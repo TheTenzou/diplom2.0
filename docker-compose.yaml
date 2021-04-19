@@ -1,13 +1,18 @@
 version: "3.8"
 
+volumes: 
+  mongo_data:
+
 services:
 
   nginx:
+    container_name: nginx
     build: ./nginx
     ports: 
       - "8080:80"
 
   user-service:
+    container_name: user-service
     build:
       context: ./user-service
       target: builder
@@ -16,6 +21,27 @@ services:
       - "8080"
     environment:
       - ENV=dev
+      - MONGO_HOST=user-mongo
+      - MONGO_PORT=27017
     volumes:
       - ./user-service:/go/src/app
     command: reflex -r "\.go$$" -s -- sh -c "go run ./"
+
+  user-mongo:
+    container_name: user-mongo
+    image: mongo
+    volumes: 
+      - "mongo_data:/data/db"
+    expose: 
+      - "27017"
+    command: mongod --quiet
+  
+  mongo-express:
+    container_name: mongo-express
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=user-mongo
+    depends_on: 
+      - user-mongo
