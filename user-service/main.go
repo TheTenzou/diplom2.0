@@ -28,6 +28,10 @@ func main() {
 		Handler: router,
 	}
 
+	gracefullShutdown(server)
+}
+
+func gracefullShutdown(server *http.Server) {
 	// Graceful server shutdown - https://github.com/gin-gonic/examples/blob/master/graceful-shutdown/graceful-shutdown/server.go
 	go func() {
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
