@@ -12,9 +12,9 @@ type userHandler struct {
 	UserService interfaces.UserService
 }
 
-func InitUserHandler(router *gin.Engine, userService *interfaces.UserService) {
+func InitUserHandler(router *gin.Engine, userService interfaces.UserService) {
 	handler := userHandler{
-		UserService: *userService,
+		UserService: userService,
 	}
 
 	group := router.Group("/api/users/v1")

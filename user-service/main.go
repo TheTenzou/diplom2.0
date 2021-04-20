@@ -10,28 +10,25 @@ import (
 	"time"
 
 	"github.com/TheTenzou/diplom2.0/user-service/config"
-	"github.com/TheTenzou/diplom2.0/user-service/handler"
-	"github.com/TheTenzou/diplom2.0/user-service/repository"
-	"github.com/TheTenzou/diplom2.0/user-service/service"
-	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	log.Printf("Stating server....")
 
-	router := gin.Default()
+	dataSorces, err := config.InitDataSources()
+	if err != nil {
+		log.Fatalf("Ubable to initialize data sources: %v\n", err)
+	}
 
-	dataSorces, _ := config.ConfigDataSources()
+	repositories := config.InitRepositories(dataSorces)
 
-	userRepo := repository.NewMongoUserRepository(dataSorces.MongoDB)
+	services := config.InitServices(repositories)
 
-	userService := service.NewUserService(userRepo)
-
-	handler.InitUserHandler(router, &userService)
+	handler := config.InitHandlers(services)
 
 	server := &http.Server{
 		Addr:    ":8080",
-		Handler: router,
+		Handler: handler,
 	}
 
 	gracefullShutdown(server)

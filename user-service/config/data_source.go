@@ -15,7 +15,7 @@ type DataSources struct {
 	MongoDB *mongo.Client
 }
 
-func ConfigDataSources() (*DataSources, error) {
+func InitDataSources() (*DataSources, error) {
 
 	mongoClient, err := configMongo()
 	if err != nil {
