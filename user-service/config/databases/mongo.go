@@ -1,4 +1,4 @@
-package config
+package databases
 
 import (
 	"context"
@@ -11,32 +11,18 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type DataSources struct {
-	MongoDB *mongo.Client
-}
+var mongoDB *mongo.Client
 
-func InitDataSources() (*DataSources, error) {
-
-	mongoClient, err := configMongo()
-	if err != nil {
-		return nil, fmt.Errorf("faild to connect to mongo: %v", err)
+func GetMongo() (*mongo.Client, error) {
+	if mongoDB == nil {
+		var err error
+		mongoDB, err = configMongo()
+		if err != nil {
+			return nil, fmt.Errorf("error connecting to monog: %v", err)
+		}
 	}
 
-	return &DataSources{
-		MongoDB: mongoClient,
-	}, nil
-}
-
-func (ds *DataSources) Close() error {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	err := ds.MongoDB.Disconnect(ctx)
-	if err != nil {
-		return fmt.Errorf("error closing mongo: %v", err)
-	}
-
-	return nil
+	return mongoDB, nil
 }
 
 func configMongo() (*mongo.Client, error) {
