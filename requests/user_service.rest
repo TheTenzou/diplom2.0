@@ -1,3 +1,30 @@
 
 ###
 GET http://localhost:8080/api/users/v1/user/607db993fad7324170a4debc
+
+###
+GET http://localhost:8080/api/users/v1/users
+
+###
+PUT http://localhost:8080/api/users/v1/user
+Content-Type: application/json
+
+{
+    "login": "test",
+    "password": "password",
+    "name": "name"
+}
+
+###
+PATCH  http://localhost:8080/api/users/v1/user
+Content-Type: application/json
+
+{
+    "id": "607db993fad7324170a4debc",
+    "login": "testUpdate",
+    "password": "password",
+    "name": "name"
+}
+
+###
+DELETE http://localhost:8080/api/users/v1/user/607db993fad7324170a4debc
