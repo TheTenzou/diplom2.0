@@ -13,11 +13,13 @@ import (
 
 type mongoUserRepository struct {
 	MongoDB *mongo.Client
+	Users   *mongo.Collection
 }
 
 func NewMongoUserRepository(mongoDB *mongo.Client) interfaces.UserRepository {
 	return &mongoUserRepository{
 		MongoDB: mongoDB,
+		Users:   mongoDB.Database("users").Collection("users"),
 	}
 }
 
@@ -26,12 +28,11 @@ func (r *mongoUserRepository) FindByID(
 	userID primitive.ObjectID,
 ) (model.User, error) {
 
-	collection := r.MongoDB.Database("users").Collection("users")
-
 	var user model.User
-	err := collection.FindOne(ctx, model.User{ID: userID}).Decode(&user)
+
+	err := r.Users.FindOne(ctx, model.User{ID: userID}).Decode(&user)
 	if err != nil {
-		return user, fmt.Errorf("failed to fetch user: %v", err)
+		return user, fmt.Errorf("failed to fetch user by id: %v", err)
 	}
 
 	return user, nil
@@ -42,12 +43,11 @@ func (r *mongoUserRepository) FindByLogin(
 	userLogin string,
 ) (model.User, error) {
 
-	collection := r.MongoDB.Database("users").Collection("users")
-
 	var user model.User
-	err := collection.FindOne(ctx, model.User{Login: userLogin}).Decode(&user)
+
+	err := r.Users.FindOne(ctx, model.User{Login: userLogin}).Decode(&user)
 	if err != nil {
-		return user, fmt.Errorf("failed to fetch user: %v", err)
+		return user, fmt.Errorf("failed to fetch user by login: %v", err)
 	}
 
 	return user, nil
@@ -65,11 +65,9 @@ func (r *mongoUserRepository) Create(
 	user model.User,
 ) (model.User, error) {
 
-	collection := r.MongoDB.Database("users").Collection("users")
-
-	userID, err := collection.InsertOne(ctx, user)
+	userID, err := r.Users.InsertOne(ctx, user)
 	if err != nil {
-		return model.User{}, fmt.Errorf("fail %v", err)
+		return model.User{}, fmt.Errorf("failed to create users %v", err)
 	}
 
 	user.ID = userID.InsertedID.(primitive.ObjectID)
@@ -81,12 +79,11 @@ func (r *mongoUserRepository) Update(
 	ctx context.Context,
 	user model.User,
 ) error {
-	collection := r.MongoDB.Database("users").Collection("users")
 
-	_, err := collection.UpdateByID(ctx, user.ID, bson.M{"$set": user})
+	_, err := r.Users.UpdateByID(ctx, user.ID, bson.M{"$set": user})
 
 	if err != nil {
-		return fmt.Errorf("fail %v", err)
+		return fmt.Errorf("failed to update user %v", err)
 	}
 
 	return nil
@@ -97,15 +94,13 @@ func (r *mongoUserRepository) Delete(
 	userID primitive.ObjectID,
 ) (model.User, error) {
 
-	collection := r.MongoDB.Database("users").Collection("users")
-
-	result := collection.FindOneAndDelete(ctx, bson.M{"_id": userID})
+	result := r.Users.FindOneAndDelete(ctx, bson.M{"_id": userID})
 
 	var deletedUser model.User
 
 	err := result.Decode(&deletedUser)
 	if err != nil {
-		return model.User{}, fmt.Errorf("fail %v", err)
+		return model.User{}, fmt.Errorf("failed to delete user %v", err)
 	}
 
 	return deletedUser, nil
