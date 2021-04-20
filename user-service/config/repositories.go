@@ -1,6 +1,8 @@
 package config
 
 import (
+	"os"
+
 	"github.com/TheTenzou/diplom2.0/user-service/config/databases"
 	"github.com/TheTenzou/diplom2.0/user-service/interfaces"
 	"github.com/TheTenzou/diplom2.0/user-service/repository"
@@ -17,7 +19,9 @@ func InitRepositories() (*Repositories, error) {
 		return nil, err
 	}
 
-	usersCollection := mongo.Database("users").Collection("users")
+	dbName := os.Getenv("MONGO_DABASE_NAME")
+	collectionName := os.Getenv("USERS_COLLECTION")
+	usersCollection := mongo.Database(dbName).Collection(collectionName)
 
 	userRepository := repository.NewMongoUserRepository(usersCollection)
 

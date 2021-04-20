@@ -23,22 +23,22 @@ services:
       - "8080"
     environment:
       - ENV=dev
-      - MONGO_HOST=user-service-mongo
-      - MONGO_PORT=27017
+    env_file: 
+      - .env
     volumes:
       - ./user-service:/go/src/app
     depends_on: 
       - user-service-mongo
-    command: ./wait-for.sh user-service-mongo:27017 -- reflex -r "\.go$$" -s -- sh -c "go run ./"
+    command: ./wait-for.sh ${MONGO_HOST}:${MONGO_PORT} -- reflex -r "\.go$$" -s -- sh -c "go run ./"
 
   user-service-mongo:
-    container_name: user-service-mongo
+    container_name: ${MONGO_HOST}
     image: mongo
     volumes: 
       - "mongo_data:/data/db"
     expose: 
-      - "27017"
-    command: mongod --quiet
+      - ${MONGO_PORT}
+    command: mongod --quiet --port ${MONGO_PORT}
   
   mongo-express:
     container_name: mongo-express
@@ -46,6 +46,7 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - ME_CONFIG_MONGODB_SERVER=user-service-mongo
+      - ME_CONFIG_MONGODB_SERVER=${MONGO_HOST}
+      - ME_CONFIG_MONGODB_PORT=${MONGO_PORT}
     depends_on: 
       - user-service-mongo
