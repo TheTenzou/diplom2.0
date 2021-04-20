@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -41,6 +42,22 @@ func configMongo() (*mongo.Client, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	dbName := os.Getenv("MONGO_DABASE_NAME")
+	collectionName := os.Getenv("USERS_COLLECTION")
+	usersCollection := mongoClient.Database(dbName).Collection(collectionName)
+
+	indexName, err := usersCollection.Indexes().CreateOne(ctx,
+		mongo.IndexModel{
+			Keys:    bson.M{"login": 1},
+			Options: options.Index().SetUnique(true),
+		},
+	)
+	if err != nil {
+		return nil, fmt.Errorf("faild to create index: %v", err)
+	}
+
+	log.Printf("index %s created", indexName)
 
 	log.Printf("Connected to mongo")
 
