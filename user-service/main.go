@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/TheTenzou/diplom2.0/user-service/config"
+	"github.com/TheTenzou/diplom2.0/user-service/config/databases"
 )
 
 func main() {
@@ -59,6 +60,12 @@ func gracefullShutdown(server *http.Server) {
 	// the request it is currently handling
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
+
+	mongo, err := databases.GetMongo()
+	if err != nil {
+		log.Fatalf("FAild to close mongo: %v\n", err)
+	}
+	mongo.Disconnect(ctx)
 
 	// Shutdown server
 	log.Println("Shutting down server...")
