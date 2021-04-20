@@ -12,14 +12,12 @@ import (
 )
 
 type mongoUserRepository struct {
-	MongoDB *mongo.Client
-	Users   *mongo.Collection
+	Users *mongo.Collection
 }
 
-func NewMongoUserRepository(mongoDB *mongo.Client) interfaces.UserRepository {
+func NewMongoUserRepository(usersCollection *mongo.Collection) interfaces.UserRepository {
 	return &mongoUserRepository{
-		MongoDB: mongoDB,
-		Users:   mongoDB.Database("users").Collection("users"),
+		Users: usersCollection,
 	}
 }
 

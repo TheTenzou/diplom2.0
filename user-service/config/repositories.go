@@ -17,7 +17,9 @@ func InitRepositories() (*Repositories, error) {
 		return nil, err
 	}
 
-	userRepository := repository.NewMongoUserRepository(mongo)
+	usersCollection := mongo.Database("users").Collection("users")
+
+	userRepository := repository.NewMongoUserRepository(usersCollection)
 
 	return &Repositories{
 		UserRepository: userRepository,
