@@ -15,3 +15,12 @@ type UserRepository interface {
 	Update(ctx context.Context, user model.User) error
 	Delete(ctx context.Context, userID primitive.ObjectID) (model.User, error)
 }
+
+type UserService interface {
+	FindByID(ctx context.Context, userID primitive.ObjectID) (model.User, error)
+	FindByLogin(ctx context.Context, userLogin string) (model.User, error)
+	FindAll(ctx context.Context, page int) ([]model.User, error)
+	Create(ctx context.Context, user model.User) (model.User, error)
+	Update(ctx context.Context, user model.User) error
+	Delete(ctx context.Context, userID primitive.ObjectID) (model.User, error)
+}
