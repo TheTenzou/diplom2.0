@@ -27,6 +27,18 @@ func ConfigDataSources() (*DataSources, error) {
 	}, nil
 }
 
+func (ds *DataSources) Close() error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	err := ds.MongoDB.Disconnect(ctx)
+	if err != nil {
+		return fmt.Errorf("error closing mongo: %v", err)
+	}
+
+	return nil
+}
+
 func configMongo() (*mongo.Client, error) {
 
 	log.Printf("Conecting to mongo...")
