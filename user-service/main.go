@@ -9,6 +9,10 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/TheTenzou/diplom2.0/user-service/config"
+	"github.com/TheTenzou/diplom2.0/user-service/handler"
+	"github.com/TheTenzou/diplom2.0/user-service/repository"
+	"github.com/TheTenzou/diplom2.0/user-service/service"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,11 +21,13 @@ func main() {
 
 	router := gin.Default()
 
-	router.GET("/api/users", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{
-			"hello": "world",
-		})
-	})
+	dataSorces, _ := config.ConfigDataSources()
+
+	userRepo := repository.NewMongoUserRepository(dataSorces.MongoDB)
+
+	userService := service.NewUserService(userRepo)
+
+	handler.InitUserHandler(router, &userService)
 
 	server := &http.Server{
 		Addr:    ":8080",
