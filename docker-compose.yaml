@@ -36,9 +36,11 @@ services:
     image: mongo
     volumes: 
       - "mongo_data:/data/db"
+    environment: 
+      - MONGO_LOG_DIR=/dev/null
     expose: 
       - ${MONGO_PORT}
-    command: mongod --quiet --port ${MONGO_PORT}
+    command: mongod --quiet --port ${MONGO_PORT} --logpath=/dev/null
   
   mongo-express:
     container_name: mongo-express
