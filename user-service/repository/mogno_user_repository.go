@@ -16,12 +16,15 @@ type mongoUserRepository struct {
 	Users *mongo.Collection
 }
 
+// factry for initializating user repository
 func NewMongoUserRepository(usersCollection *mongo.Collection) interfaces.UserRepository {
 	return &mongoUserRepository{
 		Users: usersCollection,
 	}
 }
 
+// fetch user by id from databse
+// userID is id of requested user
 func (r *mongoUserRepository) FindByID(
 	ctx context.Context,
 	userID primitive.ObjectID,
@@ -37,6 +40,8 @@ func (r *mongoUserRepository) FindByID(
 	return user, nil
 }
 
+// fetch user by login from databse
+// userLogin is login of requested user
 func (r *mongoUserRepository) FindByLogin(
 	ctx context.Context,
 	userLogin string,
@@ -52,6 +57,11 @@ func (r *mongoUserRepository) FindByLogin(
 	return user, nil
 }
 
+// return page of users
+// page is number of requested page
+// pageSize is size of page
+
+// TODO not implemented
 func (r *mongoUserRepository) FindAll(
 	ctx context.Context,
 	page int,
@@ -59,6 +69,9 @@ func (r *mongoUserRepository) FindAll(
 	panic("not implemented")
 }
 
+// create user record in data base
+// user login shoud be unique
+// return inserted use with id
 func (r *mongoUserRepository) Create(
 	ctx context.Context,
 	user model.User,
@@ -82,6 +95,8 @@ func (r *mongoUserRepository) Create(
 	return user, nil
 }
 
+// update user record in database
+// user login shoud be unique
 func (r *mongoUserRepository) Update(
 	ctx context.Context,
 	user model.User,
@@ -108,6 +123,8 @@ func (r *mongoUserRepository) Update(
 	return nil
 }
 
+// mark user is deleted
+// return deleted user
 func (r *mongoUserRepository) Delete(
 	ctx context.Context,
 	userID primitive.ObjectID,

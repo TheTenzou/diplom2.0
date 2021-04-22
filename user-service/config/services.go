@@ -9,6 +9,7 @@ type Services struct {
 	UserService interfaces.UserService
 }
 
+// init all necessary services
 func InitServices(repositories *Repositories) *Services {
 	userService := service.NewUserService(repositories.UserRepository)
 

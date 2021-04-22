@@ -2,6 +2,8 @@ package model
 
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
+// define document structure in database
+// define structure of json
 type User struct {
 	ID       primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
 	Login    string             `bson:"login,omitempty" json:"login,omitempty"`

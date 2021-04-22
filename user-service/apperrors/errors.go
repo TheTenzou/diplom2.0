@@ -26,14 +26,12 @@ type Error struct {
 	Message    string    `json:"message"`
 }
 
+// requiers to implement error interface
 func (e *Error) Error() string {
 	return e.Message
 }
 
-func (e *Error) Status() int {
-	return e.StatusCode
-}
-
+// convert any error to http status code
 func Status(err error) int {
 	var e *Error
 	if errors.As(err, &e) {
@@ -42,7 +40,9 @@ func Status(err error) int {
 	return http.StatusInternalServerError
 }
 
-func NewAuthorization(reason string) *Error {
+// factory for Unauthorized error
+// reason - explain why is unauthorized
+func NewUnauthorized(reason string) *Error {
 	return &Error{
 		TimeStemp:  time.Now(),
 		StatusCode: http.StatusUnauthorized,
@@ -51,6 +51,8 @@ func NewAuthorization(reason string) *Error {
 	}
 }
 
+// factory for bad request error
+// reson - explain what is wrong
 func NewBadRequest(reason string) *Error {
 	return &Error{
 		TimeStemp:  time.Now(),
@@ -60,6 +62,9 @@ func NewBadRequest(reason string) *Error {
 	}
 }
 
+// factory for conflict error
+// name - name of parametr witch raise conflict error
+// value - value with raise conflict error
 func NewConflict(name string, value string) *Error {
 	return &Error{
 		TimeStemp:  time.Now(),
@@ -69,6 +74,7 @@ func NewConflict(name string, value string) *Error {
 	}
 }
 
+// factory for internal error
 func NewInternal() *Error {
 	return &Error{
 		TimeStemp:  time.Now(),
@@ -78,6 +84,9 @@ func NewInternal() *Error {
 	}
 }
 
+// factory for not found error
+// name - name of resource wich is not found
+// value - vlue of resource wich is not found
 func NewNotFound(name string, value string) *Error {
 	return &Error{
 		TimeStemp:  time.Now(),
@@ -87,6 +96,7 @@ func NewNotFound(name string, value string) *Error {
 	}
 }
 
+// factory for Service unavailable error
 func NewServiceUnavailable() *Error {
 	return &Error{
 		TimeStemp:  time.Now(),
@@ -96,6 +106,8 @@ func NewServiceUnavailable() *Error {
 	}
 }
 
+// factory for unsupported madia type error
+// reson explain why and wich resources an suported
 func NewUnsupportedMediaType(reason string) *Error {
 	return &Error{
 		TimeStemp:  time.Now(),

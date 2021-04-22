@@ -16,6 +16,8 @@ type invalidArgument struct {
 	Param string `json:"param"`
 }
 
+// bind data from context to request structure
+// if error occurred returns response with error
 func BindData(ctx *gin.Context, request interface{}) bool {
 
 	if ctx.ContentType() != "application/json" {
@@ -23,7 +25,7 @@ func BindData(ctx *gin.Context, request interface{}) bool {
 
 		err := apperrors.NewUnsupportedMediaType(message)
 
-		ctx.JSON(err.Status(), err)
+		ctx.JSON(err.StatusCode, err)
 
 		return false
 	}
@@ -37,7 +39,7 @@ func BindData(ctx *gin.Context, request interface{}) bool {
 
 			err := apperrors.NewBadRequest("Invalid request paramtrs. See invalidArguments")
 
-			ctx.JSON(err.Status(), gin.H{
+			ctx.JSON(err.StatusCode, gin.H{
 				"error":           err,
 				"invalidArgumets": bindingsErrors,
 			})
@@ -47,7 +49,7 @@ func BindData(ctx *gin.Context, request interface{}) bool {
 
 		err := apperrors.NewInternal()
 
-		ctx.JSON(err.Status(), err)
+		ctx.JSON(err.StatusCode, err)
 
 		return false
 	}
@@ -55,6 +57,8 @@ func BindData(ctx *gin.Context, request interface{}) bool {
 	return true
 }
 
+// return list of binding errors
+// requires to make sansable error discription
 func getBindigError(err error) []invalidArgument {
 
 	if errors, ok := err.(validator.ValidationErrors); ok {

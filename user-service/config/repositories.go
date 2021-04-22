@@ -12,6 +12,7 @@ type Repositories struct {
 	UserRepository interfaces.UserService
 }
 
+// initialise all necassary repositories
 func InitRepositories() (*Repositories, error) {
 
 	mongo, err := databases.GetMongo()

@@ -14,6 +14,7 @@ import (
 
 var mongoDB *mongo.Client
 
+// singlton return mongo data source
 func GetMongo() (*mongo.Client, error) {
 	if mongoDB == nil {
 		var err error
@@ -26,6 +27,7 @@ func GetMongo() (*mongo.Client, error) {
 	return mongoDB, nil
 }
 
+// connect to mongo database
 func configMongo() (*mongo.Client, error) {
 
 	log.Printf("Conecting to mongo...")

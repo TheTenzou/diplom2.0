@@ -17,6 +17,7 @@ type userHandler struct {
 	UserService interfaces.UserService
 }
 
+// init user routs
 func InitUserHandler(router *gin.Engine, userService interfaces.UserService) {
 	handler := userHandler{
 		UserService: userService,
@@ -32,6 +33,7 @@ func InitUserHandler(router *gin.Engine, userService interfaces.UserService) {
 
 }
 
+// handle request of user
 func (h *userHandler) getUser(ctx *gin.Context) {
 	userID, err := primitive.ObjectIDFromHex(ctx.Params.ByName("userID"))
 	if err != nil {
@@ -39,7 +41,7 @@ func (h *userHandler) getUser(ctx *gin.Context) {
 
 		err := apperrors.NewInternal()
 
-		ctx.JSON(err.Status(), err)
+		ctx.JSON(err.StatusCode, err)
 
 		return
 	}
@@ -49,13 +51,13 @@ func (h *userHandler) getUser(ctx *gin.Context) {
 		log.Printf("failed to fetch user: %v\n%v", userID, err)
 
 		if err, ok := err.(*apperrors.Error); ok {
-			ctx.JSON(err.Status(), err)
+			ctx.JSON(err.StatusCode, err)
 			return
 		}
 
 		err := apperrors.NewInternal()
 
-		ctx.JSON(err.Status(), err)
+		ctx.JSON(err.StatusCode, err)
 
 		return
 	}
@@ -63,12 +65,14 @@ func (h *userHandler) getUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, user)
 }
 
+// handle paginated users list request
 func (h *userHandler) getUsers(ctx *gin.Context) {
 	ctx.JSON(200, gin.H{
 		"user": "all users",
 	})
 }
 
+// handle creation of user
 func (h *userHandler) createUser(ctx *gin.Context) {
 	var request requests.CreateUserRequest
 
@@ -90,13 +94,13 @@ func (h *userHandler) createUser(ctx *gin.Context) {
 		log.Printf("failed to create user: %v\n", err)
 
 		if err, ok := err.(*apperrors.Error); ok {
-			ctx.JSON(err.Status(), err)
+			ctx.JSON(err.StatusCode, err)
 			return
 		}
 
 		err := apperrors.NewInternal()
 
-		ctx.JSON(err.Status(), err)
+		ctx.JSON(err.StatusCode, err)
 
 		return
 	}
@@ -104,6 +108,7 @@ func (h *userHandler) createUser(ctx *gin.Context) {
 	ctx.JSON(200, createdUser)
 }
 
+// handle update request of user
 func (h *userHandler) updateUser(ctx *gin.Context) {
 	var request requests.UpdateUserRequest
 
@@ -126,7 +131,7 @@ func (h *userHandler) updateUser(ctx *gin.Context) {
 		log.Printf("failed to update user: %v\n", err)
 
 		if err, ok := err.(*apperrors.Error); ok {
-			ctx.JSON(err.Status(), gin.H{
+			ctx.JSON(err.StatusCode, gin.H{
 				"err": err,
 			})
 			return
@@ -134,7 +139,7 @@ func (h *userHandler) updateUser(ctx *gin.Context) {
 
 		err := apperrors.NewInternal()
 
-		ctx.JSON(err.Status(), gin.H{
+		ctx.JSON(err.StatusCode, gin.H{
 			"err": err,
 		})
 
@@ -144,6 +149,7 @@ func (h *userHandler) updateUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, user)
 }
 
+// handle deletion of user
 func (h *userHandler) deleteUser(ctx *gin.Context) {
 	userID, err := primitive.ObjectIDFromHex(ctx.Params.ByName("userID"))
 	if err != nil {
@@ -151,7 +157,7 @@ func (h *userHandler) deleteUser(ctx *gin.Context) {
 
 		err := apperrors.NewInternal()
 
-		ctx.JSON(err.Status(), err)
+		ctx.JSON(err.StatusCode, err)
 
 		return
 	}
@@ -163,13 +169,13 @@ func (h *userHandler) deleteUser(ctx *gin.Context) {
 		log.Printf("failed to delete user: %v\n", err)
 
 		if err, ok := err.(*apperrors.Error); ok {
-			ctx.JSON(err.Status(), err)
+			ctx.JSON(err.StatusCode, err)
 			return
 		}
 
 		err := apperrors.NewInternal()
 
-		ctx.JSON(err.Status(), err)
+		ctx.JSON(err.StatusCode, err)
 
 		return
 	}
