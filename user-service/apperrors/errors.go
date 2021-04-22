@@ -40,6 +40,14 @@ func Status(err error) int {
 	return http.StatusInternalServerError
 }
 
+func ConvertToAppError(err error) *Error {
+	var e *Error
+	if errors.As(err, &e) {
+		return e
+	}
+	return NewInternal()
+}
+
 // factory for Unauthorized error
 // reason - explain why is unauthorized
 func NewUnauthorized(reason string) *Error {

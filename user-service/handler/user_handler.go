@@ -38,27 +38,14 @@ func (h *userHandler) getUser(ctx *gin.Context) {
 	userID, err := primitive.ObjectIDFromHex(ctx.Params.ByName("userID"))
 	if err != nil {
 		log.Printf("faild to parse userID: %v", err)
-
-		err := apperrors.NewInternal()
-
-		ctx.JSON(err.StatusCode, err)
-
+		ctx.JSON(apperrors.Status(err), apperrors.ConvertToAppError(err))
 		return
 	}
 	requestCtx := ctx.Request.Context()
 	user, err := h.UserService.FindByID(requestCtx, userID)
 	if err != nil {
-		log.Printf("failed to fetch user: %v\n%v", userID, err)
-
-		if err, ok := err.(*apperrors.Error); ok {
-			ctx.JSON(err.StatusCode, err)
-			return
-		}
-
-		err := apperrors.NewInternal()
-
-		ctx.JSON(err.StatusCode, err)
-
+		log.Printf("faild to get user: %v", err)
+		ctx.JSON(apperrors.Status(err), apperrors.ConvertToAppError(err))
 		return
 	}
 
@@ -92,20 +79,11 @@ func (h *userHandler) createUser(ctx *gin.Context) {
 
 	if err != nil {
 		log.Printf("failed to create user: %v\n", err)
-
-		if err, ok := err.(*apperrors.Error); ok {
-			ctx.JSON(err.StatusCode, err)
-			return
-		}
-
-		err := apperrors.NewInternal()
-
-		ctx.JSON(err.StatusCode, err)
-
+		ctx.JSON(apperrors.Status(err), apperrors.ConvertToAppError(err))
 		return
 	}
 
-	ctx.JSON(200, createdUser)
+	ctx.JSON(http.StatusOK, createdUser)
 }
 
 // handle update request of user
@@ -129,20 +107,7 @@ func (h *userHandler) updateUser(ctx *gin.Context) {
 
 	if err != nil {
 		log.Printf("failed to update user: %v\n", err)
-
-		if err, ok := err.(*apperrors.Error); ok {
-			ctx.JSON(err.StatusCode, gin.H{
-				"err": err,
-			})
-			return
-		}
-
-		err := apperrors.NewInternal()
-
-		ctx.JSON(err.StatusCode, gin.H{
-			"err": err,
-		})
-
+		ctx.JSON(apperrors.Status(err), apperrors.ConvertToAppError(err))
 		return
 	}
 
@@ -154,11 +119,7 @@ func (h *userHandler) deleteUser(ctx *gin.Context) {
 	userID, err := primitive.ObjectIDFromHex(ctx.Params.ByName("userID"))
 	if err != nil {
 		log.Printf("faild to parse userID: %v", err)
-
-		err := apperrors.NewInternal()
-
-		ctx.JSON(err.StatusCode, err)
-
+		ctx.JSON(apperrors.Status(err), apperrors.ConvertToAppError(err))
 		return
 	}
 
@@ -167,16 +128,7 @@ func (h *userHandler) deleteUser(ctx *gin.Context) {
 
 	if err != nil {
 		log.Printf("failed to delete user: %v\n", err)
-
-		if err, ok := err.(*apperrors.Error); ok {
-			ctx.JSON(err.StatusCode, err)
-			return
-		}
-
-		err := apperrors.NewInternal()
-
-		ctx.JSON(err.StatusCode, err)
-
+		ctx.JSON(apperrors.Status(err), apperrors.ConvertToAppError(err))
 		return
 	}
 
