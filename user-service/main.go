@@ -16,11 +16,6 @@ import (
 func main() {
 	log.Printf("Stating server....")
 
-	// dataSorces, err := config.InitDataSources()
-	// if err != nil {
-	// 	log.Fatalf("Unable to initialize data sources: %v\n", err)
-	// }
-
 	repositories, err := config.InitRepositories()
 	if err != nil {
 		log.Fatalf("Unable to initialize repositories: %v\n", err)
