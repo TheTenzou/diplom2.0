@@ -87,7 +87,12 @@ func (r *mongoUserRepository) Update(
 	user model.User,
 ) error {
 
-	_, err := r.Users.UpdateByID(ctx, user.ID, bson.M{"$set": user})
+	updateResult, err := r.Users.UpdateByID(ctx, user.ID, bson.M{"$set": user})
+
+	if updateResult.MatchedCount == 0 {
+		log.Printf("Couldn't update user. Id %v doesn't exit.", user.ID)
+		return apperrors.NewNotFound("id", user.ID.Hex())
+	}
 
 	if err != nil {
 		if err, ok := err.(mongo.WriteException); ok && err.HasErrorMessage("duplicate key error collection") {
