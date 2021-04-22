@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/TheTenzou/diplom2.0/user-service/apperrors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
@@ -20,9 +21,9 @@ func BindData(ctx *gin.Context, request interface{}) bool {
 	if ctx.ContentType() != "application/json" {
 		message := fmt.Sprintf("%s only accept Content-Type application/json", ctx.FullPath())
 
-		ctx.JSON(500, gin.H{
-			"error": message,
-		})
+		err := apperrors.NewUnsupportedMediaType(message)
+
+		ctx.JSON(err.Status(), err)
 
 		return false
 	}
@@ -32,9 +33,21 @@ func BindData(ctx *gin.Context, request interface{}) bool {
 
 		bindingsErrors := getBindigError(err)
 
-		ctx.JSON(500, gin.H{
-			"error": bindingsErrors,
-		})
+		if bindingsErrors != nil {
+
+			err := apperrors.NewBadRequest("Invalid request paramtrs. See invalidArguments")
+
+			ctx.JSON(err.Status(), gin.H{
+				"error":           err,
+				"invalidArgumets": bindingsErrors,
+			})
+
+			return false
+		}
+
+		err := apperrors.NewInternal()
+
+		ctx.JSON(err.Status(), err)
 
 		return false
 	}

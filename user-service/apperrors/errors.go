@@ -1,4 +1,4 @@
-package errors
+package apperrors
 
 import (
 	"errors"
@@ -10,18 +10,19 @@ import (
 type Type string
 
 const (
-	Unauthorization    Type = "UNAUTHORIZATION"
-	BadRequest         Type = "BAD_REQUEST"
-	Conflict           Type = "CONFLICT"
-	Internal           Type = "INTERNAL"
-	NotFound           Type = "NOT_FOUND"
-	ServiceUnavailable Type = "SERVICE_UNAVAILABLE"
+	Unauthorization      Type = "UNAUTHORIZATION"
+	BadRequest           Type = "BAD_REQUEST"
+	Conflict             Type = "CONFLICT"
+	Internal             Type = "INTERNAL"
+	NotFound             Type = "NOT_FOUND"
+	ServiceUnavailable   Type = "SERVICE_UNAVAILABLE"
+	UnSupportedMediaType Type = "UN_SUPPORTED_MEDIATYPE"
 )
 
 type Error struct {
 	TimeStemp  time.Time `json:"timestamp"`
 	StatusCode int       `json:"status"`
-	Type       Type      `json:"type"`
+	Type       Type      `json:"error"`
 	Message    string    `json:"message"`
 }
 
@@ -92,5 +93,14 @@ func NewServiceUnavailable() *Error {
 		StatusCode: http.StatusServiceUnavailable,
 		Type:       ServiceUnavailable,
 		Message:    "Service unavailable or timed out",
+	}
+}
+
+func NewUnsupportedMediaType(reason string) *Error {
+	return &Error{
+		TimeStemp:  time.Now(),
+		StatusCode: http.StatusUnsupportedMediaType,
+		Type:       UnSupportedMediaType,
+		Message:    reason,
 	}
 }

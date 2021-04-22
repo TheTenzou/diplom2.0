@@ -2,8 +2,9 @@ package repository
 
 import (
 	"context"
-	"fmt"
+	"log"
 
+	"github.com/TheTenzou/diplom2.0/user-service/apperrors"
 	"github.com/TheTenzou/diplom2.0/user-service/interfaces"
 	"github.com/TheTenzou/diplom2.0/user-service/model"
 	"go.mongodb.org/mongo-driver/bson"
@@ -30,7 +31,7 @@ func (r *mongoUserRepository) FindByID(
 
 	err := r.Users.FindOne(ctx, model.User{ID: userID}).Decode(&user)
 	if err != nil {
-		return user, fmt.Errorf("failed to fetch user by id: %v", err)
+		return user, apperrors.NewNotFound("id", userID.Hex())
 	}
 
 	return user, nil
@@ -45,7 +46,7 @@ func (r *mongoUserRepository) FindByLogin(
 
 	err := r.Users.FindOne(ctx, model.User{Login: userLogin}).Decode(&user)
 	if err != nil {
-		return user, fmt.Errorf("failed to fetch user by login: %v", err)
+		return user, apperrors.NewNotFound("login", userLogin)
 	}
 
 	return user, nil
@@ -62,10 +63,18 @@ func (r *mongoUserRepository) Create(
 	ctx context.Context,
 	user model.User,
 ) (model.User, error) {
+	log.Println("1")
 
 	userID, err := r.Users.InsertOne(ctx, user)
 	if err != nil {
-		return model.User{}, fmt.Errorf("failed to create users %v", err)
+		if err, ok := err.(mongo.WriteException); ok && err.HasErrorMessage("duplicate key error collection") {
+			log.Printf(
+				"Could not create a user with login: %v. Reason %v\n",
+				user.Login,
+				"duplicate key error collection",
+			)
+		}
+		return model.User{}, apperrors.NewConflict("login", user.Login)
 	}
 
 	user.ID = userID.InsertedID.(primitive.ObjectID)
@@ -81,7 +90,14 @@ func (r *mongoUserRepository) Update(
 	_, err := r.Users.UpdateByID(ctx, user.ID, bson.M{"$set": user})
 
 	if err != nil {
-		return fmt.Errorf("failed to update user %v", err)
+		if err, ok := err.(mongo.WriteException); ok && err.HasErrorMessage("duplicate key error collection") {
+			log.Printf(
+				"Could not update a user with new login: %v. Reason %v\n",
+				user.Login,
+				"duplicate key error collection",
+			)
+		}
+		return apperrors.NewConflict("login", user.Login)
 	}
 
 	return nil
@@ -98,7 +114,8 @@ func (r *mongoUserRepository) Delete(
 
 	err := result.Decode(&deletedUser)
 	if err != nil {
-		return model.User{}, fmt.Errorf("failed to delete user %v", err)
+		log.Printf("Ubancle to delete user: %v\n", err)
+		return model.User{}, apperrors.NewInternal()
 	}
 
 	return deletedUser, nil

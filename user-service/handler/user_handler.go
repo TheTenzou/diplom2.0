@@ -2,7 +2,9 @@ package handler
 
 import (
 	"log"
+	"net/http"
 
+	"github.com/TheTenzou/diplom2.0/user-service/apperrors"
 	"github.com/TheTenzou/diplom2.0/user-service/interfaces"
 	"github.com/TheTenzou/diplom2.0/user-service/model"
 	"github.com/TheTenzou/diplom2.0/user-service/requests"
@@ -35,27 +37,30 @@ func (h *userHandler) getUser(ctx *gin.Context) {
 	if err != nil {
 		log.Printf("faild to parse userID: %v", err)
 
-		ctx.JSON(500, gin.H{
-			"err": "faild to extract id",
-		})
+		err := apperrors.NewInternal()
+
+		ctx.JSON(err.Status(), err)
 
 		return
 	}
 	requestCtx := ctx.Request.Context()
 	user, err := h.UserService.FindByID(requestCtx, userID)
 	if err != nil {
-		log.Panicf("failed to fetch user: %v\n%v", userID, err)
+		log.Printf("failed to fetch user: %v\n%v", userID, err)
 
-		ctx.JSON(500, gin.H{
-			"err": "faild to fetch user",
-		})
+		if err, ok := err.(*apperrors.Error); ok {
+			ctx.JSON(err.Status(), err)
+			return
+		}
+
+		err := apperrors.NewInternal()
+
+		ctx.JSON(err.Status(), err)
 
 		return
 	}
 
-	ctx.JSON(200, gin.H{
-		"user": user,
-	})
+	ctx.JSON(http.StatusOK, user)
 }
 
 func (h *userHandler) getUsers(ctx *gin.Context) {
@@ -80,12 +85,22 @@ func (h *userHandler) createUser(ctx *gin.Context) {
 	requestCtx := ctx.Request.Context()
 
 	createdUser, err := h.UserService.Create(requestCtx, user)
+
 	if err != nil {
-		log.Printf("Faild to create user: %v\n", err)
-		ctx.JSON(500, gin.H{
-			"error": err,
-		})
+		log.Printf("failed to create user: %v\n", err)
+
+		if err, ok := err.(*apperrors.Error); ok {
+			ctx.JSON(err.Status(), err)
+			return
+		}
+
+		err := apperrors.NewInternal()
+
+		ctx.JSON(err.Status(), err)
+
+		return
 	}
+
 	ctx.JSON(200, createdUser)
 }
 
@@ -106,13 +121,27 @@ func (h *userHandler) updateUser(ctx *gin.Context) {
 	requestCtx := ctx.Request.Context()
 
 	err := h.UserService.Update(requestCtx, user)
+
 	if err != nil {
-		log.Printf("Faild to create user: %v\n", err)
-		ctx.JSON(500, gin.H{
-			"error": err,
+		log.Printf("failed to update user: %v\n", err)
+
+		if err, ok := err.(*apperrors.Error); ok {
+			ctx.JSON(err.Status(), gin.H{
+				"err": err,
+			})
+			return
+		}
+
+		err := apperrors.NewInternal()
+
+		ctx.JSON(err.Status(), gin.H{
+			"err": err,
 		})
+
+		return
 	}
-	ctx.JSON(200, user)
+
+	ctx.JSON(http.StatusOK, user)
 }
 
 func (h *userHandler) deleteUser(ctx *gin.Context) {
@@ -120,20 +149,30 @@ func (h *userHandler) deleteUser(ctx *gin.Context) {
 	if err != nil {
 		log.Printf("faild to parse userID: %v", err)
 
-		ctx.JSON(500, gin.H{
-			"err": "faild to extract id",
-		})
+		err := apperrors.NewInternal()
+
+		ctx.JSON(err.Status(), err)
 
 		return
 	}
 
 	requestCtx := ctx.Request.Context()
 	deletedUser, err := h.UserService.Delete(requestCtx, userID)
+
 	if err != nil {
-		log.Printf("Faild to create user: %v\n", err)
-		ctx.JSON(500, gin.H{
-			"error": err,
-		})
+		log.Printf("failed to delete user: %v\n", err)
+
+		if err, ok := err.(*apperrors.Error); ok {
+			ctx.JSON(err.Status(), err)
+			return
+		}
+
+		err := apperrors.NewInternal()
+
+		ctx.JSON(err.Status(), err)
+
+		return
 	}
-	ctx.JSON(200, deletedUser)
+
+	ctx.JSON(http.StatusOK, deletedUser)
 }
