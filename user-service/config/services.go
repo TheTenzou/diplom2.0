@@ -1,8 +1,8 @@
 package config
 
 import (
-	"github.com/TheTenzou/diplom2.0/user-service/interfaces"
-	"github.com/TheTenzou/diplom2.0/user-service/service"
+	"github.com/TheTenzou/gis-diplom/user-service/interfaces"
+	"github.com/TheTenzou/gis-diplom/user-service/service"
 )
 
 type Services struct {

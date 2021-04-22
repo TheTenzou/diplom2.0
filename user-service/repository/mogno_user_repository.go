@@ -4,9 +4,9 @@ import (
 	"context"
 	"log"
 
-	"github.com/TheTenzou/diplom2.0/user-service/apperrors"
-	"github.com/TheTenzou/diplom2.0/user-service/interfaces"
-	"github.com/TheTenzou/diplom2.0/user-service/model"
+	"github.com/TheTenzou/gis-diplom/user-service/apperrors"
+	"github.com/TheTenzou/gis-diplom/user-service/interfaces"
+	"github.com/TheTenzou/gis-diplom/user-service/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

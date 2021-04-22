@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/TheTenzou/diplom2.0/user-service/apperrors"
+	"github.com/TheTenzou/gis-diplom/user-service/apperrors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )

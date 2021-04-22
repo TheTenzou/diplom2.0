@@ -9,8 +9,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/TheTenzou/diplom2.0/user-service/config"
-	"github.com/TheTenzou/diplom2.0/user-service/config/databases"
+	"github.com/TheTenzou/gis-diplom/user-service/config"
+	"github.com/TheTenzou/gis-diplom/user-service/config/databases"
 )
 
 func main() {

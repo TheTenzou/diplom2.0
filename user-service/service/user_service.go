@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 
-	"github.com/TheTenzou/diplom2.0/user-service/interfaces"
-	"github.com/TheTenzou/diplom2.0/user-service/model"
+	"github.com/TheTenzou/gis-diplom/user-service/interfaces"
+	"github.com/TheTenzou/gis-diplom/user-service/model"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

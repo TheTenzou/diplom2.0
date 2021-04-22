@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/TheTenzou/diplom2.0/user-service/handler"
+	"github.com/TheTenzou/gis-diplom/user-service/handler"
 	"github.com/gin-gonic/gin"
 )
 

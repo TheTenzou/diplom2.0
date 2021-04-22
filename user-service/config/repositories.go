@@ -3,9 +3,9 @@ package config
 import (
 	"os"
 
-	"github.com/TheTenzou/diplom2.0/user-service/config/databases"
-	"github.com/TheTenzou/diplom2.0/user-service/interfaces"
-	"github.com/TheTenzou/diplom2.0/user-service/repository"
+	"github.com/TheTenzou/gis-diplom/user-service/config/databases"
+	"github.com/TheTenzou/gis-diplom/user-service/interfaces"
+	"github.com/TheTenzou/gis-diplom/user-service/repository"
 )
 
 type Repositories struct {

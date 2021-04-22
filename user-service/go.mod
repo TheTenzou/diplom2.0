@@ -1,4 +1,4 @@
-module github.com/TheTenzou/diplom2.0/user-service
+module github.com/TheTenzou/gis-diplom/user-service
 
 go 1.16
 
