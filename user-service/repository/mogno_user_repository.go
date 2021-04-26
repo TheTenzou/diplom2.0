@@ -121,11 +121,10 @@ func (r *mongoUserRepository) Update(
 	}
 
 	var updatedUser model.User
-	updatedUserID := updateResult.UpsertedID.(primitive.ObjectID)
 
-	err = r.Users.FindOne(ctx, model.User{ID: updatedUserID}).Decode(&updatedUser)
+	err = r.Users.FindOne(ctx, model.User{ID: user.ID}).Decode(&updatedUser)
 	if err != nil {
-		return user, apperrors.NewNotFound("id", updatedUserID.Hex())
+		return user, apperrors.NewNotFound("id", user.ID.Hex())
 	}
 
 	return updatedUser, nil
