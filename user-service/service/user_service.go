@@ -2,9 +2,11 @@ package service
 
 import (
 	"context"
+	"log"
 
 	"github.com/TheTenzou/gis-diplom/user-service/interfaces"
 	"github.com/TheTenzou/gis-diplom/user-service/model"
+	"github.com/TheTenzou/gis-diplom/user-service/utils"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -42,6 +44,11 @@ func (s *userService) FindAll(ctx context.Context, page model.Pagination) (model
 // user login shoud be unique
 // return inserted use with id
 func (s *userService) Create(ctx context.Context, user model.User) (model.User, error) {
+	var err error
+	user.Password, err = utils.HashPassword(user.Password)
+	if err != nil {
+		log.Printf("Failed to hash password: %v", err)
+	}
 	return s.UserRepository.Create(ctx, user)
 }
 

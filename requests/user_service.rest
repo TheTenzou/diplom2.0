@@ -10,7 +10,7 @@ PUT http://localhost:8080/api/users/v1/user
 Content-Type: application/json
 
 {
-    "login": "testlogin5",
+    "login": "testlogin6",
     "password": "password",
     "name": "name",
     "role": [
