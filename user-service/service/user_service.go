@@ -34,7 +34,7 @@ func (s *userService) FindByLogin(ctx context.Context, userLogin string) (model.
 // return page of users
 // page is number of requested page
 // pageSize is size of page
-func (s *userService) FindAll(ctx context.Context, page int) ([]model.User, error) {
+func (s *userService) FindAll(ctx context.Context, page model.Pagination) (model.PaginatedData, error) {
 	return s.UserRepository.FindAll(ctx, page)
 }
 

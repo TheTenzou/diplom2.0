@@ -55,11 +55,16 @@ func (h *userHandler) getUser(ctx *gin.Context) {
 // handle paginated users list request
 func (h *userHandler) getUsers(ctx *gin.Context) {
 
-	page := utils.GenaratePaginationFromRequest(ctx)
-	ctx.JSON(200, gin.H{
-		"user": "all users",
-		"page": page,
-	})
+	pagination := utils.GenaratePaginationFromRequest(ctx)
+
+	pagenatedData, err := h.UserService.FindAll(ctx, pagination)
+	if err != nil {
+		log.Printf("faild to get users: %v", err)
+		ctx.JSON(apperrors.Status(err), apperrors.ConvertToAppError(err))
+		return
+	}
+
+	ctx.JSON(200, pagenatedData)
 }
 
 // handle creation of user

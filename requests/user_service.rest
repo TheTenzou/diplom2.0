@@ -3,14 +3,14 @@
 GET http://localhost:8080/api/users/v1/user/607db993fad7324170a4debc
 
 ###
-GET http://localhost:8080/api/users/v1/users?page=10&limit=10&roles=admin&roles=user
+GET http://localhost:8080/api/users/v1/users?page=1&limit=10&roles=admin&roles=user
 
 ###
 PUT http://localhost:8080/api/users/v1/user
 Content-Type: application/json
 
 {
-    "login": "testlogin",
+    "login": "testlogin5",
     "password": "password",
     "name": "name",
     "role": [

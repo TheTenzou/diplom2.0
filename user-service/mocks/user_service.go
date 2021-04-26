@@ -47,13 +47,13 @@ func (m *MockUserService) FindByLogin(ctx context.Context, userLogin string) (mo
 	return r0, r1
 }
 
-func (m *MockUserService) FindAll(ctx context.Context, page int /*, pageSize int*/) ([]model.User, error) {
+func (m *MockUserService) FindAll(ctx context.Context, page model.Pagination) (model.PaginatedData, error) {
 
 	args := m.Called(ctx, page)
 
-	var r0 []model.User
+	var r0 model.PaginatedData
 	if args.Get(0) != nil {
-		r0 = args.Get(0).([]model.User)
+		r0 = args.Get(0).(model.PaginatedData)
 	}
 
 	var r1 error

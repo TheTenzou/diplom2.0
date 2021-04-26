@@ -7,6 +7,7 @@ import (
 	"github.com/TheTenzou/gis-diplom/user-service/apperrors"
 	"github.com/TheTenzou/gis-diplom/user-service/interfaces"
 	"github.com/TheTenzou/gis-diplom/user-service/model"
+	mongopagination "github.com/gobeam/mongo-go-pagination"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -64,9 +65,37 @@ func (r *mongoUserRepository) FindByLogin(
 // TODO not implemented
 func (r *mongoUserRepository) FindAll(
 	ctx context.Context,
-	page int,
-) ([]model.User, error) {
-	panic("not implemented")
+	pagination model.Pagination,
+) (model.PaginatedData, error) {
+	var users []model.User
+
+	paginatedData, err :=
+		mongopagination.
+			New(r.Users).
+			Context(ctx).
+			Limit(pagination.Limit).
+			Page(pagination.Page).
+			Filter(bson.M{"roles": bson.M{"$all": pagination.Roles}}).
+			Decode(&users).
+			Find()
+	if err != nil {
+		log.Printf("faild to fetch users %v", err)
+		return model.PaginatedData{}, apperrors.NewInternal()
+	}
+
+	log.Printf("resutl: %v", users)
+
+	log.Printf("resutl: %v", paginatedData)
+
+	return model.PaginatedData{
+		Total:      paginatedData.Pagination.Total,
+		Page:       paginatedData.Pagination.Page,
+		PageSize:   paginatedData.Pagination.PerPage,
+		Previous:   paginatedData.Pagination.Next,
+		Next:       paginatedData.Pagination.Next,
+		TotalPages: paginatedData.Pagination.TotalPage,
+		Data:       users,
+	}, nil
 }
 
 // create user record in data base

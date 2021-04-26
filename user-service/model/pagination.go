@@ -1,7 +1,7 @@
 package model
 
 type Pagination struct {
-	Limit int      `json:"limit"`
-	Page  int      `json:"page"`
+	Limit int64    `json:"limit"`
+	Page  int64    `json:"page"`
 	Roles []string `json:"sort"`
 }

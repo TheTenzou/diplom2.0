@@ -8,17 +8,17 @@ import (
 )
 
 func GenaratePaginationFromRequest(ctx *gin.Context) model.Pagination {
-	limit := 10
-	page := 1
+	var limit int64 = 10
+	var page int64 = 1
 	roles := []string{"user", "admin"}
 	query := ctx.Request.URL.Query()
 
 	for key, value := range query {
 		switch key {
 		case "limit":
-			limit, _ = strconv.Atoi(value[0])
+			limit, _ = strconv.ParseInt(value[0], 10, 64)
 		case "page":
-			page, _ = strconv.Atoi(value[0])
+			page, _ = strconv.ParseInt(value[0], 10, 64)
 
 		case "roles":
 			roles = value

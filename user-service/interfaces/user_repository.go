@@ -19,9 +19,8 @@ type UserRepository interface {
 	FindByLogin(ctx context.Context, userLogin string) (model.User, error)
 
 	// return page of users
-	// page is number of requested page
-	// pageSize is size of page
-	FindAll(ctx context.Context, page int /*, pageSize int*/) ([]model.User, error)
+	// pagination specify page size, page number and filters
+	FindAll(ctx context.Context, pagination model.Pagination) (model.PaginatedData, error)
 
 	// create user record in data base
 	// user login shoud be unique
