@@ -103,7 +103,7 @@ func (h *userHandler) updateUser(ctx *gin.Context) {
 
 	requestCtx := ctx.Request.Context()
 
-	err := h.UserService.Update(requestCtx, user)
+	updatedUser, err := h.UserService.Update(requestCtx, user)
 
 	if err != nil {
 		log.Printf("failed to update user: %v\n", err)
@@ -111,7 +111,7 @@ func (h *userHandler) updateUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, user)
+	ctx.JSON(http.StatusOK, updatedUser)
 }
 
 // handle deletion of user

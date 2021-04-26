@@ -30,7 +30,7 @@ type UserService interface {
 
 	// update user record
 	// user login shoud be unique
-	Update(ctx context.Context, user model.User) error
+	Update(ctx context.Context, user model.User) (model.User, error)
 
 	// mark user is deleted
 	// return deleted user

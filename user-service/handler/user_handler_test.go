@@ -278,3 +278,80 @@ func TestCreateUser(test *testing.T) {
 		mockUserService.AssertExpectations(test)
 	})
 }
+
+func TestUpdateUser(test *testing.T) {
+	router := gin.Default()
+
+	mockUserService := new(mocks.MockUserService)
+
+	InitUserHandler(router, mockUserService)
+
+	userID, _ := primitive.ObjectIDFromHex("607db993fad7324170a4debc")
+
+	test.Run("Data binding error", func(test *testing.T) {
+		recorder := httptest.NewRecorder()
+
+		reqBody, _ := json.Marshal(gin.H{
+			"id":    userID.Hex(),
+			"login": "short",
+		})
+		request, _ := http.NewRequest(
+			http.MethodPatch,
+			"/api/users/v1/user",
+			bytes.NewBuffer(reqBody),
+		)
+		request.Header.Set("Content-Type", "application/json")
+
+		router.ServeHTTP(recorder, request)
+
+		assert.Equal(test, http.StatusBadRequest, recorder.Code)
+		mockUserService.AssertNotCalled(test, "Update")
+	})
+
+	test.Run("Update success", func(test *testing.T) {
+		recoder := httptest.NewRecorder()
+
+		newName := "alice1"
+
+		reqBody, _ := json.Marshal(gin.H{
+			"id":   userID.Hex(),
+			"name": newName,
+		})
+
+		request, _ := http.NewRequest(
+			http.MethodPatch,
+			"/api/users/v1/user",
+			bytes.NewBuffer(reqBody),
+		)
+		request.Header.Set("Content-Type", "application/json")
+
+		userToUpdate := model.User{
+			ID:   userID,
+			Name: newName,
+		}
+
+		updatedUser := model.User{
+			ID:       userID,
+			Login:    "alice1",
+			Password: "alicePassword",
+			Name:     newName,
+		}
+
+		updateArgs := mock.Arguments{
+			mock.AnythingOfType("*context.emptyCtx"),
+			userToUpdate,
+		}
+
+		mockUserService.
+			On("Update", updateArgs...).
+			Return(updatedUser, nil)
+
+		router.ServeHTTP(recoder, request)
+
+		responseBody, _ := json.Marshal(updatedUser)
+
+		assert.Equal(test, http.StatusOK, recoder.Code)
+		assert.Equal(test, responseBody, recoder.Body.Bytes())
+		mockUserService.AssertCalled(test, "Update", updateArgs...)
+	})
+}

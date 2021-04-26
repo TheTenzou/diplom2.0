@@ -47,7 +47,7 @@ func (s *userService) Create(ctx context.Context, user model.User) (model.User, 
 
 // update user record
 // user login shoud be unique
-func (s *userService) Update(ctx context.Context, user model.User) error {
+func (s *userService) Update(ctx context.Context, user model.User) (model.User, error) {
 	return s.UserRepository.Update(ctx, user)
 }
 

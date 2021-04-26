@@ -100,13 +100,13 @@ func (r *mongoUserRepository) Create(
 func (r *mongoUserRepository) Update(
 	ctx context.Context,
 	user model.User,
-) error {
+) (model.User, error) {
 
 	updateResult, err := r.Users.UpdateByID(ctx, user.ID, bson.M{"$set": user})
 
 	if updateResult.MatchedCount == 0 {
 		log.Printf("Couldn't update user. Id %v doesn't exit.", user.ID)
-		return apperrors.NewNotFound("id", user.ID.Hex())
+		return model.User{}, apperrors.NewNotFound("id", user.ID.Hex())
 	}
 
 	if err != nil {
@@ -117,10 +117,18 @@ func (r *mongoUserRepository) Update(
 				"duplicate key error collection",
 			)
 		}
-		return apperrors.NewConflict("login", user.Login)
+		return model.User{}, apperrors.NewConflict("login", user.Login)
 	}
 
-	return nil
+	var updatedUser model.User
+	updatedUserID := updateResult.UpsertedID.(primitive.ObjectID)
+
+	err = r.Users.FindOne(ctx, model.User{ID: updatedUserID}).Decode(&updatedUser)
+	if err != nil {
+		return user, apperrors.NewNotFound("id", updatedUserID.Hex())
+	}
+
+	return updatedUser, nil
 }
 
 // mark user is deleted
