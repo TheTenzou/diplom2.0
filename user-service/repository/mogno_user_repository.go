@@ -34,7 +34,7 @@ func (r *mongoUserRepository) FindByID(
 
 	err := r.Users.FindOne(ctx, model.User{ID: userID}).Decode(&user)
 	if err != nil {
-		return user, apperrors.NewNotFound("id", userID.Hex())
+		return model.User{}, apperrors.NewNotFound("id", userID.Hex())
 	}
 
 	return user, nil
@@ -126,7 +126,7 @@ func (r *mongoUserRepository) Update(
 
 	err = r.Users.FindOne(ctx, model.User{ID: user.ID}).Decode(&updatedUser)
 	if err != nil {
-		return user, apperrors.NewNotFound("id", user.ID.Hex())
+		return model.User{}, apperrors.NewNotFound("id", user.ID.Hex())
 	}
 
 	return updatedUser, nil
@@ -139,15 +139,23 @@ func (r *mongoUserRepository) Delete(
 	userID primitive.ObjectID,
 ) (model.User, error) {
 
-	result := r.Users.FindOneAndDelete(ctx, bson.M{"_id": userID})
+	updateResult, err := r.Users.UpdateByID(ctx, userID, bson.M{"$set": bson.M{"status": "deleted"}})
 
-	var deletedUser model.User
-
-	err := result.Decode(&deletedUser)
-	if err != nil {
-		log.Printf("Ubancle to delete user: %v\n", err)
-		return model.User{}, apperrors.NewInternal()
+	if updateResult.MatchedCount == 0 {
+		log.Printf("Couldn't update user. Id %v doesn't exit.", userID)
+		return model.User{}, apperrors.NewNotFound("id", userID.Hex())
 	}
 
-	return deletedUser, nil
+	if err != nil {
+		return model.User{}, apperrors.NewConflict("login", userID.Hex())
+	}
+
+	var updatedUser model.User
+
+	err = r.Users.FindOne(ctx, model.User{ID: userID}).Decode(&updatedUser)
+	if err != nil {
+		return model.User{}, apperrors.NewNotFound("id", userID.Hex())
+	}
+
+	return updatedUser, nil
 }
