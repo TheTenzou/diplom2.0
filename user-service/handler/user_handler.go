@@ -71,6 +71,7 @@ func (h *userHandler) createUser(ctx *gin.Context) {
 		Login:    request.Login,
 		Password: request.Password,
 		Name:     request.Name,
+		Role:     request.Role,
 	}
 
 	requestCtx := ctx.Request.Context()
@@ -99,6 +100,7 @@ func (h *userHandler) updateUser(ctx *gin.Context) {
 		Login:    request.Login,
 		Password: request.Password,
 		Name:     request.Name,
+		Role:     request.Role,
 	}
 
 	requestCtx := ctx.Request.Context()

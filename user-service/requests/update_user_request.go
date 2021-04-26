@@ -9,4 +9,5 @@ type UpdateUserRequest struct {
 	Login    string             `json:"login" binding:"omitempty,gte=6,lte=32"`
 	Password string             `json:"password" binding:"omitempty,gte=6,lte=30"`
 	Name     string             `json:"name" binding:"omitempty,lte=50"`
+	Role     []string           `json:"role" binding:"omitempty"`
 }

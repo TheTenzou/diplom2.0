@@ -10,9 +10,13 @@ PUT http://localhost:8080/api/users/v1/user
 Content-Type: application/json
 
 {
-    "login": "test",
+    "login": "testlogin",
     "password": "password",
-    "name": "name"
+    "name": "name",
+    "role": [
+        "user",
+        "admin"
+    ]
 }
 
 ###
@@ -20,10 +24,13 @@ PATCH  http://localhost:8080/api/users/v1/user
 Content-Type: application/json
 
 {
-    "id": "607db993fad7324170a4debc",
+    "id": "6086c28fb93b1460d2763042",
     "login": "testUpdate",
     "password": "password",
-    "name": "name"
+    "name": "name",
+    "role": [
+        "user"
+    ]
 }
 
 ###
