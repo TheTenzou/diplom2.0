@@ -83,7 +83,7 @@ func (h *userHandler) createUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, createdUser)
+	ctx.JSON(http.StatusCreated, createdUser)
 }
 
 // handle update request of user
