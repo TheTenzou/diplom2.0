@@ -54,8 +54,11 @@ func (h *userHandler) getUser(ctx *gin.Context) {
 
 // handle paginated users list request
 func (h *userHandler) getUsers(ctx *gin.Context) {
+
+	page := utils.GenaratePaginationFromRequest(ctx)
 	ctx.JSON(200, gin.H{
 		"user": "all users",
+		"page": page,
 	})
 }
 
