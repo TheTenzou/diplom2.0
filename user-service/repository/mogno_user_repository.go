@@ -78,6 +78,8 @@ func (r *mongoUserRepository) Create(
 ) (model.User, error) {
 	log.Println("1")
 
+	user.Status = "active"
+
 	userID, err := r.Users.InsertOne(ctx, user)
 	if err != nil {
 		if err, ok := err.(mongo.WriteException); ok && err.HasErrorMessage("duplicate key error collection") {
