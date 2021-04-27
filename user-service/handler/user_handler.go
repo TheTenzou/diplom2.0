@@ -6,6 +6,7 @@ import (
 
 	"github.com/TheTenzou/gis-diplom/user-service/apperrors"
 	"github.com/TheTenzou/gis-diplom/user-service/interfaces"
+	"github.com/TheTenzou/gis-diplom/user-service/middleware"
 	"github.com/TheTenzou/gis-diplom/user-service/model"
 	"github.com/TheTenzou/gis-diplom/user-service/requests"
 	"github.com/TheTenzou/gis-diplom/user-service/utils"
@@ -15,15 +16,26 @@ import (
 
 type userHandler struct {
 	UserService interfaces.UserService
+	AuthService interfaces.AuthService
+}
+
+type UserHandlerConfig struct {
+	UserService interfaces.UserService
+	AuthService interfaces.AuthService
 }
 
 // init user routs
-func InitUserHandler(router *gin.Engine, userService interfaces.UserService) {
+func InitUserHandler(router *gin.Engine, config UserHandlerConfig) {
 	handler := userHandler{
-		UserService: userService,
+		UserService: config.UserService,
+		AuthService: config.AuthService,
 	}
 
 	group := router.Group("/api/users/v1")
+
+	if gin.Mode() != gin.TestMode {
+		group.Use(middleware.AuthUser(handler.AuthService))
+	}
 
 	group.GET("/user/:userID", handler.getUser)
 	group.GET("/users", handler.getUsers)

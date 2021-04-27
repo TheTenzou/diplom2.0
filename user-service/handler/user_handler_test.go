@@ -35,7 +35,9 @@ func TestGetUser(test *testing.T) {
 
 		router := gin.Default()
 
-		InitUserHandler(router, mockUserService)
+		InitUserHandler(router, UserHandlerConfig{
+			UserService: mockUserService,
+		})
 
 		request, err := http.NewRequest(http.MethodGet, "/api/users/v1/user/"+userID.Hex(), nil)
 
@@ -64,7 +66,9 @@ func TestGetUser(test *testing.T) {
 
 		router := gin.Default()
 
-		InitUserHandler(router, mockUserService)
+		InitUserHandler(router, UserHandlerConfig{
+			UserService: mockUserService,
+		})
 
 		request, err := http.NewRequest(http.MethodGet, "/api/users/v1/user/"+userID.Hex(), nil)
 		assert.NoError(test, err)
@@ -96,7 +100,9 @@ func TestCreateUser(test *testing.T) {
 
 		router := gin.Default()
 
-		InitUserHandler(router, mockUserService)
+		InitUserHandler(router, UserHandlerConfig{
+			UserService: mockUserService,
+		})
 
 		requestBody, err := json.Marshal(gin.H{
 			"login": "",
@@ -131,7 +137,9 @@ func TestCreateUser(test *testing.T) {
 
 		router := gin.Default()
 
-		InitUserHandler(router, mockUserService)
+		InitUserHandler(router, UserHandlerConfig{
+			UserService: mockUserService,
+		})
 
 		requestBody, err := json.Marshal(gin.H{
 			"login":    "alice",
@@ -167,7 +175,9 @@ func TestCreateUser(test *testing.T) {
 
 		router := gin.Default()
 
-		InitUserHandler(router, mockUserService)
+		InitUserHandler(router, UserHandlerConfig{
+			UserService: mockUserService,
+		})
 
 		requestBody, err := json.Marshal(gin.H{
 			"login":    "alice",
@@ -208,7 +218,9 @@ func TestCreateUser(test *testing.T) {
 
 		router := gin.Default()
 
-		InitUserHandler(router, mockUserService)
+		InitUserHandler(router, UserHandlerConfig{
+			UserService: mockUserService,
+		})
 
 		requestBody, err := json.Marshal(gin.H{
 			"login":    user.Login,
@@ -250,7 +262,9 @@ func TestCreateUser(test *testing.T) {
 
 		router := gin.Default()
 
-		InitUserHandler(router, mockUserService)
+		InitUserHandler(router, UserHandlerConfig{
+			UserService: mockUserService,
+		})
 
 		requestBody, err := json.Marshal(gin.H{
 			"login":    user.Login,
@@ -284,7 +298,9 @@ func TestUpdateUser(test *testing.T) {
 
 	mockUserService := new(mocks.MockUserService)
 
-	InitUserHandler(router, mockUserService)
+	InitUserHandler(router, UserHandlerConfig{
+		UserService: mockUserService,
+	})
 
 	userID, _ := primitive.ObjectIDFromHex("607db993fad7324170a4debc")
 
@@ -376,7 +392,9 @@ func TestDeleteUser(test *testing.T) {
 
 		router := gin.Default()
 
-		InitUserHandler(router, mockUserService)
+		InitUserHandler(router, UserHandlerConfig{
+			UserService: mockUserService,
+		})
 
 		request, err := http.NewRequest(http.MethodDelete, "/api/users/v1/user/"+userID.Hex(), nil)
 
@@ -405,7 +423,9 @@ func TestDeleteUser(test *testing.T) {
 
 		router := gin.Default()
 
-		InitUserHandler(router, mockUserService)
+		InitUserHandler(router, UserHandlerConfig{
+			UserService: mockUserService,
+		})
 
 		request, err := http.NewRequest(http.MethodDelete, "/api/users/v1/user/"+userID.Hex(), nil)
 		assert.NoError(test, err)

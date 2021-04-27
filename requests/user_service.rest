@@ -1,6 +1,7 @@
 
 ###
 GET http://localhost:8080/api/users/v1/user/607db993fad7324170a4debc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MDg3MDRlMmI5YzExMDg5M2YxN2IzMjgiLCJyb2xlcyI6WyJ1c2VyIiwiYWRtaW4iXSwiaWF0IjoxNjE5NTM3MzU2LCJleHAiOjE2MTk1Mzc5NTZ9.RsQlQf2RpJrgPTWhwkeOnCj8Wo99fcGNqrbe40WCcfU
 
 ###
 # GET http://localhost:8080/api/users/v1/users?page=1&limit=10&roles=admin&roles=user&status=deleted

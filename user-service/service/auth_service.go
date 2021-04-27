@@ -60,6 +60,14 @@ func (s *authService) Login(ctx context.Context, user model.User) (model.TokenPa
 	}, nil
 }
 
+func (s *authService) ValidateAccessToken(token string) (model.User, error) {
+	panic("not implemented")
+}
+
+func (s *authService) ValidateRefreshToken(token string) (model.User, error) {
+	panic("not implemented")
+}
+
 func (s *authService) RefreshTokens(ctx context.Context, refreshToken string) (model.TokenPair, error) {
 	panic("not implemented")
 }
