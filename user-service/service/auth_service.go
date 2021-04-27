@@ -8,6 +8,7 @@ import (
 	"github.com/TheTenzou/gis-diplom/user-service/interfaces"
 	"github.com/TheTenzou/gis-diplom/user-service/model"
 	"github.com/TheTenzou/gis-diplom/user-service/utils"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type authService struct {
@@ -61,7 +62,23 @@ func (s *authService) Login(ctx context.Context, user model.User) (model.TokenPa
 }
 
 func (s *authService) ValidateAccessToken(token string) (model.User, error) {
-	panic("not implemented")
+	claims, err := utils.ValidateAccessToken(token, s.accessTokenSecret)
+
+	if err != nil {
+		log.Printf("Unable to validate or parse accessToken - Error: %v\n", err)
+		return model.User{}, apperrors.NewUnauthorized("Unable to verify user from accessToken")
+	}
+
+	userID, err := primitive.ObjectIDFromHex(claims.Subject)
+	if err != nil {
+		log.Printf("faild to parse userID: %v", err)
+		return model.User{}, apperrors.NewUnauthorized("Unable to verify user from accessToken")
+	}
+	user := model.User{
+		ID:   userID,
+		Role: claims.Roles,
+	}
+	return user, nil
 }
 
 func (s *authService) ValidateRefreshToken(token string) (model.User, error) {

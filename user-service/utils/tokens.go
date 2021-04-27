@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -28,4 +29,31 @@ func GenerateAccessToken(user model.User, secret string, expiration int64) (stri
 	}
 
 	return signedToken, nil
+}
+
+func ValidateAccessToken(tokenString string, secret string) (*model.AccessTokenClaims, error) {
+	claims := &model.AccessTokenClaims{}
+
+	token, err := jwt.ParseWithClaims(
+		tokenString, claims,
+		func(token *jwt.Token) (interface{}, error) {
+			return []byte(secret), nil
+		},
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if !token.Valid {
+		return nil, fmt.Errorf("ID token is invalid")
+	}
+
+	claims, ok := token.Claims.(*model.AccessTokenClaims)
+
+	if !ok {
+		return nil, fmt.Errorf("ID token valid but couldn't parse claims")
+	}
+
+	return claims, nil
 }
