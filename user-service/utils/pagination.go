@@ -10,7 +10,10 @@ import (
 func GenaratePaginationFromRequest(ctx *gin.Context) model.Pagination {
 	var limit int64 = 10
 	var page int64 = 1
-	roles := []string{"user", "admin"}
+	// roles := []string{"user", "admin"}
+	roles := []string{}
+	status := []string{"active"}
+
 	query := ctx.Request.URL.Query()
 
 	for key, value := range query {
@@ -19,15 +22,17 @@ func GenaratePaginationFromRequest(ctx *gin.Context) model.Pagination {
 			limit, _ = strconv.ParseInt(value[0], 10, 64)
 		case "page":
 			page, _ = strconv.ParseInt(value[0], 10, 64)
-
 		case "roles":
 			roles = value
+		case "status":
+			status = value
 		}
 	}
 
 	return model.Pagination{
-		Limit: limit,
-		Page:  page,
-		Roles: roles,
+		Limit:  limit,
+		Page:   page,
+		Roles:  roles,
+		Status: status,
 	}
 }

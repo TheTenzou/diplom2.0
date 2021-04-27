@@ -61,13 +61,18 @@ func (r *mongoUserRepository) FindByLogin(
 // return page of users
 // page is number of requested page
 // pageSize is size of page
-
-// TODO not implemented
 func (r *mongoUserRepository) FindAll(
 	ctx context.Context,
 	pagination model.Pagination,
 ) (model.PaginatedData, error) {
 	var users []model.User
+
+	var filter bson.M
+	if len(pagination.Roles) > 0 {
+		filter = bson.M{"roles": bson.M{"$all": pagination.Roles}, "status": bson.M{"$in": pagination.Status}}
+	} else {
+		filter = bson.M{"status": bson.M{"$in": pagination.Status}}
+	}
 
 	paginatedData, err :=
 		mongopagination.
@@ -75,7 +80,7 @@ func (r *mongoUserRepository) FindAll(
 			Context(ctx).
 			Limit(pagination.Limit).
 			Page(pagination.Page).
-			Filter(bson.M{"roles": bson.M{"$all": pagination.Roles}}).
+			Filter(filter).
 			Decode(&users).
 			Find()
 	if err != nil {
