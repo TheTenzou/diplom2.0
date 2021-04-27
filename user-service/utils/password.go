@@ -31,6 +31,9 @@ func HashPassword(password string) (string, error) {
 	return hashedPassword, nil
 }
 
+// compare passwrods
+// storedPassword - password from database
+// suppliedPassword - passwrod from user request
 func ComparePasswords(storedPassword, suppliedPassword string) (bool, error) {
 	passwordAndSalt := strings.Split(storedPassword, ".")
 

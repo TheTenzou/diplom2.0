@@ -17,12 +17,15 @@ type AuthServiceConfig struct {
 	UserRepository interfaces.UserRepository
 }
 
+// factory function for initializing a AuthService with its repository layer dependencies
 func NewAuthSerivce(config AuthServiceConfig) interfaces.AuthService {
 	return &authService{
 		userRepository: config.UserRepository,
 	}
 }
 
+// return token pair for given user
+// rrequired login and passwrod in user structure to be filled
 func (s *authService) Login(ctx context.Context, user model.User) (model.TokenPair, error) {
 	fetchedUser, err := s.userRepository.FindByLogin(ctx, user.Login)
 	if err != nil {
