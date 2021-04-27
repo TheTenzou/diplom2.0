@@ -12,23 +12,29 @@ import (
 )
 
 type authService struct {
-	userRepository        interfaces.UserRepository
-	accessTokenSecret     string
-	accessTokenExpiration int64
+	userRepository         interfaces.UserRepository
+	accessTokenSecret      string
+	accessTokenExpiration  int64
+	refreshTokenSecret     string
+	refreshTokenExpiration int64
 }
 
 type AuthServiceConfig struct {
-	UserRepository        interfaces.UserRepository
-	AccessTokenSecret     string
-	AccessTokenExpiration int64
+	UserRepository         interfaces.UserRepository
+	AccessTokenSecret      string
+	AccessTokenExpiration  int64
+	RefreshTokenSecret     string
+	RefreshTokenExpiration int64
 }
 
 // factory function for initializing a AuthService with its repository layer dependencies
 func NewAuthSerivce(config AuthServiceConfig) interfaces.AuthService {
 	return &authService{
-		userRepository:        config.UserRepository,
-		accessTokenSecret:     config.AccessTokenSecret,
-		accessTokenExpiration: config.AccessTokenExpiration,
+		userRepository:         config.UserRepository,
+		accessTokenSecret:      config.AccessTokenSecret,
+		accessTokenExpiration:  config.AccessTokenExpiration,
+		refreshTokenSecret:     config.RefreshTokenSecret,
+		refreshTokenExpiration: config.RefreshTokenExpiration,
 	}
 }
 
@@ -55,7 +61,7 @@ func (s *authService) Login(ctx context.Context, user model.User) (model.TokenPa
 		return model.TokenPair{}, apperrors.NewInternal()
 	}
 
-	refreshToken, err := utils.GenerateRefreshToken(fetchedUser, "test", 10000000)
+	refreshToken, err := utils.GenerateRefreshToken(fetchedUser, s.refreshTokenSecret, s.refreshTokenExpiration)
 	if err != nil {
 		log.Printf("Error generating refreshToken for id: %v. Error %v\n", fetchedUser.ID, err.Error())
 	}

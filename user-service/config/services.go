@@ -26,10 +26,20 @@ func InitServices(repositories *Repositories) (*Services, error) {
 		return nil, fmt.Errorf("could not ACCESSTOKEN_EXPIRATION as int: %v", err)
 	}
 
+	refreshTokenSecret := os.Getenv("REFRESHTOKEN_SECRET")
+	refreshTokenExpiration := os.Getenv("REFRESHTOKEN_EXPIRATION")
+
+	refreshTokenExpirationSec, err := strconv.ParseInt(refreshTokenExpiration, 0, 64)
+	if err != nil {
+		return nil, fmt.Errorf("could not REFRESHTOKEN_EXPIRATION as int: %v", err)
+	}
+
 	authService := service.NewAuthSerivce(service.AuthServiceConfig{
-		UserRepository:        repositories.UserRepository,
-		AccessTokenSecret:     accessTokenSecret,
-		AccessTokenExpiration: accessTokenExpirationSec,
+		UserRepository:         repositories.UserRepository,
+		AccessTokenSecret:      accessTokenSecret,
+		AccessTokenExpiration:  accessTokenExpirationSec,
+		RefreshTokenSecret:     refreshTokenSecret,
+		RefreshTokenExpiration: refreshTokenExpirationSec,
 	})
 
 	return &Services{
