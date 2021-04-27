@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"fmt"
+	"strings"
 
 	"golang.org/x/crypto/scrypt"
 )
@@ -28,4 +29,22 @@ func HashPassword(password string) (string, error) {
 	)
 
 	return hashedPassword, nil
+}
+
+func ComparePasswords(storedPassword, suppliedPassword string) (bool, error) {
+	passwordAndSalt := strings.Split(storedPassword, ".")
+
+	salt, err := hex.DecodeString(passwordAndSalt[1])
+
+	if err != nil {
+		return false, fmt.Errorf("unable to verify user password")
+	}
+
+	hash, err := scrypt.Key([]byte(suppliedPassword), salt, 32768, 8, 1, 32)
+
+	if err != nil {
+		return false, fmt.Errorf("unable to verify user password")
+	}
+
+	return hex.EncodeToString(hash) == passwordAndSalt[0], nil
 }
