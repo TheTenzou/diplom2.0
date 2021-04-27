@@ -14,10 +14,11 @@ func GenerateAccessToken(user model.User, secret string, expiration int64) (stri
 	tokenExpire := unixTime + expiration
 
 	claims := model.AccessTokenClaims{
-		Subject:   user.ID.Hex(),
-		Roles:     user.Role,
-		IssuedAt:  unixTime,
-		ExpiresAt: tokenExpire,
+		Roles: user.Role,
+		StandardClaims: jwt.StandardClaims{Subject: user.ID.Hex(),
+			IssuedAt:  unixTime,
+			ExpiresAt: tokenExpire,
+		},
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
