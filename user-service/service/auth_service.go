@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"log"
 
 	"github.com/TheTenzou/gis-diplom/user-service/apperrors"
 	"github.com/TheTenzou/gis-diplom/user-service/interfaces"
@@ -10,17 +11,23 @@ import (
 )
 
 type authService struct {
-	userRepository interfaces.UserRepository
+	userRepository        interfaces.UserRepository
+	accessTokenSecret     string
+	accessTokenExpiration int64
 }
 
 type AuthServiceConfig struct {
-	UserRepository interfaces.UserRepository
+	UserRepository        interfaces.UserRepository
+	AccessTokenSecret     string
+	AccessTokenExpiration int64
 }
 
 // factory function for initializing a AuthService with its repository layer dependencies
 func NewAuthSerivce(config AuthServiceConfig) interfaces.AuthService {
 	return &authService{
-		userRepository: config.UserRepository,
+		userRepository:        config.UserRepository,
+		accessTokenSecret:     config.AccessTokenSecret,
+		accessTokenExpiration: config.AccessTokenExpiration,
 	}
 }
 
@@ -41,10 +48,15 @@ func (s *authService) Login(ctx context.Context, user model.User) (model.TokenPa
 		return model.TokenPair{}, apperrors.NewUnauthorized("Invalid password")
 	}
 
+	accessToken, err := utils.GenerateAccessToken(fetchedUser, s.accessTokenSecret, s.accessTokenExpiration)
+	if err != nil {
+		log.Printf("Error genaraating refreshToken for id: %v. Error %v\n", fetchedUser.ID, err.Error())
+	}
+
 	// for test purposes
 	return model.TokenPair{
-		AccessToken:  fetchedUser.Login,
-		RefreshToken: fetchedUser.Password,
+		AccessToken:  accessToken,
+		RefreshToken: "dummy",
 	}, nil
 }
 

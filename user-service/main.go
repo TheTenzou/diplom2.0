@@ -21,7 +21,10 @@ func main() {
 		log.Fatalf("Unable to initialize repositories: %v\n", err)
 	}
 
-	services := config.InitServices(repositories)
+	services, err := config.InitServices(repositories)
+	if err != nil {
+		log.Fatalf("Unable to initialize services: %v\n", err)
+	}
 
 	handler := config.InitHandlers(services)
 
