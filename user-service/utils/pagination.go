@@ -7,10 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// parse request to pagination model
+// required for user service
 func GenaratePaginationFromRequest(ctx *gin.Context) model.Pagination {
 	var limit int64 = 10
 	var page int64 = 1
-	// roles := []string{"user", "admin"}
 	roles := []string{}
 	status := []string{"active"}
 

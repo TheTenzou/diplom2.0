@@ -11,6 +11,8 @@ func InitHandlers(services *Services) *gin.Engine {
 	router := gin.Default()
 
 	handler.InitUserHandler(router, services.UserService)
+	// handler.AuthHandlerConfig(router, handler.AuthHandlerConfig{})
+	handler.InitAuthHandler(router, handler.AuthHandlerConfig{})
 
 	return router
 }
