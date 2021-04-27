@@ -13,9 +13,10 @@ func GenerateAccessToken(user model.User, secret string, expiration int64) (stri
 	unixTime := time.Now().Unix()
 	tokenExpire := unixTime + expiration
 
-	claims := model.AccessTokenClaims{
+	claims := model.TokenClaims{
 		Roles: user.Role,
-		StandardClaims: jwt.StandardClaims{Subject: user.ID.Hex(),
+		StandardClaims: jwt.StandardClaims{
+			Subject:   user.ID.Hex(),
 			IssuedAt:  unixTime,
 			ExpiresAt: tokenExpire,
 		},
@@ -32,8 +33,8 @@ func GenerateAccessToken(user model.User, secret string, expiration int64) (stri
 	return signedToken, nil
 }
 
-func ValidateAccessToken(tokenString string, secret string) (*model.AccessTokenClaims, error) {
-	claims := &model.AccessTokenClaims{}
+func ValidateAccessToken(tokenString string, secret string) (*model.TokenClaims, error) {
+	claims := &model.TokenClaims{}
 
 	token, err := jwt.ParseWithClaims(
 		tokenString, claims,
@@ -50,7 +51,7 @@ func ValidateAccessToken(tokenString string, secret string) (*model.AccessTokenC
 		return nil, fmt.Errorf("ID token is invalid")
 	}
 
-	claims, ok := token.Claims.(*model.AccessTokenClaims)
+	claims, ok := token.Claims.(*model.TokenClaims)
 
 	if !ok {
 		return nil, fmt.Errorf("ID token valid but couldn't parse claims")

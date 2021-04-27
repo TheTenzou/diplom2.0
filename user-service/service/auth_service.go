@@ -51,13 +51,19 @@ func (s *authService) Login(ctx context.Context, user model.User) (model.TokenPa
 
 	accessToken, err := utils.GenerateAccessToken(fetchedUser, s.accessTokenSecret, s.accessTokenExpiration)
 	if err != nil {
-		log.Printf("Error genaraating refreshToken for id: %v. Error %v\n", fetchedUser.ID, err.Error())
+		log.Printf("Error generating accessToken for id: %v. Error %v\n", fetchedUser.ID, err.Error())
+		return model.TokenPair{}, apperrors.NewInternal()
+	}
+
+	refreshToken, err := utils.GenerateRefreshToken(fetchedUser, "test", 10000000)
+	if err != nil {
+		log.Printf("Error generating refreshToken for id: %v. Error %v\n", fetchedUser.ID, err.Error())
 	}
 
 	// for test purposes
 	return model.TokenPair{
 		AccessToken:  accessToken,
-		RefreshToken: "dummy",
+		RefreshToken: refreshToken,
 	}, nil
 }
 
