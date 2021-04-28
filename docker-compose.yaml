@@ -2,6 +2,7 @@ version: "3.8"
 
 volumes: 
   mongo_data:
+  redis_data:
 
 services:
 
@@ -29,7 +30,18 @@ services:
       - ./user-service:/go/src/app
     depends_on: 
       - user-service-mongo
-    command: ./wait-for.sh ${MONGO_HOST}:${MONGO_PORT} -- reflex -r "\.go$$" -s -- sh -c "go run ./"
+    command: > 
+      ./wait-for.sh ${REDIS_HOST}:${REDIS_PORT} 
+      -- ./wait-for.sh ${MONGO_HOST}:${MONGO_PORT} 
+      -- reflex -r "\.go$$" -s -- sh -c "go run ./"
+  
+  user-service-reids:
+    container_name: ${REDIS_HOST}
+    image: "redis:alpine"
+    expose: 
+      - ${REDIS_PORT}
+    volumes: 
+      - "redis_data:/data"
 
   user-service-mongo:
     container_name: ${MONGO_HOST}
@@ -41,6 +53,15 @@ services:
     expose: 
       - ${MONGO_PORT}
     command: mongod --quiet --port ${MONGO_PORT} --logpath=/dev/null
+
+  redis-commander:
+    container_name: redis-commander
+    image: rediscommander/redis-commander
+    restart: always
+    environment: 
+      - REDIS_HOSTS=local:${REDIS_HOST}:${REDIS_PORT}
+    ports: 
+      - "8082:8081"
   
   mongo-express:
     container_name: mongo-express
