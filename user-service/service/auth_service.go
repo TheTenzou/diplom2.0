@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"log"
+	"time"
 
 	"github.com/TheTenzou/gis-diplom/user-service/apperrors"
 	"github.com/TheTenzou/gis-diplom/user-service/interfaces"
@@ -13,6 +14,7 @@ import (
 
 type authService struct {
 	userRepository         interfaces.UserRepository
+	tokenRepository        interfaces.TokenRepository
 	accessTokenSecret      string
 	accessTokenExpiration  int64
 	refreshTokenSecret     string
@@ -21,6 +23,7 @@ type authService struct {
 
 type AuthServiceConfig struct {
 	UserRepository         interfaces.UserRepository
+	TokenRepository        interfaces.TokenRepository
 	AccessTokenSecret      string
 	AccessTokenExpiration  int64
 	RefreshTokenSecret     string
@@ -31,6 +34,7 @@ type AuthServiceConfig struct {
 func NewAuthSerivce(config AuthServiceConfig) interfaces.AuthService {
 	return &authService{
 		userRepository:         config.UserRepository,
+		tokenRepository:        config.TokenRepository,
 		accessTokenSecret:      config.AccessTokenSecret,
 		accessTokenExpiration:  config.AccessTokenExpiration,
 		refreshTokenSecret:     config.RefreshTokenSecret,
@@ -66,7 +70,12 @@ func (s *authService) Login(ctx context.Context, user model.User) (model.TokenPa
 		log.Printf("Error generating refreshToken for id: %v. Error %v\n", fetchedUser.ID, err.Error())
 	}
 
-	// for test purposes
+	err = s.tokenRepository.SaveRefreshToken(ctx, fetchedUser.ID.Hex(), refreshToken, time.Duration(s.refreshTokenExpiration)*time.Second)
+	if err != nil {
+		log.Printf("Error savign refresh token: %v", err)
+		return model.TokenPair{}, apperrors.NewInternal()
+	}
+
 	return model.TokenPair{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,

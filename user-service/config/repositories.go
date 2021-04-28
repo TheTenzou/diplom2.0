@@ -9,7 +9,8 @@ import (
 )
 
 type Repositories struct {
-	UserRepository interfaces.UserService
+	UserRepository  interfaces.UserService
+	TokenRepository interfaces.TokenRepository
 }
 
 // initialise all necassary repositories
@@ -26,7 +27,15 @@ func InitRepositories() (*Repositories, error) {
 
 	userRepository := repository.NewMongoUserRepository(usersCollection)
 
+	redis, err := databases.GetRedis()
+	if err != nil {
+		return nil, err
+	}
+
+	tokenRepository := repository.NewTokenRepository(redis)
+
 	return &Repositories{
-		UserRepository: userRepository,
+		UserRepository:  userRepository,
+		TokenRepository: tokenRepository,
 	}, nil
 }

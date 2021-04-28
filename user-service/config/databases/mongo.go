@@ -30,7 +30,7 @@ func GetMongo() (*mongo.Client, error) {
 // connect to mongo database
 func configMongo() (*mongo.Client, error) {
 
-	log.Printf("Conecting to mongo...")
+	log.Printf("Connecting to mongo...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()

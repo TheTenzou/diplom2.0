@@ -36,6 +36,7 @@ func InitServices(repositories *Repositories) (*Services, error) {
 
 	authService := service.NewAuthSerivce(service.AuthServiceConfig{
 		UserRepository:         repositories.UserRepository,
+		TokenRepository:        repositories.TokenRepository,
 		AccessTokenSecret:      accessTokenSecret,
 		AccessTokenExpiration:  accessTokenExpirationSec,
 		RefreshTokenSecret:     refreshTokenSecret,
