@@ -11,6 +11,7 @@ services:
     build: ./nginx
     depends_on: 
       - user-service
+      - tsodd-service
     ports: 
       - "8080:80"
 
@@ -31,9 +32,19 @@ services:
     depends_on: 
       - user-service-mongo
     command: > 
-      ./wait-for.sh ${REDIS_HOST}:${REDIS_PORT} 
-      -- ./wait-for.sh ${MONGO_HOST}:${MONGO_PORT} 
+      ./wait-for.sh ${REDIS_HOST}:${REDIS_PORT} --timeout=30
+      -- ./wait-for.sh ${MONGO_HOST}:${MONGO_PORT} --timeout=30
       -- reflex -r "\.go$$" -s -- sh -c "go run ./"
+
+  tsodd-service:
+    container_name: tsodd-service
+    image: gradle:6.8.3-jdk11
+    volumes: 
+      - ./tsodd-service:/app
+    expose: 
+      - 8080
+    working_dir: /app
+    command: sh run.sh
   
   user-service-reids:
     container_name: ${REDIS_HOST}

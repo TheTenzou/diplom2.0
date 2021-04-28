@@ -5,6 +5,10 @@
             "path": "user-service"
         },
         {
+            "name": "tsodd-service",
+            "path": "tsodd-service"
+        },
+        {
             "name": "nginx",
             "path": "nginx"
         },
@@ -22,9 +26,11 @@
             "nginx": true,
             "requests": true,
             "user-service": true,
+            "tsodd-service": true,
         },
         "go.toolsEnvVars": {
             "GO111MODULE": "on"
-        }
+        },
+        "java.configuration.updateBuildConfiguration": "automatic"
     }
 }
