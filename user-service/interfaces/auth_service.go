@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/TheTenzou/gis-diplom/user-service/model"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // AuthService defines methods the handler layer expects
@@ -16,5 +17,6 @@ type AuthService interface {
 	ValidateAccessToken(token string) (model.User, error)
 	// return new pair of tokens based on current refresh token
 	RefreshTokens(ctx context.Context, refreshToken string) (model.TokenPair, error)
-	BlackListToken(ctx context.Context, refreshToken string) error
+	// blacklist all users tokens
+	BlackListTokens(ctx context.Context, userID primitive.ObjectID) error
 }

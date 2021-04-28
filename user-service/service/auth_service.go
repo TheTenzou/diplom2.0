@@ -152,6 +152,14 @@ func (s *authService) RefreshTokens(ctx context.Context, refreshToken string) (m
 	}, nil
 }
 
-func (s *authService) BlackListToken(ctx context.Context, refreshToken string) error {
-	panic("not implemented")
+// blacklist all users tokens
+func (s *authService) BlackListTokens(ctx context.Context, userID primitive.ObjectID) error {
+
+	err := s.tokenRepository.DeleteUserRefreshTokens(ctx, userID.Hex())
+	if err != nil {
+		log.Printf("Error deleteing token: %v", err)
+		return err
+	}
+
+	return nil
 }

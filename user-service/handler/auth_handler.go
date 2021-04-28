@@ -6,6 +6,7 @@ import (
 
 	"github.com/TheTenzou/gis-diplom/user-service/apperrors"
 	"github.com/TheTenzou/gis-diplom/user-service/interfaces"
+	"github.com/TheTenzou/gis-diplom/user-service/middleware"
 	"github.com/TheTenzou/gis-diplom/user-service/model"
 	"github.com/TheTenzou/gis-diplom/user-service/utils"
 	"github.com/gin-gonic/gin"
@@ -30,6 +31,7 @@ func InitAuthHandler(router *gin.Engine, config AuthHandlerConfig) {
 
 	group.POST("/login", handler.login)
 	group.POST("/refresh", handler.refreshTokens)
+	group.POST("/logout", middleware.AuthUser(handler.AuthService), handler.logout)
 }
 
 // structure for holding and validation incoming login user request
@@ -80,10 +82,26 @@ func (h *authHandler) refreshTokens(ctx *gin.Context) {
 
 	tokenPair, err := h.AuthService.RefreshTokens(requestContext, request.RefreshToken)
 	if err != nil {
-		log.Printf("faild to refresh tokens: %v", err)
+		log.Printf("failed to refresh tokens: %v", err)
 		ctx.JSON(apperrors.Status(err), apperrors.ConvertToAppError(err))
 		return
 	}
 
 	ctx.JSON(http.StatusOK, tokenPair)
+}
+
+func (h *authHandler) logout(ctx *gin.Context) {
+	user := ctx.MustGet("user")
+
+	requestContext := ctx.Request.Context()
+
+	err := h.AuthService.BlackListTokens(requestContext, user.(model.User).ID)
+	if err != nil {
+		log.Printf("Failed to blacklist refresh token: %v", err)
+		ctx.JSON(apperrors.Status(err), apperrors.ConvertToAppError(err))
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "user logout successfully",
+	})
 }
