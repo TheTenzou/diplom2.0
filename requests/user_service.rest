@@ -11,7 +11,20 @@ Content-Type: application/json
 
 ### response variable
 @accessToken = {{loginRequest.response.body.$.accessToken}}
+@refreshToken = {{loginRequest.response.body.$.refreshToken}}
 
+### token refresh request
+# @name tokenRefreshRequest
+POST http://localhost:8080/api/users/v1/auth/refresh
+Content-Type: application/json
+
+{
+    "refreshToken": "{{refreshToken}}"
+}
+
+### response variable
+@accessToken = {{tokenRefreshRequest.response.body.$.accessToken}}
+@refreshToken = {{tokenRefreshRequest.response.body.$.refreshToken}}
 
 ###
 GET http://localhost:8080/api/users/v1/user/608704e2b9c110893f17b328

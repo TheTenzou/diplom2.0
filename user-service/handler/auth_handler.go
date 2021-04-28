@@ -2,6 +2,7 @@ package handler
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/TheTenzou/gis-diplom/user-service/apperrors"
 	"github.com/TheTenzou/gis-diplom/user-service/interfaces"
@@ -28,17 +29,18 @@ func InitAuthHandler(router *gin.Engine, config AuthHandlerConfig) {
 	group := router.Group("/api/users/v1/auth")
 
 	group.POST("/login", handler.login)
+	group.POST("/refresh", handler.refreshTokens)
 }
 
 // structure for holding and validation incoming login user request
 // input argument of bindData
-type LoginRequest struct {
+type loginRequest struct {
 	Login    string `json:"login" binding:"required,gte=6,lte=32"`
 	Password string `json:"password" binding:"required,gte=6,lte=30"`
 }
 
 func (h *authHandler) login(ctx *gin.Context) {
-	var request LoginRequest
+	var request loginRequest
 
 	if ok := utils.BindData(ctx, &request); !ok {
 		return
@@ -58,9 +60,30 @@ func (h *authHandler) login(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(200, tokenPair)
+	ctx.JSON(http.StatusOK, tokenPair)
+}
+
+// structure for holding and validation incoming login user request
+// input argument of bindData
+type refreshRequest struct {
+	RefreshToken string `json:"refreshToken" binding:"required"`
 }
 
 func (h *authHandler) refreshTokens(ctx *gin.Context) {
+	var request refreshRequest
 
+	if ok := utils.BindData(ctx, &request); !ok {
+		return
+	}
+
+	requestContext := ctx.Request.Context()
+
+	tokenPair, err := h.AuthService.RefreshTokens(requestContext, request.RefreshToken)
+	if err != nil {
+		log.Printf("faild to refresh tokens: %v", err)
+		ctx.JSON(apperrors.Status(err), apperrors.ConvertToAppError(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, tokenPair)
 }

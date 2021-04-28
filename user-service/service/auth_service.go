@@ -82,6 +82,8 @@ func (s *authService) Login(ctx context.Context, user model.User) (model.TokenPa
 	}, nil
 }
 
+// validate access token
+// return user from token data
 func (s *authService) ValidateAccessToken(token string) (model.User, error) {
 	claims, err := utils.ValidateAccessToken(token, s.accessTokenSecret)
 
@@ -92,7 +94,7 @@ func (s *authService) ValidateAccessToken(token string) (model.User, error) {
 
 	userID, err := primitive.ObjectIDFromHex(claims.Subject)
 	if err != nil {
-		log.Printf("faild to parse userID: %v", err)
+		log.Printf("failed to parse userID: %v", err)
 		return model.User{}, apperrors.NewUnauthorized("Unable to verify user from accessToken")
 	}
 	user := model.User{
@@ -102,12 +104,52 @@ func (s *authService) ValidateAccessToken(token string) (model.User, error) {
 	return user, nil
 }
 
-func (s *authService) ValidateRefreshToken(token string) (model.User, error) {
-	panic("not implemented")
-}
-
+// return new pair of tokens based on current refresh token
 func (s *authService) RefreshTokens(ctx context.Context, refreshToken string) (model.TokenPair, error) {
-	panic("not implemented")
+	claims, err := utils.ValidateRefreshToken(refreshToken, s.refreshTokenSecret)
+	if err != nil {
+		log.Printf("Unable to validate or parse refreshToken - Error: %v\n", err)
+		return model.TokenPair{}, apperrors.NewUnauthorized("Unable to verify user from refreshToken")
+	}
+
+	userID, err := primitive.ObjectIDFromHex(claims.Subject)
+	if err != nil {
+		log.Printf("Unable to parse user id: %v", err)
+		return model.TokenPair{}, apperrors.NewInternal()
+	}
+
+	user := model.User{
+		ID:   userID,
+		Role: claims.Roles,
+	}
+
+	err = s.tokenRepository.DeleteRefreshToken(ctx, userID.Hex(), refreshToken)
+	if err != nil {
+		log.Printf("Failed to delete refresh token: %v", err)
+		return model.TokenPair{}, err
+	}
+
+	accessToken, err := utils.GenerateAccessToken(user, s.accessTokenSecret, s.accessTokenExpiration)
+	if err != nil {
+		log.Printf("Error generating accessToken for id: %v. Error %v\n", user.ID, err.Error())
+		return model.TokenPair{}, apperrors.NewInternal()
+	}
+
+	newRefreshToken, err := utils.GenerateRefreshToken(user, s.refreshTokenSecret, s.refreshTokenExpiration)
+	if err != nil {
+		log.Printf("Error generating refreshToken for id: %v. Error %v\n", user.ID, err.Error())
+	}
+
+	err = s.tokenRepository.SaveRefreshToken(ctx, user.ID.Hex(), newRefreshToken, time.Duration(s.refreshTokenExpiration)*time.Second)
+	if err != nil {
+		log.Printf("Error savign refresh token: %v", err)
+		return model.TokenPair{}, apperrors.NewInternal()
+	}
+
+	return model.TokenPair{
+		AccessToken:  accessToken,
+		RefreshToken: newRefreshToken,
+	}, nil
 }
 
 func (s *authService) BlackListToken(ctx context.Context, refreshToken string) error {
