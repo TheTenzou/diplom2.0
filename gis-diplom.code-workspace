@@ -1,0 +1,27 @@
+{
+    "folders": [
+        {
+            "name": "user-service",
+            "path": "user-service"
+        },
+        {
+            "name": "nginx",
+            "path": "nginx"
+        },
+        {
+            "name": "requests",
+            "path": "requests"
+        },
+        {
+            "name": "ROOT",
+            "path": "."
+        }
+    ],
+    "settings": {
+        "files.exclude": {
+            "nginx": true,
+            "requests": true,
+            "user-service": true,
+        }
+    }
+}
