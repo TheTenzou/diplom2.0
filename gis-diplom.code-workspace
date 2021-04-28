@@ -22,6 +22,9 @@
             "nginx": true,
             "requests": true,
             "user-service": true,
+        },
+        "go.toolsEnvVars": {
+            "GO111MODULE": "on"
         }
     }
 }
