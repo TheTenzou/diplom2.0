@@ -8,7 +8,6 @@ import (
 	"github.com/TheTenzou/gis-diplom/user-service/interfaces"
 	"github.com/TheTenzou/gis-diplom/user-service/middleware"
 	"github.com/TheTenzou/gis-diplom/user-service/model"
-	"github.com/TheTenzou/gis-diplom/user-service/requests"
 	"github.com/TheTenzou/gis-diplom/user-service/utils"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -79,9 +78,18 @@ func (h *userHandler) getUsers(ctx *gin.Context) {
 	ctx.JSON(200, pagenatedData)
 }
 
+// structure for holding and validation incoming create user request
+// input argument of bindData
+type createUserRequest struct {
+	Login    string   `json:"login" binding:"required,gte=6,lte=32"`
+	Password string   `json:"password" binding:"required,gte=6,lte=30"`
+	Name     string   `json:"name" binding:"omitempty,lte=50"`
+	Role     []string `json:"role" binding:"omitempty"`
+}
+
 // handle creation of user
 func (h *userHandler) createUser(ctx *gin.Context) {
-	var request requests.CreateUserRequest
+	var request createUserRequest
 
 	if ok := utils.BindData(ctx, &request); !ok {
 		return
@@ -107,9 +115,19 @@ func (h *userHandler) createUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, createdUser)
 }
 
+// structure for holding and validation incoming create update request
+// input argument of bindData
+type updateUserRequest struct {
+	ID       primitive.ObjectID `json:"id" binding:"required"`
+	Login    string             `json:"login" binding:"omitempty,gte=6,lte=32"`
+	Password string             `json:"password" binding:"omitempty,gte=6,lte=30"`
+	Name     string             `json:"name" binding:"omitempty,lte=50"`
+	Role     []string           `json:"role" binding:"omitempty"`
+}
+
 // handle update request of user
 func (h *userHandler) updateUser(ctx *gin.Context) {
-	var request requests.UpdateUserRequest
+	var request updateUserRequest
 
 	if ok := utils.BindData(ctx, &request); !ok {
 		return

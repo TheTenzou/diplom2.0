@@ -6,7 +6,6 @@ import (
 	"github.com/TheTenzou/gis-diplom/user-service/apperrors"
 	"github.com/TheTenzou/gis-diplom/user-service/interfaces"
 	"github.com/TheTenzou/gis-diplom/user-service/model"
-	"github.com/TheTenzou/gis-diplom/user-service/requests"
 	"github.com/TheTenzou/gis-diplom/user-service/utils"
 	"github.com/gin-gonic/gin"
 )
@@ -31,8 +30,15 @@ func InitAuthHandler(router *gin.Engine, config AuthHandlerConfig) {
 	group.POST("/login", handler.login)
 }
 
+// structure for holding and validation incoming login user request
+// input argument of bindData
+type LoginRequest struct {
+	Login    string `json:"login" binding:"required,gte=6,lte=32"`
+	Password string `json:"password" binding:"required,gte=6,lte=30"`
+}
+
 func (h *authHandler) login(ctx *gin.Context) {
-	var request requests.LoginRequest
+	var request LoginRequest
 
 	if ok := utils.BindData(ctx, &request); !ok {
 		return
@@ -53,4 +59,8 @@ func (h *authHandler) login(ctx *gin.Context) {
 	}
 
 	ctx.JSON(200, tokenPair)
+}
+
+func (h *authHandler) refreshTokens(ctx *gin.Context) {
+
 }
