@@ -44,12 +44,11 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "login": "admin",
-    "password": "admin",
+    "login": "testUser",
+    "password": "userPass",
     "name": "name",
     "role": [
-        "ROLE_USER",
-        "ROLE_ADMIN"
+        "ROLE_USER"
     ]
 }
 

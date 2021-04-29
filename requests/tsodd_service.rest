@@ -1,0 +1,24 @@
+
+### login request
+# @name loginRequest
+POST  http://localhost:8080/api/users/v1/auth/login
+Content-Type: application/json
+
+{
+    "login":"admin",
+    "password": "admin"
+}
+
+### response variable
+@accessToken = {{loginRequest.response.body.$.accessToken}}
+
+###
+GET http://localhost:8080/api/tsodd/v1/helloWorld
+
+###
+GET http://localhost:8080/api/tsodd/v1/helloUser
+Authorization: Bearer {{accessToken}}
+
+###
+GET http://localhost:8080/api/tsodd/v1/helloAdmin
+Authorization: Bearer {{accessToken}}
