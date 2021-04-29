@@ -1,11 +1,15 @@
 package config
 
 import (
+	"context"
 	"os"
 
 	"github.com/TheTenzou/gis-diplom/user-service/config/databases"
 	"github.com/TheTenzou/gis-diplom/user-service/interfaces"
+	"github.com/TheTenzou/gis-diplom/user-service/model"
 	"github.com/TheTenzou/gis-diplom/user-service/repository"
+	"github.com/TheTenzou/gis-diplom/user-service/utils"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type Repositories struct {
@@ -24,6 +28,7 @@ func InitRepositories() (*Repositories, error) {
 	dbName := os.Getenv("MONGO_DABASE_NAME")
 	collectionName := os.Getenv("USERS_COLLECTION")
 	usersCollection := mongo.Database(dbName).Collection(collectionName)
+	createAdmin(usersCollection)
 
 	userRepository := repository.NewMongoUserRepository(usersCollection)
 
@@ -38,4 +43,17 @@ func InitRepositories() (*Repositories, error) {
 		UserRepository:  userRepository,
 		TokenRepository: tokenRepository,
 	}, nil
+}
+
+// insert admin user if not exist
+func createAdmin(users *mongo.Collection) {
+	password, _ := utils.HashPassword("admin")
+	user := model.User{
+		Login:    "admin",
+		Password: password,
+		Status:   "ACTIVE",
+		Role:     []string{"ROLE_ADMIN", "ROLE_USER"},
+	}
+
+	users.InsertOne(context.Background(), user)
 }

@@ -81,8 +81,8 @@ func (h *userHandler) getUsers(ctx *gin.Context) {
 // structure for holding and validation incoming create user request
 // input argument of bindData
 type createUserRequest struct {
-	Login    string   `json:"login" binding:"required,gte=6,lte=32"`
-	Password string   `json:"password" binding:"required,gte=6,lte=30"`
+	Login    string   `json:"login" binding:"required,gte=5,lte=32"`
+	Password string   `json:"password" binding:"required,gte=5,lte=32"`
 	Name     string   `json:"name" binding:"omitempty,lte=50"`
 	Role     []string `json:"role" binding:"omitempty"`
 }
@@ -119,8 +119,8 @@ func (h *userHandler) createUser(ctx *gin.Context) {
 // input argument of bindData
 type updateUserRequest struct {
 	ID       primitive.ObjectID `json:"id" binding:"required"`
-	Login    string             `json:"login" binding:"omitempty,gte=6,lte=32"`
-	Password string             `json:"password" binding:"omitempty,gte=6,lte=30"`
+	Login    string             `json:"login" binding:"omitempty,gte=5,lte=32"`
+	Password string             `json:"password" binding:"omitempty,gte=5,lte=32"`
 	Name     string             `json:"name" binding:"omitempty,lte=50"`
 	Role     []string           `json:"role" binding:"omitempty"`
 }

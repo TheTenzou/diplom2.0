@@ -5,8 +5,8 @@ POST  http://localhost:8080/api/users/v1/auth/login
 Content-Type: application/json
 
 {
-    "login":"testlogin6",
-    "password": "password"
+    "login":"admin",
+    "password": "admin"
 }
 
 ### response variable
@@ -35,7 +35,7 @@ GET http://localhost:8080/api/users/v1/user/608704e2b9c110893f17b328
 Authorization: Bearer {{accessToken}}
 
 ###
-GET http://localhost:8080/api/users/v1/users?page=1&limit=10&&status=deleted&status=active
+GET http://localhost:8080/api/users/v1/users?page=1&limit=10&&status=ACTIVE&status=active
 Authorization: Bearer {{accessToken}}
 
 ###
@@ -44,12 +44,12 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "login": "testlogin6",
-    "password": "password",
+    "login": "admin",
+    "password": "admin",
     "name": "name",
     "role": [
-        "user",
-        "admin"
+        "ROLE_USER",
+        "ROLE_ADMIN"
     ]
 }
 

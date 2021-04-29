@@ -37,8 +37,8 @@ func InitAuthHandler(router *gin.Engine, config AuthHandlerConfig) {
 // structure for holding and validation incoming login user request
 // input argument of bindData
 type loginRequest struct {
-	Login    string `json:"login" binding:"required,gte=6,lte=32"`
-	Password string `json:"password" binding:"required,gte=6,lte=30"`
+	Login    string `json:"login" binding:"required,gte=5,lte=32"`
+	Password string `json:"password" binding:"required,gte=5,lte=32"`
 }
 
 func (h *authHandler) login(ctx *gin.Context) {

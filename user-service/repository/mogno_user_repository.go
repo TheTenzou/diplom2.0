@@ -112,7 +112,7 @@ func (r *mongoUserRepository) Create(
 ) (model.User, error) {
 	log.Println("1")
 
-	user.Status = "active"
+	user.Status = "ACTIVE"
 
 	userID, err := r.Users.InsertOne(ctx, user)
 	if err != nil {
@@ -173,7 +173,7 @@ func (r *mongoUserRepository) Delete(
 	userID primitive.ObjectID,
 ) (model.User, error) {
 
-	updateResult, err := r.Users.UpdateByID(ctx, userID, bson.M{"$set": bson.M{"status": "deleted"}})
+	updateResult, err := r.Users.UpdateByID(ctx, userID, bson.M{"$set": bson.M{"status": "DELETED"}})
 
 	if updateResult.MatchedCount == 0 {
 		log.Printf("Couldn't update user. Id %v doesn't exit.", userID)
