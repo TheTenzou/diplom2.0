@@ -5,6 +5,13 @@
 - [Docker](https://www.docker.com/)
 - Docker-compose
 
-Установка докера на винду:
-- [установить wsl](https://www.windowscentral.com/install-windows-subsystem-linux-windows-10)
-- [установить Docker desktop](https://www.docker.com/products/docker-desktop)
+В случае windows лучше запускать из под wsl
+
+## Запуск
+```bash
+docker-compose up
+```
+
+- Приложение запускается на порте 8080
+- Web ui для mongo на ходится на порту 8081
+- web ui для редиса на 8082
