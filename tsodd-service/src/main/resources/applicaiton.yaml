@@ -1,0 +1,4 @@
+jwt:
+  token:
+    secret: ${ACCESSTOKEN_SECRET | accessSecret}
+    expired: ${ACCESSTOKEN_EXPIRATION | 600}
