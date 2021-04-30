@@ -30,15 +30,27 @@ Content-Type: application/json
 POST http://localhost:8080/api/users/v1/auth/logout
 Authorization: Bearer {{accessToken}}
 
-###
-GET http://localhost:8080/api/users/v1/user/608704e2b9c110893f17b328
+### get users roles
+GET http://localhost:8080/api/users/v1/roles 
+
+### get users statuses
+GET http://localhost:8080/api/users/v1/userStatus 
+
+### get use by id
+@userID = 608704e2b9c110893f17b328
+GET http://localhost:8080/api/users/v1/user/{{userID}}
 Authorization: Bearer {{accessToken}}
 
-###
-GET http://localhost:8080/api/users/v1/users?page=1&limit=10&&status=ACTIVE&status=active
+### get list of users
+# where page is page nuber default equals 1
+#       limit is max users per page
+#       role is user roles posible to request user with several roles
+#       status is user status
+
+GET http://localhost:8080/api/users/v1/users?page=1&limit=10&&status=ACTIVE&role=ROLE_USER&role=ROLE_ADMIN
 Authorization: Bearer {{accessToken}}
 
-###
+### create user
 PUT http://localhost:8080/api/users/v1/user
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
@@ -52,21 +64,21 @@ Content-Type: application/json
     ]
 }
 
-###
+### update user with given id
 PATCH  http://localhost:8080/api/users/v1/user
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "id": "6086c28fb93b1460d2763042",
+    "id": "608a9690e9907760476257c3",
     "login": "testUpdate",
     "password": "password",
     "name": "name",
     "role": [
-        "user"
+        "ROLE_USER"
     ]
 }
 
-###
+### delete user with given id
 DELETE http://localhost:8080/api/users/v1/user/607db993fad7324170a4debc
 Authorization: Bearer {{accessToken}}
