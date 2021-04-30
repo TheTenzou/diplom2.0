@@ -1,0 +1,14 @@
+FROM node:14.16-alpine
+
+WORKDIR /app
+
+ENV PATH /app/node_modules/.bin:$PATH
+
+RUN npm install react-scripts@4.0.3 -g --silent
+COPY package.json ./
+COPY package-lock.json ./
+RUN npm install --silent
+
+COPY . ./
+
+CMD npm start

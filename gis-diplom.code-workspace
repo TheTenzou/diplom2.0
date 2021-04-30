@@ -17,6 +17,10 @@
             "path": "requests"
         },
         {
+            "name": "frontend",
+            "path": "frontend"
+        },
+        {
             "name": "ROOT",
             "path": "."
         }
@@ -25,6 +29,7 @@
         "files.exclude": {
             "nginx": true,
             "requests": true,
+            "frontend": true,
             "user-service": true,
             "tsodd-service": true,
         },
