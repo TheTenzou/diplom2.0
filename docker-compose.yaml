@@ -21,8 +21,8 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     volumes: 
-      - ./frontend:/app
       - /app/node_modules
+      - ./frontend:/app
     expose: 
       - "3000"
     environment: 

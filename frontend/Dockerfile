@@ -4,11 +4,11 @@ WORKDIR /app
 
 ENV PATH /app/node_modules/.bin:$PATH
 
-RUN npm install react-scripts@4.0.3 -g --silent
-COPY package.json ./
-COPY package-lock.json ./
+COPY package.json .
+COPY package-lock.json .
 RUN npm install --silent
+RUN npm install react-scripts@4.0.3 -g --silent
 
-COPY . ./
+COPY . .
 
 CMD npm start
