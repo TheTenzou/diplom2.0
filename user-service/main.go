@@ -11,6 +11,7 @@ import (
 
 	"github.com/TheTenzou/gis-diplom/user-service/config"
 	"github.com/TheTenzou/gis-diplom/user-service/config/databases"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -27,6 +28,12 @@ func main() {
 	}
 
 	handler := config.InitHandlers(services)
+
+	handler.GET("/api/users/health", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, gin.H{
+			"status": "live",
+		})
+	})
 
 	server := &http.Server{
 		Addr:    ":8080",
