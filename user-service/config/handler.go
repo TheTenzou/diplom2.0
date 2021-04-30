@@ -18,5 +18,7 @@ func InitHandlers(services *Services) *gin.Engine {
 		AuthService: services.AuthService,
 	})
 
+	handler.InitStatusAndRoleHandler(router)
+
 	return router
 }
