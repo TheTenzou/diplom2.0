@@ -23,7 +23,7 @@ func GenaratePaginationFromRequest(ctx *gin.Context) model.Pagination {
 			limit, _ = strconv.ParseInt(value[0], 10, 64)
 		case "page":
 			page, _ = strconv.ParseInt(value[0], 10, 64)
-		case "roles":
+		case "role":
 			roles = value
 		case "status":
 			status = value
