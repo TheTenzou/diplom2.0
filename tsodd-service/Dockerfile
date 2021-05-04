@@ -1,5 +1,4 @@
-FROM gradle:7.0.0-jdk11
+FROM gradle:6.8.3-jdk11
 
-RUN set -x && \
-    addgroup --group appuser && \
-    adduser --user --group appuser appuser 
+RUN apt update
+RUN apt install -y netcat

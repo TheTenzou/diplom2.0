@@ -3,6 +3,8 @@ version: "3.8"
 volumes: 
   mongo_data:
   redis_data:
+  postgis_tsodd_data:
+  pgadmin_data:
 
 services:
 
@@ -10,8 +12,9 @@ services:
     container_name: nginx
     build: ./nginx
     depends_on: 
-      - user-service
+      # - user-service
       - tsodd-service
+      - frontend
     ports: 
       - "8080:80"
 
@@ -51,15 +54,21 @@ services:
 
   tsodd-service:
     container_name: tsodd-service
-    image: gradle:6.8.3-jdk11
+    image: tsodd-service
+    build: 
+      context: ./tsodd-service
+      dockerfile: Dockerfile
     volumes: 
       - ./tsodd-service:/app
     env_file: 
       - .env
     expose: 
       - 8080
+    depends_on: 
+      - postgis-tsodd
     working_dir: /app
-    command: sh run.sh
+    command: ./wait-for.sh postgis-tsodd:5432 --timeout=60 -- sh run.sh
+    # command: sh run.sh
   
   user-service-reids:
     container_name: ${REDIS_HOST}
@@ -80,6 +89,18 @@ services:
       - ${MONGO_PORT}
     command: mongod --quiet --port ${MONGO_PORT} --logpath=/dev/null
 
+  postgis-tsodd:
+    container_name: postgis-tsodd
+    image: postgis/postgis:latest
+    environment: 
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tsodd-service
+    expose: 
+      - 5432
+    volumes: 
+      - "postgis_tsodd_data:/var/lib/postgresql/data"      
+
   redis-commander:
     container_name: redis-commander
     image: rediscommander/redis-commander
@@ -99,3 +120,17 @@ services:
       - ME_CONFIG_MONGODB_PORT=${MONGO_PORT}
     depends_on: 
       - user-service-mongo
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    volumes:
+    - pgadmin_data:/root/.pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@mail.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+      PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: 50
+    ports:
+    - "16543:80"
+    depends_on:
+      - postgis-tsodd
