@@ -17,14 +17,14 @@ type mongoUserRepository struct {
 	Users *mongo.Collection
 }
 
-// factry for initializating user repository
+// NewMongoUserRepository factory for initializing user repository
 func NewMongoUserRepository(usersCollection *mongo.Collection) interfaces.UserRepository {
 	return &mongoUserRepository{
 		Users: usersCollection,
 	}
 }
 
-// fetch user by id from databse
+// FindByID fetch user by id from database
 // userID is id of requested user
 func (r *mongoUserRepository) FindByID(
 	ctx context.Context,
@@ -41,7 +41,7 @@ func (r *mongoUserRepository) FindByID(
 	return user, nil
 }
 
-// fetch user by login from databse
+// FindByLogin fetch user by login from database
 // userLogin is login of requested user
 func (r *mongoUserRepository) FindByLogin(
 	ctx context.Context,
@@ -58,7 +58,7 @@ func (r *mongoUserRepository) FindByLogin(
 	return user, nil
 }
 
-// return page of users
+// FindAll return page of users
 // page is number of requested page
 // pageSize is size of page
 func (r *mongoUserRepository) FindAll(
@@ -103,8 +103,8 @@ func (r *mongoUserRepository) FindAll(
 	}, nil
 }
 
-// create user record in data base
-// user login shoud be unique
+// Create create user record in data base
+// user login should be unique
 // return inserted use with id
 func (r *mongoUserRepository) Create(
 	ctx context.Context,
@@ -131,8 +131,8 @@ func (r *mongoUserRepository) Create(
 	return user, nil
 }
 
-// update user record in database
-// user login shoud be unique
+// Update update user record in database
+// user login should be unique
 func (r *mongoUserRepository) Update(
 	ctx context.Context,
 	user model.User,
@@ -166,7 +166,7 @@ func (r *mongoUserRepository) Update(
 	return updatedUser, nil
 }
 
-// mark user is deleted
+// Delete mark user is deleted
 // return deleted user
 func (r *mongoUserRepository) Delete(
 	ctx context.Context,
@@ -174,14 +174,13 @@ func (r *mongoUserRepository) Delete(
 ) (model.User, error) {
 
 	updateResult, err := r.Users.UpdateByID(ctx, userID, bson.M{"$set": bson.M{"status": "DELETED"}})
+	if err != nil {
+		return model.User{}, apperrors.NewConflict("login", userID.Hex())
+	}
 
 	if updateResult.MatchedCount == 0 {
 		log.Printf("Couldn't update user. Id %v doesn't exit.", userID)
 		return model.User{}, apperrors.NewNotFound("id", userID.Hex())
-	}
-
-	if err != nil {
-		return model.User{}, apperrors.NewConflict("login", userID.Hex())
 	}
 
 	var updatedUser model.User

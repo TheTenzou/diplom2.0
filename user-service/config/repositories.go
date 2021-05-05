@@ -17,7 +17,7 @@ type Repositories struct {
 	TokenRepository interfaces.TokenRepository
 }
 
-// initialise all necassary repositories
+// InitRepositories initialise all necassary repositories
 func InitRepositories() (*Repositories, error) {
 
 	mongo, err := databases.GetMongo()
@@ -25,7 +25,7 @@ func InitRepositories() (*Repositories, error) {
 		return nil, err
 	}
 
-	dbName := os.Getenv("MONGO_DABASE_NAME")
+	dbName := os.Getenv("MONGO_DATABASE_NAME")
 	collectionName := os.Getenv("USERS_COLLECTION")
 	usersCollection := mongo.Database(dbName).Collection(collectionName)
 	createAdmin(usersCollection)

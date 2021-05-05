@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// init handler with all necessary routs
+// InitHandlers init handler with all necessary routs
 func InitHandlers(services *Services) *gin.Engine {
 
 	router := gin.Default()

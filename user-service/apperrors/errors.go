@@ -10,28 +10,28 @@ import (
 type Type string
 
 const (
-	Unauthorization      Type = "UNAUTHORIZATION"
+	Unauthorized         Type = "UNAUTHORIZED"
 	BadRequest           Type = "BAD_REQUEST"
 	Conflict             Type = "CONFLICT"
 	Internal             Type = "INTERNAL"
 	NotFound             Type = "NOT_FOUND"
 	ServiceUnavailable   Type = "SERVICE_UNAVAILABLE"
-	UnSupportedMediaType Type = "UN_SUPPORTED_MEDIATYPE"
+	UnSupportedMediaType Type = "UN_SUPPORTED_MEDIA_TYPE"
 )
 
 type Error struct {
-	TimeStemp  time.Time `json:"timestamp"`
+	Timestamp  time.Time `json:"timestamp"`
 	StatusCode int       `json:"status"`
 	Type       Type      `json:"error"`
 	Message    string    `json:"message"`
 }
 
-// requiers to implement error interface
+// requires to implement error interface
 func (e *Error) Error() string {
 	return e.Message
 }
 
-// convert any error to http status code
+// Status convert any error to http status code
 func Status(err error) int {
 	var e *Error
 	if errors.As(err, &e) {
@@ -48,77 +48,77 @@ func ConvertToAppError(err error) *Error {
 	return NewInternal()
 }
 
-// factory for Unauthorized error
+// NewUnauthorized factory for Unauthorized error
 // reason - explain why is unauthorized
 func NewUnauthorized(reason string) *Error {
 	return &Error{
-		TimeStemp:  time.Now(),
+		Timestamp:  time.Now(),
 		StatusCode: http.StatusUnauthorized,
-		Type:       Unauthorization,
+		Type:       Unauthorized,
 		Message:    reason,
 	}
 }
 
-// factory for bad request error
-// reson - explain what is wrong
+// NewBadRequest factory for bad request error
+// reason - explain what is wrong
 func NewBadRequest(reason string) *Error {
 	return &Error{
-		TimeStemp:  time.Now(),
+		Timestamp:  time.Now(),
 		StatusCode: http.StatusBadRequest,
 		Type:       BadRequest,
 		Message:    fmt.Sprintf("Bad request. Reason: %v", reason),
 	}
 }
 
-// factory for conflict error
-// name - name of parametr witch raise conflict error
+// NewConflict factory for conflict error
+// name - name of parameter witch raise conflict error
 // value - value with raise conflict error
 func NewConflict(name string, value string) *Error {
 	return &Error{
-		TimeStemp:  time.Now(),
+		Timestamp:  time.Now(),
 		StatusCode: http.StatusConflict,
 		Type:       Conflict,
 		Message:    fmt.Sprintf("resource: %v with value: %v already exists", name, value),
 	}
 }
 
-// factory for internal error
+// NewInternal factory for internal error
 func NewInternal() *Error {
 	return &Error{
-		TimeStemp:  time.Now(),
+		Timestamp:  time.Now(),
 		StatusCode: http.StatusInternalServerError,
 		Type:       Internal,
 		Message:    "Internal server error.",
 	}
 }
 
-// factory for not found error
-// name - name of resource wich is not found
-// value - vlue of resource wich is not found
+// NewNotFound factory for not found error
+// name - name of resource which is not found
+// value - value of resource which is not found
 func NewNotFound(name string, value string) *Error {
 	return &Error{
-		TimeStemp:  time.Now(),
+		Timestamp:  time.Now(),
 		StatusCode: http.StatusNotFound,
 		Type:       NotFound,
 		Message:    fmt.Sprintf("resource: %v with value: %v not found", name, value),
 	}
 }
 
-// factory for Service unavailable error
+// NewServiceUnavailable factory for Service unavailable error
 func NewServiceUnavailable() *Error {
 	return &Error{
-		TimeStemp:  time.Now(),
+		Timestamp:  time.Now(),
 		StatusCode: http.StatusServiceUnavailable,
 		Type:       ServiceUnavailable,
 		Message:    "Service unavailable or timed out",
 	}
 }
 
-// factory for unsupported madia type error
-// reson explain why and wich resources an suported
+// NewUnsupportedMediaType factory for unsupported media type error
+// reason explain why and which resources an supported
 func NewUnsupportedMediaType(reason string) *Error {
 	return &Error{
-		TimeStemp:  time.Now(),
+		Timestamp:  time.Now(),
 		StatusCode: http.StatusUnsupportedMediaType,
 		Type:       UnSupportedMediaType,
 		Message:    reason,

@@ -20,7 +20,7 @@ type AuthHandlerConfig struct {
 	AuthService interfaces.AuthService
 }
 
-// init user routs
+// InitAuthHandler init user routs
 func InitAuthHandler(router *gin.Engine, config AuthHandlerConfig) {
 
 	handler := authHandler{

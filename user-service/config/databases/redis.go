@@ -11,6 +11,7 @@ import (
 
 var redisDB *redis.Client
 
+// GetRedis singleton return mongo data source
 func GetRedis() (*redis.Client, error) {
 	if redisDB == nil {
 		var err error
@@ -23,6 +24,7 @@ func GetRedis() (*redis.Client, error) {
 	return redisDB, nil
 }
 
+// connect to redis
 func configRedis() (*redis.Client, error) {
 
 	log.Printf("Connecting to redis...")

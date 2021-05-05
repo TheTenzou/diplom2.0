@@ -14,13 +14,13 @@ import (
 
 var mongoDB *mongo.Client
 
-// singlton return mongo data source
+// GetMongo singleton return mongo data source
 func GetMongo() (*mongo.Client, error) {
 	if mongoDB == nil {
 		var err error
 		mongoDB, err = configMongo()
 		if err != nil {
-			return nil, fmt.Errorf("error connecting to monog: %v", err)
+			return nil, fmt.Errorf("error connecting to mongo: %v", err)
 		}
 	}
 
@@ -45,7 +45,7 @@ func configMongo() (*mongo.Client, error) {
 		return nil, err
 	}
 
-	dbName := os.Getenv("MONGO_DABASE_NAME")
+	dbName := os.Getenv("MONGO_DATABASE_NAME")
 	collectionName := os.Getenv("USERS_COLLECTION")
 	usersCollection := mongoClient.Database(dbName).Collection(collectionName)
 
@@ -56,7 +56,7 @@ func configMongo() (*mongo.Client, error) {
 		},
 	)
 	if err != nil {
-		return nil, fmt.Errorf("faild to create index: %v", err)
+		return nil, fmt.Errorf("failed to create index: %v", err)
 	}
 
 	log.Printf("index %s created", indexName)

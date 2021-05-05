@@ -15,14 +15,14 @@ type redisTokenRepository struct {
 	Redis *redis.Client
 }
 
-// factory for initializing User Repositories
+// NewTokenRepository factory for initializing User Repositories
 func NewTokenRepository(redisClient *redis.Client) interfaces.TokenRepository {
 	return &redisTokenRepository{
 		Redis: redisClient,
 	}
 }
 
-// stores a refresh token with an expiry time
+// SaveRefreshToken stores a refresh token with an expiry time
 func (r *redisTokenRepository) SaveRefreshToken(
 	ctx context.Context,
 	userID string,
@@ -39,7 +39,7 @@ func (r *redisTokenRepository) SaveRefreshToken(
 	return nil
 }
 
-// delete old refresh tokens
+// DeleteRefreshToken delete old refresh tokens
 func (r *redisTokenRepository) DeleteRefreshToken(ctx context.Context, userID string, token string) error {
 
 	key := fmt.Sprintf("%s.%s", userID, token)

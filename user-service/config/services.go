@@ -14,27 +14,27 @@ type Services struct {
 	AuthService interfaces.AuthService
 }
 
-// init all necessary services
+// InitServices init all necessary services
 func InitServices(repositories *Repositories) (*Services, error) {
 	userService := service.NewUserService(repositories.UserRepository)
 
-	accessTokenSecret := os.Getenv("ACCESSTOKEN_SECRET")
-	accessTokenExpiration := os.Getenv("ACCESSTOKEN_EXPIRATION")
+	accessTokenSecret := os.Getenv("ACCESS_TOKEN_SECRET")
+	accessTokenExpiration := os.Getenv("ACCESS_TOKEN_EXPIRATION")
 
 	accessTokenExpirationSec, err := strconv.ParseInt(accessTokenExpiration, 0, 64)
 	if err != nil {
 		return nil, fmt.Errorf("could not ACCESSTOKEN_EXPIRATION as int: %v", err)
 	}
 
-	refreshTokenSecret := os.Getenv("REFRESHTOKEN_SECRET")
-	refreshTokenExpiration := os.Getenv("REFRESHTOKEN_EXPIRATION")
+	refreshTokenSecret := os.Getenv("REFRESH_TOKEN_SECRET")
+	refreshTokenExpiration := os.Getenv("REFRESH_TOKEN_EXPIRATION")
 
 	refreshTokenExpirationSec, err := strconv.ParseInt(refreshTokenExpiration, 0, 64)
 	if err != nil {
 		return nil, fmt.Errorf("could not REFRESHTOKEN_EXPIRATION as int: %v", err)
 	}
 
-	authService := service.NewAuthSerivce(service.AuthServiceConfig{
+	authService := service.NewAuthService(service.AuthServiceConfig{
 		UserRepository:         repositories.UserRepository,
 		TokenRepository:        repositories.TokenRepository,
 		AccessTokenSecret:      accessTokenSecret,

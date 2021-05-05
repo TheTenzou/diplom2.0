@@ -30,8 +30,8 @@ type AuthServiceConfig struct {
 	RefreshTokenExpiration int64
 }
 
-// factory function for initializing a AuthService with its repository layer dependencies
-func NewAuthSerivce(config AuthServiceConfig) interfaces.AuthService {
+// NewAuthService factory function for initializing a AuthService with its repository layer dependencies
+func NewAuthService(config AuthServiceConfig) interfaces.AuthService {
 	return &authService{
 		userRepository:         config.UserRepository,
 		tokenRepository:        config.TokenRepository,
@@ -42,8 +42,8 @@ func NewAuthSerivce(config AuthServiceConfig) interfaces.AuthService {
 	}
 }
 
-// return token pair for given user
-// rrequired login and passwrod in user structure to be filled
+// Login return token pair for given user
+// required login and password in user structure to be filled
 func (s *authService) Login(ctx context.Context, user model.User) (model.TokenPair, error) {
 	fetchedUser, err := s.userRepository.FindByLogin(ctx, user.Login)
 	if err != nil {
@@ -82,7 +82,7 @@ func (s *authService) Login(ctx context.Context, user model.User) (model.TokenPa
 	}, nil
 }
 
-// validate access token
+// ValidateAccessToken validate access token
 // return user from token data
 func (s *authService) ValidateAccessToken(token string) (model.User, error) {
 	claims, err := utils.ValidateAccessToken(token, s.accessTokenSecret)
@@ -104,7 +104,7 @@ func (s *authService) ValidateAccessToken(token string) (model.User, error) {
 	return user, nil
 }
 
-// return new pair of tokens based on current refresh token
+// RefreshTokens return new pair of tokens based on current refresh token
 func (s *authService) RefreshTokens(ctx context.Context, refreshToken string) (model.TokenPair, error) {
 	claims, err := utils.ValidateRefreshToken(refreshToken, s.refreshTokenSecret)
 	if err != nil {
@@ -152,7 +152,7 @@ func (s *authService) RefreshTokens(ctx context.Context, refreshToken string) (m
 	}, nil
 }
 
-// blacklist all users tokens
+// BlackListTokens blacklist all users tokens
 func (s *authService) BlackListTokens(ctx context.Context, userID primitive.ObjectID) error {
 
 	err := s.tokenRepository.DeleteUserRefreshTokens(ctx, userID.Hex())

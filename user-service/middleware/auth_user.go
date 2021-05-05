@@ -20,9 +20,9 @@ type invalidArgument struct {
 	Param string `json:"param"`
 }
 
-// extracts a user from the Authorization header
+// AuthUser extracts a user from the Authorization header
 // It sets the user to the context if the user exists
-func AuthUser(authServise interfaces.AuthService) gin.HandlerFunc {
+func AuthUser(authService interfaces.AuthService) gin.HandlerFunc {
 	return func(ginContext *gin.Context) {
 		header := authHeader{}
 
@@ -30,7 +30,7 @@ func AuthUser(authServise interfaces.AuthService) gin.HandlerFunc {
 
 			if errs, ok := err.(validator.ValidationErrors); ok {
 
-				invalidArgs := getIvalidArguments(errs)
+				invalidArgs := getInvalidArguments(errs)
 				err := apperrors.NewBadRequest("Invalid request parameters. See invalidArgs")
 
 				ginContext.JSON(err.StatusCode, gin.H{
@@ -57,7 +57,7 @@ func AuthUser(authServise interfaces.AuthService) gin.HandlerFunc {
 			return
 		}
 
-		user, err := authServise.ValidateAccessToken(idTokenHeader[1])
+		user, err := authService.ValidateAccessToken(idTokenHeader[1])
 
 		if err != nil {
 			err := apperrors.NewUnauthorized("Provided token is invalid")
@@ -72,7 +72,7 @@ func AuthUser(authServise interfaces.AuthService) gin.HandlerFunc {
 	}
 }
 
-func getIvalidArguments(errs validator.ValidationErrors) []invalidArgument {
+func getInvalidArguments(errs validator.ValidationErrors) []invalidArgument {
 	var invalidArgs []invalidArgument
 
 	for _, err := range errs {

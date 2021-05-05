@@ -10,28 +10,28 @@ import (
 // UserRepository defines methods the service layer expects
 type UserRepository interface {
 
-	// fetch user by id from databse
+	// FindByID fetch user by id from database
 	// userID is id of requested user
 	FindByID(ctx context.Context, userID primitive.ObjectID) (model.User, error)
 
-	// fetch user by login from databse
+	// FindByLogin fetch user by login from database
 	// userLogin is login of requested user
 	FindByLogin(ctx context.Context, userLogin string) (model.User, error)
 
-	// return page of users
+	// FindAll return page of users
 	// pagination specify page size, page number and filters
 	FindAll(ctx context.Context, pagination model.Pagination) (model.PaginatedData, error)
 
-	// create user record in data base
-	// user login shoud be unique
+	// Create create user record in data base
+	// user login should be unique
 	// return inserted use with id
 	Create(ctx context.Context, user model.User) (model.User, error)
 
-	// update user record in database
-	// user login shoud be unique
+	// Update update user record in database
+	// user login should be unique
 	Update(ctx context.Context, user model.User) (model.User, error)
 
-	// mark user is deleted
+	// Delete mark user is deleted
 	// return deleted user
 	Delete(ctx context.Context, userID primitive.ObjectID) (model.User, error)
 }
