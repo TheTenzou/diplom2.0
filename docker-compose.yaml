@@ -75,6 +75,8 @@ services:
     image: "redis:alpine"
     expose: 
       - ${REDIS_PORT}
+    ports:
+    - ${REDIS_PORT}:${REDIS_PORT}
     volumes: 
       - "redis_data:/data"
 
@@ -87,50 +89,54 @@ services:
       - MONGO_LOG_DIR=/dev/null
     expose: 
       - ${MONGO_PORT}
+    ports:
+    - ${MONGO_PORT}:${MONGO_PORT}
     command: mongod --quiet --port ${MONGO_PORT} --logpath=/dev/null
 
   postgis-tsodd:
-    container_name: postgis-tsodd
+    container_name: ${POSTGIS_TSODD_HOST}
     image: postgis/postgis:latest
     environment: 
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: tsodd-service
+      POSTGRES_USER: ${POSTGIS_TSODD_USER}
+      POSTGRES_PASSWORD: ${POSTGIS_TSODD_PASSWORD}
+      POSTGRES_DB: ${POSTGIS_TSODD_DATABASE}
     expose: 
-      - 5432
+      - ${POSTGIS_TSODD_PORT}
+    ports:
+    - ${POSTGIS_TSODD_PORT}:${POSTGIS_TSODD_PORT}
     volumes: 
       - "postgis_tsodd_data:/var/lib/postgresql/data"      
 
-  redis-commander:
-    container_name: redis-commander
-    image: rediscommander/redis-commander
-    restart: always
-    environment: 
-      - REDIS_HOSTS=local:${REDIS_HOST}:${REDIS_PORT}
-    ports: 
-      - "8082:8081"
-  
-  mongo-express:
-    container_name: mongo-express
-    image: mongo-express
-    ports:
-      - "8081:8081"
-    environment:
-      - ME_CONFIG_MONGODB_SERVER=${MONGO_HOST}
-      - ME_CONFIG_MONGODB_PORT=${MONGO_PORT}
-    depends_on: 
-      - user-service-mongo
-
-  pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    volumes:
-    - pgadmin_data:/root/.pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "admin@mail.com"
-      PGADMIN_DEFAULT_PASSWORD: "admin"
-      PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: 50
-    ports:
-    - "16543:80"
-    depends_on:
-      - postgis-tsodd
+#  redis-commander:
+#    container_name: redis-commander
+#    image: rediscommander/redis-commander
+#    restart: always
+#    environment:
+#      - REDIS_HOSTS=local:${REDIS_HOST}:${REDIS_PORT}
+#    ports:
+#      - "8082:8081"
+#
+#  mongo-express:
+#    container_name: mongo-express
+#    image: mongo-express
+#    ports:
+#      - "8081:8081"
+#    environment:
+#      - ME_CONFIG_MONGODB_SERVER=${MONGO_HOST}
+#      - ME_CONFIG_MONGODB_PORT=${MONGO_PORT}
+#    depends_on:
+#      - user-service-mongo
+#
+#  pgadmin:
+#    container_name: pgadmin
+#    image: dpage/pgadmin4
+#    volumes:
+#    - pgadmin_data:/root/.pgadmin
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: "admin@mail.com"
+#      PGADMIN_DEFAULT_PASSWORD: "admin"
+#      PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: 50
+#    ports:
+#    - "16543:80"
+#    depends_on:
+#      - postgis-tsodd

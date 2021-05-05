@@ -27,10 +27,10 @@ public class JwtTokenProvider {
 
     static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
-    @Value("${ACCESSTOKEN_SECRET}")
+    @Value("${jwt.token.secret}")
     private String secret;
 
-    @Value("${ACCESSTOKEN_EXPIRATION}")
+    @Value("${jwt.token.expired}")
     private long validityInSeconds;
 
     @PostConstruct
