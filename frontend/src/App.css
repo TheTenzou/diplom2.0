@@ -15,3 +15,31 @@ body {
   background: linear-gradient(45deg, rgba(45,176,224,1) 0%, rgba(96,40,168,1) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2db0e0', endColorstr='#6028a8', GradientType=1 );
 }
+
+.home {
+  width: 80%;
+  height: 80%; 
+  padding: 10px; 
+  background-color: rgba(86, 61, 124, .5);
+}
+
+.about {
+  width: 80%;
+  height: 80%;
+  padding: 10px;
+  background-color: rgba(176, 167, 199, .4);
+}
+
+.tableTSOD {
+  width: 80%;
+  height: 80%;
+  padding: 10px;
+  background-color: rgba(176, 167, 199, .4);
+}
+
+.tableFlows {
+  width: 80%;
+  height: 80%;
+  padding: 10px;
+  background-color: rgba(176, 167, 199, .4);
+}

@@ -2,9 +2,10 @@ import './App.css';
 import MainNavigation from "./components/MainNavigation";
 import MyMap from "./components/Map";
 import Info from "./components/Info";
+import Authentication from "./components/AuthWindow";
 import axios from "axios";
 import React, { Component, useEffect, useState } from "react";
-import { BDiv } from 'bootstrap-4-react';
+import { BDiv, Form, Button } from 'bootstrap-4-react';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 export default class App extends Component {
@@ -24,6 +25,9 @@ export default class App extends Component {
           <Route path="/table2">
             <TableFlows />
           </Route>
+          <Route path="/auth">
+            <Authentication />
+          </Route>
         </Switch>
       </Router>
     );
@@ -34,7 +38,7 @@ function Home() {
   return (
     <div className="wrapper">
       <MainNavigation />
-      <BDiv mx="auto" style={{ width: '80%', height: '80%', padding: '10px', backgroundColor: 'rgba(86, 61, 124, .5)' }}>
+      <BDiv mx="auto" className="home">
         <MyMap />
       </BDiv>
     </div>
@@ -45,8 +49,9 @@ function About() {
   return (
     <div className="wrapper">
       <MainNavigation />
-      <BDiv mx="auto" style={{ width: '80%', height: '80%', padding: '10px', backgroundColor: 'rgba(176, 167, 199, .4)' }}>
+      <BDiv mx="auto" className="about">
         <Info />
+        <AxiosWork />
       </BDiv>
     </div>
   );
@@ -56,7 +61,7 @@ function TableTSOD() {
   return (
     <div className="wrapper">
       <MainNavigation />
-        <BDiv mx="auto" style={{ width: '80%', height: '80%', padding: '10px', backgroundColor: 'rgba(176, 167, 199, .4)' }}>
+        <BDiv mx="auto" className="tableTSOD">
           Табличка с ТСОД
         </BDiv>
     </div>
@@ -67,16 +72,15 @@ function TableFlows() {
   return (
     <div className="wrapper">
       <MainNavigation />
-        <BDiv mx="auto" style={{ width: '80%', height: '80%', padding: '10px', backgroundColor: 'rgba(176, 167, 199, .4)' }}>
+        <BDiv mx="auto" className="tableFlows">
           Табличка с Потоками
         </BDiv>
     </div>
   );
 }
 
-/*function App() {
+function AxiosWork() {
   const [userService, setUserService] = useState(null);
-
   const [tsoddService, setTsoddService] = useState(null);
 
   useEffect(() => {
@@ -93,8 +97,8 @@ function TableFlows() {
 
   return (
     <p>
-          user service is {userService ? userService : "offline"} <br />
-          tsodd service is {tsoddService ? tsoddService : "offline"}
+      user service is {userService ? userService : "offline"} <br />
+      tsodd service is {tsoddService ? tsoddService : "offline"}
     </p>
   );
-}*/
+}

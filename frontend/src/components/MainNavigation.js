@@ -55,8 +55,7 @@ export default class MainNavigation extends Component {
             </Navbar.Nav>
             <Form inline my="2 lg-0">
               <Button outline light mr="sm-2" my="2 sm-2" onClick={(e) => this.onSetSidebarOpen(e, true)}>Сортировки</Button>
-              <Form.Input type="search" placeholder="Search" mr="sm-2" />
-              <Button outline info my="2 sm-0">Search</Button>
+              <Button outline info my="2 sm-0" as="a" href="/auth">Войти</Button>
             </Form>
           </Collapse>
         </Navbar>
