@@ -5,7 +5,7 @@ import Info from "./components/Info";
 import Authentication from "./components/AuthWindow";
 import axios from "axios";
 import React, { Component, useEffect, useState } from "react";
-import { BDiv, Form, Button } from 'bootstrap-4-react';
+import { BDiv } from 'bootstrap-4-react';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 export default class App extends Component {
