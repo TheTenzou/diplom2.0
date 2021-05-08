@@ -36,8 +36,8 @@ GET http://localhost:8080/api/users/v1/roles
 ### get users statuses
 GET http://localhost:8080/api/users/v1/userStatus 
 
-### get use by id
-@userID = 608704e2b9c110893f17b328
+### get user by id
+@userID = 608ed755959e5e674cdb492f
 GET http://localhost:8080/api/users/v1/user/{{userID}}
 Authorization: Bearer {{accessToken}}
 

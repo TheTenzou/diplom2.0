@@ -2,6 +2,7 @@ import '../authWindow.css';
 import axios from "axios";
 import React, { Component, useEffect, useState } from "react";
 import { BDiv, Form, Button } from 'bootstrap-4-react';
+import { Redirect } from 'react-router';
 
 export default class Authentication extends Component {
   render() {
@@ -23,18 +24,23 @@ const AuthForm = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
+  const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
     setLogin(login);
-  }, [setLogin]);
+  }, [login]);
 
   useEffect(() => {
     setPassword(password);
-  }, [setPassword]);
+  }, [password]);
 
   useEffect(() => {
     setErrorMessage(errorMessage);
-  }, [setErrorMessage]);
+  }, [errorMessage]);
+
+  useEffect(() => {
+    setRedirect(redirect);
+  }, [redirect]);
 
   return (
     <Form>
@@ -65,12 +71,14 @@ const AuthForm = () => {
         };
         
         axios(args).then((r) => {
-          console.log(r.data.accessToken);
-          console.log(r.data.refreshToken);
+          localStorage.setItem("accessToken", r.data.accessToken);
+          localStorage.setItem("refreshToken", r.data.refreshToken);
+          setRedirect(true);
         }).catch((er) => {
           setErrorMessage(JSON.parse(er.response.request.response)["message"]);
         });
       }}>Войти</Button>
+      <p>{redirect ? <Redirect to="/" /> : ''}</p>
     </Form>
   );
 }

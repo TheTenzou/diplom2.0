@@ -1,7 +1,9 @@
 import MySidebar from './Sidebar';
+import decodeToken from './decodeJwt';
 import React, { Component } from 'react';
 import { Navbar, Nav, Button, Form, Collapse, BImg } from 'bootstrap-4-react';
 import Sidebar from "react-sidebar";
+import axios from "axios";
 
 export default class MainNavigation extends Component {
 
@@ -54,6 +56,7 @@ export default class MainNavigation extends Component {
               <div id="modalRoot"></div>
             </Navbar.Nav>
             <Form inline my="2 lg-0">
+              <ValidityTest />
               <Button outline light mr="sm-2" my="2 sm-2" onClick={(e) => this.onSetSidebarOpen(e, true)}>Сортировки</Button>
               <Button outline info my="2 sm-0" as="a" href="/auth">Войти</Button>
             </Form>
@@ -61,5 +64,16 @@ export default class MainNavigation extends Component {
         </Navbar>
       </React.Fragment>
     );
+  }
+}
+
+function ValidityTest() {
+  var jwt = decodeToken(localStorage.getItem("accessToken"));
+
+  if (jwt["roles"].indexOf("ROLE_ADMIN") !== -1) {
+    return <Button outline warning mr="sm-2">Админская панель</Button>
+  }
+  else {
+    return <p>{console.log("You're not a admin")}</p>
   }
 }
