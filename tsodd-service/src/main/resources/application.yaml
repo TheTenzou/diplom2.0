@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://${POSTGIS_HOST:localhost}:${POSTGIS_PORT:5432}/${POSTGIS_DB:testDB}
-    username: ${POSTGIS_USER:postgres}
-    password: ${POSTGIS_PASSWORD:postgres}
+    url: jdbc:postgresql://${POSTGIS_TSODD_HOST:localhost}:${POSTGIS_TSODD_PORT:5432}/${POSTGIS_TSODD_DATABASE:testDB}
+    username: ${POSTGIS_TSODD_USER:postgres}
+    password: ${POSTGIS_TSODD_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

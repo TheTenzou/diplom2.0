@@ -1,0 +1,14 @@
+.gradle
+.idea
+.git
+build
+gradle
+.dockerignore
+.env
+.gitignore
+README.md
+request.rest
+gradlew
+gradlew.*
+Dockerfile
+docker-compose.*
