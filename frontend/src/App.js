@@ -3,6 +3,7 @@ import MainNavigation from "./components/MainNavigation";
 import MyMap from "./components/Map";
 import Info from "./components/Info";
 import Authentication from "./components/AuthWindow";
+import AdminPanel from "./components/AdminPanel";
 import axios from "axios";
 import React, { Component, useEffect, useState } from "react";
 import { BDiv } from 'bootstrap-4-react';
@@ -27,6 +28,9 @@ export default class App extends Component {
           </Route>
           <Route path="/auth">
             <Authentication />
+          </Route>
+          <Route path="/adminPanel">
+            <AdminPanel />
           </Route>
         </Switch>
       </Router>

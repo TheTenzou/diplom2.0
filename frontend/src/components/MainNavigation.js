@@ -3,7 +3,7 @@ import decodeToken from './decodeJwt';
 import React, { Component } from 'react';
 import { Navbar, Nav, Button, Form, Collapse, BImg } from 'bootstrap-4-react';
 import Sidebar from "react-sidebar";
-import axios from "axios";
+import userData from './AdminPanel';
 
 export default class MainNavigation extends Component {
 
@@ -68,12 +68,20 @@ export default class MainNavigation extends Component {
 }
 
 function ValidityTest() {
-  var jwt = decodeToken(localStorage.getItem("accessToken"));
+  try {
+    var jwt = decodeToken(localStorage.getItem("accessToken"));
 
-  if (jwt["roles"].indexOf("ROLE_ADMIN") !== -1) {
-    return <Button outline warning mr="sm-2">Админская панель</Button>
-  }
-  else {
-    return <p>{console.log("You're not a admin")}</p>
-  }
+    if (jwt["roles"].indexOf("ROLE_ADMIN") !== -1) {
+      return <Button outline warning mr="sm-2" as="a" href="/adminPanel">Админская панель</Button>
+    }
+    else {
+      return <p>{console.log("You're not an admin")}</p>
+    }
+  } catch {}
+
+  try {
+    console.log(userData);
+  } catch {}
+
+  return <p>{console.log("You're not an admin")}</p>
 }

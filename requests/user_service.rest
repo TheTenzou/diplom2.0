@@ -47,7 +47,7 @@ Authorization: Bearer {{accessToken}}
 #       role is user roles posible to request user with several roles
 #       status is user status
 
-GET http://localhost:8080/api/users/v1/users?page=1&limit=10&&status=ACTIVE&role=ROLE_USER&role=ROLE_ADMIN
+GET http://localhost:8080/api/users/v1/users?page=1&limit=10&&status=ACTIVE&role=ROLE_USER
 Authorization: Bearer {{accessToken}}
 
 ### create user

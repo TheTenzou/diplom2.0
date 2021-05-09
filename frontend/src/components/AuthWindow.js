@@ -9,7 +9,7 @@ export default class Authentication extends Component {
     return (
       <div className="wrapper">
         <div style={{ height: '20%' }}></div>
-        <BDiv m="auto" className="mainField">
+        <BDiv m="auto" className="mainField" style={{width: "40%"}}>
           <BDiv m="auto" className="contentField">
             <h1 className="title">Авторизация</h1>
             <AuthForm />
@@ -61,7 +61,8 @@ const AuthForm = () => {
       <Button primary outline as="a" href="/" style={{ marginRight: '20px' }}>Назад</Button>
       <Button primary type="submit" onClick={(e) => {
         e.preventDefault();
-        const args = {
+
+        var args = {
           method: 'post',
           url: 'api/users/v1/auth/login',
           data: {
