@@ -12,8 +12,7 @@ services:
     container_name: nginx
     build: ./nginx
     depends_on: 
-      # - user-service
-      - tsodd-service
+      - user-service
       - frontend
     ports: 
       - "8080:80"
@@ -52,24 +51,6 @@ services:
       -- ./wait-for.sh ${MONGO_HOST}:${MONGO_PORT} --timeout=30
       -- reflex -r "\.go$$" -s -- sh -c "go run ./"
 
-  tsodd-service:
-    container_name: tsodd-service
-    image: tsodd-service
-    build: 
-      context: ./tsodd-service
-      dockerfile: Dockerfile
-    volumes: 
-      - ./tsodd-service:/app
-    env_file: 
-      - .env
-    expose: 
-      - 8080
-    depends_on: 
-      - postgis-tsodd
-    working_dir: /app
-    command: ./wait-for.sh postgis-tsodd:5432 --timeout=60 -- sh run.sh
-    # command: sh run.sh
-  
   user-service-reids:
     container_name: ${REDIS_HOST}
     image: "redis:alpine"
@@ -93,50 +74,22 @@ services:
     - ${MONGO_PORT}:${MONGO_PORT}
     command: mongod --quiet --port ${MONGO_PORT} --logpath=/dev/null
 
-  postgis-tsodd:
-    container_name: ${POSTGIS_TSODD_HOST}
-    image: postgis/postgis:latest
-    environment: 
-      POSTGRES_USER: ${POSTGIS_TSODD_USER}
-      POSTGRES_PASSWORD: ${POSTGIS_TSODD_PASSWORD}
-      POSTGRES_DB: ${POSTGIS_TSODD_DATABASE}
-    expose: 
-      - ${POSTGIS_TSODD_PORT}
+  redis-commander:
+    container_name: redis-commander
+    image: rediscommander/redis-commander
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:${REDIS_HOST}:${REDIS_PORT}
     ports:
-    - ${POSTGIS_TSODD_PORT}:${POSTGIS_TSODD_PORT}
-    volumes: 
-      - "postgis_tsodd_data:/var/lib/postgresql/data"      
+      - "8082:8081"
 
-#  redis-commander:
-#    container_name: redis-commander
-#    image: rediscommander/redis-commander
-#    restart: always
-#    environment:
-#      - REDIS_HOSTS=local:${REDIS_HOST}:${REDIS_PORT}
-#    ports:
-#      - "8082:8081"
-#
-#  mongo-express:
-#    container_name: mongo-express
-#    image: mongo-express
-#    ports:
-#      - "8081:8081"
-#    environment:
-#      - ME_CONFIG_MONGODB_SERVER=${MONGO_HOST}
-#      - ME_CONFIG_MONGODB_PORT=${MONGO_PORT}
-#    depends_on:
-#      - user-service-mongo
-#
-#  pgadmin:
-#    container_name: pgadmin
-#    image: dpage/pgadmin4
-#    volumes:
-#    - pgadmin_data:/root/.pgadmin
-#    environment:
-#      PGADMIN_DEFAULT_EMAIL: "admin@mail.com"
-#      PGADMIN_DEFAULT_PASSWORD: "admin"
-#      PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: 50
-#    ports:
-#    - "16543:80"
-#    depends_on:
-#      - postgis-tsodd
+  mongo-express:
+    container_name: mongo-express
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=${MONGO_HOST}
+      - ME_CONFIG_MONGODB_PORT=${MONGO_PORT}
+    depends_on:
+      - user-service-mongo
