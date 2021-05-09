@@ -26,6 +26,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.n52.jackson:jackson-datatype-jts:1.2.6")
+	implementation("io.jsonwebtoken:jjwt:0.9.1")
 
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
