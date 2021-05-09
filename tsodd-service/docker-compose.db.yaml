@@ -31,4 +31,4 @@ services:
     depends_on:
       - postgis
     logging:
-      driver: none
+      driver: "none"
