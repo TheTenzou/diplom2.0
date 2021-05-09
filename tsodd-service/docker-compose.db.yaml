@@ -1,0 +1,34 @@
+version: "3.8"
+
+volumes:
+  postgis_data:
+  pgadmin_data:
+
+services:
+  postgis:
+    container_name: postgis
+    image: postgis/postgis:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: testDB
+    ports:
+      - 5432:5432
+    volumes:
+      - "postgis_data:/var/lib/postgresql/data"
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@mail.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+      PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: 50
+    ports:
+      - "16543:80"
+    depends_on:
+      - postgis
+    logging:
+      driver: none
