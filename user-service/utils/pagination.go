@@ -13,7 +13,7 @@ func GenaratePaginationFromRequest(ctx *gin.Context) model.Pagination {
 	var limit int64 = 10
 	var page int64 = 1
 	roles := []string{}
-	status := []string{"active"}
+	status := []string{"ACTIVE"}
 
 	query := ctx.Request.URL.Query()
 
