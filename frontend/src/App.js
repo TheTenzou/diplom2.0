@@ -1,7 +1,6 @@
 import './App.css';
 import MainNavigation from "./components/MainNavigation";
 import MyMap from "./components/Map";
-import Info from "./components/Info";
 import Authentication from "./components/AuthWindow";
 import AdminPanel from "./components/AdminPanel";
 import axios from "axios";
@@ -54,7 +53,10 @@ function About() {
     <div className="wrapper">
       <MainNavigation />
       <BDiv mx="auto" className="about">
-        <Info />
+        <div>
+          <h2>Геоинформационная система</h2>
+          <p>Предназначена для регулирования ТСОД и маршрутов в вашем городе!</p>
+        </div>
         <AxiosWork />
       </BDiv>
     </div>
