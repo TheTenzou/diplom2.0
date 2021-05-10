@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/TheTenzou/gis-diplom/user-service/apperrors"
 	"github.com/TheTenzou/gis-diplom/user-service/interfaces"
 	"github.com/TheTenzou/gis-diplom/user-service/model"
 	"github.com/TheTenzou/gis-diplom/user-service/utils"
@@ -48,6 +49,7 @@ func (s *userService) Create(ctx context.Context, user model.User) (model.User, 
 	user.Password, err = utils.HashPassword(user.Password)
 	if err != nil {
 		log.Printf("Failed to hash password: %v", err)
+		return model.User{}, err
 	}
 	return s.UserRepository.Create(ctx, user)
 }
@@ -55,6 +57,14 @@ func (s *userService) Create(ctx context.Context, user model.User) (model.User, 
 // Update update user record
 // user login should be unique
 func (s *userService) Update(ctx context.Context, user model.User) (model.User, error) {
+	var err error
+	log.Printf("not hashed password: %v", user.Password)
+	user.Password, err = utils.HashPassword(user.Password)
+	log.Printf("hashed password: %v", user.Password)
+	if err != nil {
+		log.Printf("Error during hashing password: %v", err)
+		return model.User{}, apperrors.NewInternal()
+	}
 	return s.UserRepository.Update(ctx, user)
 }
 
