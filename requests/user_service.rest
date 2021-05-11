@@ -56,9 +56,9 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "login": "testUser",
-    "password": "userPass",
-    "name": "name",
+    "login": "betomex",
+    "password": "bkmzbetomex",
+    "name": "Ilya",
     "role": [
         "ROLE_USER"
     ]
@@ -70,10 +70,10 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "id": "608a9690e9907760476257c3",
-    "login": "testUpdate",
-    "password": "password",
-    "name": "name",
+    "id": "6096aebb1495ca60d7c1c76a",
+    "login": "betomex",
+    "password": "bkmzbetomex",
+    "name": "Ilya",
     "role": [
         "ROLE_USER"
     ]
