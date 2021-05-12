@@ -1,6 +1,6 @@
 import '../AdminPanel.css';
 import React, { Component, useState, useEffect } from "react";
-import { BDiv, Card, Button, Modal, Form, Collapse, Row, Col } from 'bootstrap-4-react';
+import { BDiv, Card, Button, Modal, Form, Collapse, Row, Col, Badge } from 'bootstrap-4-react';
 import axios from "axios";
 import ReactDOM from 'react-dom';
 
@@ -13,7 +13,7 @@ export default class AdminPanel extends Component {
           <BDiv m="auto" className="contentField">
             <h1 style={{ paddingBottom: '10px', borderBottom: '1px solid gray' }}>Список пользователей</h1>
             <CreateModal />
-            <Button dark m="2" onClick={() => window.location.reload()}>Обновить список</Button>
+            <Button dark m="2" onClick={() => window.location.reload()}>Обновить список <Badge dark>&#8634;</Badge></Button>
             <UserDataSample />
             <p style={{ margin: '5px', borderBottom: '1px solid gray' }}></p>
             <div id="usersCards"></div>
@@ -37,15 +37,15 @@ const UserCards = () => {
     cards.push(
       <Card key={i} style={{ borderRadius: '20px' }}>
         <Card.Body>
-          <Card.Title style={{ fontWeight: "bold", fontSize: "24px" }}>{data[i]["login"]}</Card.Title>
-          <Card.Text>{data[i]["status"]}</Card.Text>
-          <Card.Text>{data[i]["role"][0]}</Card.Text>
-          <Card.Text>{data[i]["name"]}</Card.Text>
+          <Card.Title style={{ fontWeight: "bold", fontSize: "24px" }}>Логин: {data[i]["login"]}</Card.Title>
+          <Card.Text>Статус: {data[i]["status"]}</Card.Text>
+          <Card.Text>Роль: {data[i]["role"][0]}</Card.Text>
+          <Card.Text>{data[i]["name"] ? "Имя: " + data[i]["name"] : ''}</Card.Text>
         </Card.Body>
-        <Card.Footer>
+        {data[i]["status"] === "DELETED" ? <p></p> : <Card.Footer>
           <UpdateModal data={data[i]} />
           <DeleteModal data={data[i]} />
-        </Card.Footer>
+        </Card.Footer>}
       </Card>
     );
   }
@@ -65,7 +65,7 @@ const UpdateModal = (data) => {
 
   return (
     <>
-      <Button primary data-toggle="modal" data-target={"#update" + id} mx="2">Обновить</Button>
+      <Button primary data-toggle="modal" data-target={"#update" + id} mx="2">Обновить <Badge primary>&#9998;</Badge></Button>
       <Modal id={"update" + id} fade>
         <Modal.Dialog>
           <Modal.Content>
@@ -94,7 +94,7 @@ const UpdateModal = (data) => {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button secondary data-dismiss="modal">Отмена</Button>
+              <Button secondary data-dismiss="modal">Закрыть</Button>
               <Button primary onClick={(e) => {
                 e.preventDefault();
 
@@ -141,7 +141,7 @@ const DeleteModal = (data) => {
 
   return (
     <>
-      <Button primary data-toggle="modal" data-target={"#delete" + id}>Удалить</Button>
+      <Button danger data-toggle="modal" data-target={"#delete" + id}>Удалить <Badge danger>&#10008;</Badge></Button>
       <Modal id={"delete" + id} fade>
         <Modal.Dialog centered>
           <Modal.Content>
@@ -200,7 +200,7 @@ const CreateModal = () => {
 
   return (
     <>
-      <Button success m="2" data-toggle="modal" data-target="#createUser">Создать пользователя</Button>
+      <Button success m="2" data-toggle="modal" data-target="#createUser">Создать пользователя <Badge success>+</Badge></Button>
       <Modal id="createUser" fade>
         <Modal.Dialog>
           <Modal.Content>
@@ -318,7 +318,7 @@ const UserDataSample = () => {
   return (
     <>
       <Collapse.Button warning m="2" target=".multi-collapse" aria-expanded="false" aria-controls="collapseExample">
-        Выборка
+        Выборка <Badge warning>&#10004;	</Badge>
       </Collapse.Button>
 
       <Row mb="4">
