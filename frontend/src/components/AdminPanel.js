@@ -1,8 +1,8 @@
 import '../AdminPanel.css';
 import React, { Component, useState, useEffect } from "react";
-import { BDiv, Card, Button, Modal, Form } from 'bootstrap-4-react';
+import { BDiv, Card, Button, Modal, Form, Collapse, Row, Col } from 'bootstrap-4-react';
 import axios from "axios";
-import { Redirect } from 'react-router';
+import ReactDOM from 'react-dom';
 
 export default class AdminPanel extends Component {
   render() {
@@ -14,9 +14,9 @@ export default class AdminPanel extends Component {
             <h1 style={{ paddingBottom: '10px', borderBottom: '1px solid gray' }}>Список пользователей</h1>
             <CreateModal />
             <Button dark m="2" onClick={() => window.location.reload()}>Обновить список</Button>
+            <UserDataSample />
             <p style={{ margin: '5px', borderBottom: '1px solid gray' }}></p>
-            <UsersData />
-            <UserCards />
+            <div id="usersCards"></div>
           </BDiv>
         </BDiv>
       </div>
@@ -27,6 +27,7 @@ export default class AdminPanel extends Component {
 const UserCards = () => {
   let cards = [];
   var countOfUsers = 0;
+
   try {
     countOfUsers = JSON.parse(localStorage.getItem("usersData"))["total"];
     var data = JSON.parse(localStorage.getItem("usersData"))["data"];
@@ -43,31 +44,13 @@ const UserCards = () => {
         </Card.Body>
         <Card.Footer>
           <UpdateModal data={data[i]} />
-          <DeleteModal data={data[i]}/>
+          <DeleteModal data={data[i]} />
         </Card.Footer>
       </Card>
     );
   }
 
-  return <Card.Columns mb="3">{cards}</Card.Columns>;
-}
-
-const UsersData = () => {
-  var args = {
-    method: 'get',
-    url: 'api/users/v1/users?page=1&limit=10&&status=ACTIVE&role=ROLE_USER',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-    }
-  };
-
-  axios(args).then((r) => {
-    localStorage.setItem("usersData", JSON.stringify(r.data));
-  }).catch((er) => {
-    console.log(er.response.request);
-  });
-
-  return <p></p>
+  return <Card.Columns my="4">{cards}</Card.Columns>;
 }
 
 const UpdateModal = (data) => {
@@ -87,7 +70,7 @@ const UpdateModal = (data) => {
         <Modal.Dialog>
           <Modal.Content>
             <Modal.Header>
-              <Modal.Title>Новые данные пользователя:</Modal.Title>
+              <Modal.Title>Новые данные для {data["data"]["login"]} :</Modal.Title>
               <Modal.Close>
                 <span aria-hidden="true">&times;</span>
               </Modal.Close>
@@ -118,7 +101,7 @@ const UpdateModal = (data) => {
                 var role = []
                 if (adminRole) role.push(adminRole);
                 if (userRole) role.push(userRole);
-                
+
                 var args = {
                   method: 'patch',
                   url: 'api/users/v1/user',
@@ -163,14 +146,14 @@ const DeleteModal = (data) => {
         <Modal.Dialog centered>
           <Modal.Content>
             <Modal.Header>
-              <Modal.Title>Точно удалить?</Modal.Title>
+              <Modal.Title>Точно удалить пользователя {data["data"]["login"]} ?</Modal.Title>
               <Modal.Close>
                 <span aria-hidden="true">&times;</span>
               </Modal.Close>
             </Modal.Header>
             <Modal.Body>
-              {errorMessage? errorMessage : ''}
-              {goodMessage? goodMessage : ''}
+              {errorMessage ? errorMessage : ''}
+              {goodMessage ? goodMessage : ''}
             </Modal.Body>
             <Modal.Footer>
               <Button secondary data-dismiss="modal">Закрыть</Button>
@@ -179,7 +162,7 @@ const DeleteModal = (data) => {
 
                 var myUrl = 'api/users/v1/user/' + id;
                 console.log(myUrl);
-                
+
                 var args = {
                   method: 'delete',
                   url: myUrl,
@@ -256,7 +239,7 @@ const CreateModal = () => {
                 if (userRole) role.push(userRole);
 
                 console.log(login, password, name, role);
-                
+
                 var args = {
                   method: 'put',
                   url: 'api/users/v1/user',
@@ -284,6 +267,104 @@ const CreateModal = () => {
           </Modal.Content>
         </Modal.Dialog>
       </Modal>
+    </>
+  );
+}
+
+const UserDataSample = () => {
+  const [role1, setRole1] = useState(false);
+  const [role2, setRole2] = useState(false);
+  const [status1, setStatus1] = useState(false);
+  const [status2, setStatus2] = useState(false);
+
+  const getUserData = (myUrl) => {
+    var args = {
+      method: 'get',
+      url: myUrl,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      }
+    };
+  
+    axios(args).then((r) => {
+      localStorage.setItem("usersData", JSON.stringify(r.data));
+      ReactDOM.render(
+        <React.StrictMode>
+          <UserCards />
+        </React.StrictMode>,
+        document.getElementById('usersCards')
+      );
+    }).catch((er) => {
+      console.log(er.response.request);
+    });
+  }
+
+  useEffect(() => {
+    var testUrl = '';
+    if (!role1 && !role2 && !status2 && !status1) {
+      testUrl = 'api/users/v1/users?page=1&limit=10&&status=ACTIVE&role=ROLE_USER';
+    }
+    else {
+      testUrl = 'api/users/v1/users?page=1&limit=10&';
+      if (status1) testUrl += '&status=ACTIVE';
+      if (status2) testUrl += '&status=DELETED';
+      if (role1) testUrl += '&role=ROLE_USER';
+      if (role2) testUrl += '&role=ROLE_ADMIN';
+    }
+    
+    getUserData(testUrl);
+  }, [role1, role2, status1, status2]);
+
+  return (
+    <>
+      <Collapse.Button warning m="2" target=".multi-collapse" aria-expanded="false" aria-controls="collapseExample">
+        Выборка
+      </Collapse.Button>
+
+      <Row mb="4">
+        <Col>
+          <Collapse id="Collapse1" className="multi-collapse">
+            <Card>
+              <Card.Header>
+                Нужна выборка по умолчанию?
+              </Card.Header>
+              <Card.Body>
+                Тогда просто снимите все галочки ;)
+              </Card.Body>
+            </Card>
+          </Collapse>
+        </Col>
+
+        <Col>
+          <Collapse id="Collapse2" className="multi-collapse">
+            <Card>
+              <Card.Header>
+                Роли/Права
+              </Card.Header>
+              <Card.Body>
+                <input type="checkbox" id="role1" onChange={(e) => setRole1(!role1)} /> ROLE_USER
+                <br></br>
+                <input type="checkbox" id="role2" onChange={(e) => setRole2(!role2)} /> ROLE_ADMIN
+              </Card.Body>
+            </Card>
+          </Collapse>
+        </Col>
+
+        <Col>
+          <Collapse id="Collapse3" className="multi-collapse">
+            <Card>
+              <Card.Header>
+                Статусы
+              </Card.Header>
+              <Card.Body>
+                <input type="checkbox" id="status1" onChange={(e) => setStatus1(!status1)} /> ACTIVE
+                <br></br>
+                <input type="checkbox" id="status2" onChange={(e) => setStatus2(!status2)} /> DELETED
+              </Card.Body>
+            </Card>
+          </Collapse>
+        </Col>
+      </Row>
     </>
   );
 }
