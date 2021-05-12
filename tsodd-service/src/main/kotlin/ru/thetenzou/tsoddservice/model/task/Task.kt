@@ -13,4 +13,12 @@ data class Task(
     @ManyToOne
     @JoinColumn(name = "task_group_id")
     var taskGroup: TaskGroup,
+    @Column(name = "time_interval")
+    var timeIntervalInDays: Int,
+    @Column(name = "duration_hours")
+    var durationHours: Int,
+    @Column(name = "money")
+    var moneyResources: Double,
+    @Column(name = "effectiveness")
+    var effectiveness: Int,
 )
