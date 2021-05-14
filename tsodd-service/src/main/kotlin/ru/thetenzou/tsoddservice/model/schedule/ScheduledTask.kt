@@ -10,10 +10,10 @@ import javax.persistence.*
 data class ScheduledTask(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long,
+    var id: Long?,
     @ManyToOne
     @JoinColumn(name = "schedule_id")
-    var schedule: Schedule,
+    var schedule: Schedule?,
     @Column(name = "date_time")
     var dataTime: LocalDateTime,
     @ManyToOne
@@ -22,4 +22,6 @@ data class ScheduledTask(
     @ManyToOne
     @JoinColumn(name = "task_id")
     var task: Task,
+    @Transient
+    val selected: Boolean,
 )

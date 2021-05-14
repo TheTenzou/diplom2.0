@@ -16,7 +16,7 @@ data class Tsodd(
     var visibility: Double,
     @ManyToOne
     @JoinColumn(name = "condition_id")
-    var condition: TsoddCondition,
+    var condition: TsoddCondition?,
     @Column(name = "coordinates")
     var coordinates: GeometryCollection,
 )
