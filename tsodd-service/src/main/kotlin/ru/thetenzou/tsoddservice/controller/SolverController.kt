@@ -61,6 +61,22 @@ class SolverController {
         ),
     )
 
+    private fun saveProblem(planningSchedule: PlanningSchedule) {
+        println("new solution")
+        planningSchedule.listOfScheduledTask?.forEach { it.print() }
+    }
+
+    private fun Any?.toGreenString() = "\u001B[32m${toString()}\u001B[0m"
+
+    private fun ScheduledTask.print() = println(
+        "tsodd name: ${tsodd.name.name.toGreenString().padStart(30)}; " +
+                "task name: ${task.name.toGreenString().padStart(25)}; " +
+                "date: ${date?.year.toGreenString()} ${
+                    date?.month.toGreenString().padStart(7)
+                } ${date?.dayOfMonth.toGreenString().padStart(4)}; " +
+                "status: $selected"
+    )
+
     private val firstTaskGroup =
         TaskGroup(id = 1L, name = "first group", tsoddType = firstTsoddType, tasks = emptyList())
     private val secondTaskGroup =
@@ -162,19 +178,5 @@ class SolverController {
         )
     )
 
-    private fun Any?.toGreenString() = "\u001B[32m${toString()}\u001B[0m"
-
-    private fun ScheduledTask.print() = println(
-        "tsodd name: ${tsodd.name.name.toGreenString().padStart(30)}; " +
-                "task name: ${task.name.toGreenString().padStart(25)}; " +
-                "date: ${date?.year.toGreenString()} ${
-                    date?.month.toGreenString().padStart(7)
-                } ${date?.dayOfMonth.toGreenString().padStart(4)}; " +
-                "status: $selected"
-    )
-
-    private fun saveProblem(planningSchedule: PlanningSchedule) {
-        planningSchedule.listOfScheduledTask?.forEach { it.print() }
-    }
 
 }
