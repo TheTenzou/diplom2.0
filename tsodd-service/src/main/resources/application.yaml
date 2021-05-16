@@ -19,3 +19,6 @@ jwt:
   token:
     secret: ${ACCESS_TOKEN_SECRET:accessTokenSecret}
     expired: ${ACCESS_TOKEN_EXPIRATION:600}
+
+optaplanner:
+  solver-config-xml: solverConfig.xml

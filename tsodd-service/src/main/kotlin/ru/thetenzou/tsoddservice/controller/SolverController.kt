@@ -19,17 +19,14 @@ import java.time.LocalDate
 
 @RestController
 @RequestMapping("/api/tsodd/v1")
-class SolverController {
-
-    @Autowired
-    private lateinit var solverManager: SolverManager<PlanningSchedule, Long>
-
-    @Autowired
-    private lateinit var scoreManager: ScoreManager<PlanningSchedule>
-
+class SolverController(
+    private  val solverManager: SolverManager<PlanningSchedule, Long>,
+//    private  val scoreManager: ScoreManager<PlanningSchedule>,
+) {
 
     @GetMapping("/solve")
     fun solve(): String {
+
         solverManager.solveAndListen(
             1L,
             ::getProblem,
