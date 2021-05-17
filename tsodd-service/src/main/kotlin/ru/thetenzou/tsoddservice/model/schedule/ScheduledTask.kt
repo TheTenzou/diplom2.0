@@ -19,7 +19,7 @@ data class ScheduledTask(
     @JoinColumn(name = "schedule_id")
     var schedule: Schedule?,
 
-    @Column(name = "date_time")
+    @Column(name = "date")
     var date: LocalDate?,
 
     @ManyToOne

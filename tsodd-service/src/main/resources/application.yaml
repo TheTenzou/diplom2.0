@@ -6,10 +6,10 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     database-platform: org.hibernate.spatial.dialect.postgis.PostgisDialect
-#    generate-ddl: false
-#    show-sql: false
+    generate-ddl: false
+    show-sql: false
   data:
     rest:
       base-path: api/tsodd/v1
