@@ -2,6 +2,7 @@ package ru.thetenzou.tsoddservice.model.schedule
 
 import org.optaplanner.core.api.domain.entity.PlanningEntity
 import org.optaplanner.core.api.domain.variable.PlanningVariable
+import ru.thetenzou.tsoddservice.model.crew.Crew
 import ru.thetenzou.tsoddservice.model.task.Task
 import ru.thetenzou.tsoddservice.model.tsodd.Tsodd
 import java.time.LocalDate
@@ -29,4 +30,8 @@ data class ScheduledTask(
     @ManyToOne
     @JoinColumn(name = "task_id")
     var task: Task,
+
+    @ManyToOne
+    @JoinColumn(name = "crew_id")
+    var crew: Crew,
 )
