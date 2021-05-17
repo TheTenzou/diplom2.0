@@ -30,6 +30,29 @@ class SchedulePlanningService(
         )
     }
 
+    private fun getProblem(id: Long) = PlanningSchedule(
+        availableDates = listOf(LocalDate.now(), LocalDate.now().plusDays(1)),
+        availableCrews = crewList,
+        scheduledTaskList = scheduledTaskList,
+    )
+
+    private fun saveProblem(planningSchedule: PlanningSchedule) {
+        logger.info("new solution")
+        planningSchedule.scheduledTaskList?.forEach { it.print() }
+    }
+
+    private fun Any?.toGreenString() = "\u001B[32m${toString()}\u001B[0m"
+
+    private fun PlanningTask.print() =
+        logger.info(
+            "tsodd name: ${tsodd?.name?.name.toGreenString().padStart(30)}; " +
+                    "task name: ${task?.name.toGreenString().padStart(25)}; " +
+                    "date: ${date?.year.toGreenString()} ${
+                        date?.month.toGreenString().padStart(7)
+                    } ${date?.dayOfMonth.toGreenString().padStart(4)}; " +
+                    "status: ${crew?.name.toGreenString()}"
+        )
+
     private val firstTsoddType = TsoddType(id = 0L, "first type", taskGroup = null)
     private val secondTsoddType = TsoddType(id = 0L, "first type", taskGroup = null)
     private val firstTsoddName = TsoddName(id = 0L, tsoddType = firstTsoddType, name = "first tsodd name")
@@ -51,23 +74,6 @@ class SchedulePlanningService(
             coordinates = GeometryFactory().createGeometryCollection(),
         ),
     )
-
-    private fun saveProblem(planningSchedule: PlanningSchedule) {
-        println("new solution")
-        planningSchedule.scheduledTaskList?.forEach { it.print() }
-    }
-
-    private fun Any?.toGreenString() = "\u001B[32m${toString()}\u001B[0m"
-
-    private fun PlanningTask.print() =
-        logger.info(
-            "tsodd name: ${tsodd?.name?.name.toGreenString().padStart(30)}; " +
-                    "task name: ${task?.name.toGreenString().padStart(25)}; " +
-                    "date: ${date?.year.toGreenString()} ${
-                        date?.month.toGreenString().padStart(7)
-                    } ${date?.dayOfMonth.toGreenString().padStart(4)}; " +
-                    "status: ${crew?.name.toGreenString()}"
-        )
 
     private val firstTaskGroup =
         TaskGroup(id = 1L, name = "first group", tsoddType = firstTsoddType, tasks = emptyList())
@@ -167,10 +173,5 @@ class SchedulePlanningService(
         ),
     )
 
-    private fun getProblem(id: Long) = PlanningSchedule(
-        availableDates = listOf(LocalDate.now(), LocalDate.now().plusDays(1)),
-        availableCrews = crewList,
-        scheduledTaskList = scheduledTaskList,
-    )
 
 }
