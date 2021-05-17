@@ -16,14 +16,14 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
     }
 
     private fun selected(constraintFactory: ConstraintFactory): Constraint {
-        return constraintFactory.from(ScheduledTask::class.java)
+        return constraintFactory.from(PlanningTask::class.java)
             .filter { it.selected == true }
             .reward("selected", HardSoftScore.ONE_SOFT)
     }
 
     private fun selectedCount(constraintFactory: ConstraintFactory): Constraint {
-        return constraintFactory.from(ScheduledTask::class.java)
-            .groupBy(ScheduledTask::selected, count())
+        return constraintFactory.from(PlanningTask::class.java)
+            .groupBy(PlanningTask::selected, count())
             .filter { selected, count -> selected!! && count > 3 }
             .penalize("selected count constraint", HardSoftScore.ONE_HARD)
     }

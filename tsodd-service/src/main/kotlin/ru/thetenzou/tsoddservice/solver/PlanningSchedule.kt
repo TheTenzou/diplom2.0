@@ -15,7 +15,7 @@ class PlanningSchedule(
     @ValueRangeProvider(id = "selectedRange")
     val selected: List<Boolean>?,
     @PlanningEntityCollectionProperty
-    val listOfScheduledTask: List<ScheduledTask>?,
+    val listOfScheduledTask: List<PlanningTask>?,
 ) {
     @PlanningScore
     lateinit var score: HardSoftScore

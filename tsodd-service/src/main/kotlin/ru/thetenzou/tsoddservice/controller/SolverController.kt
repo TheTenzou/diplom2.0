@@ -14,6 +14,7 @@ import ru.thetenzou.tsoddservice.model.tsodd.Tsodd
 import ru.thetenzou.tsoddservice.model.tsodd.TsoddName
 import ru.thetenzou.tsoddservice.model.tsodd.TsoddType
 import ru.thetenzou.tsoddservice.solver.PlanningSchedule
+import ru.thetenzou.tsoddservice.solver.PlanningTask
 import java.time.LocalDate
 
 
@@ -65,9 +66,9 @@ class SolverController(
 
     private fun Any?.toGreenString() = "\u001B[32m${toString()}\u001B[0m"
 
-    private fun ScheduledTask.print() = println(
-        "tsodd name: ${tsodd.name.name.toGreenString().padStart(30)}; " +
-                "task name: ${task.name.toGreenString().padStart(25)}; " +
+    private fun PlanningTask.print() = println(
+        "tsodd name: ${tsodd?.name?.name.toGreenString().padStart(30)}; " +
+                "task name: ${task?.name.toGreenString().padStart(25)}; " +
                 "date: ${date?.year.toGreenString()} ${
                     date?.month.toGreenString().padStart(7)
                 } ${date?.dayOfMonth.toGreenString().padStart(4)}; " +
@@ -124,49 +125,37 @@ class SolverController(
         availableDates = listOf(LocalDate.now(), LocalDate.now().plusDays(1)),
         selected = listOf(false, true),
         listOfScheduledTask = listOf(
-            ScheduledTask(
-                id = null,
-                schedule = null,
+            PlanningTask(
                 date = null,
                 tsodd = tsoddList[0],
                 task = taskList[0],
                 selected = null,
             ),
-            ScheduledTask(
-                id = null,
-                schedule = null,
+            PlanningTask(
                 date = null,
                 tsodd = tsoddList[0],
                 task = taskList[0],
                 selected = null,
             ),
-            ScheduledTask(
-                id = null,
-                schedule = null,
+            PlanningTask(
                 date = null,
                 tsodd = tsoddList[0],
                 task = taskList[1],
                 selected = null,
             ),
-            ScheduledTask(
-                id = null,
-                schedule = null,
+            PlanningTask(
                 date = null,
                 tsodd = tsoddList[0],
                 task = taskList[2],
                 selected = null,
             ),
-            ScheduledTask(
-                id = null,
-                schedule = null,
+            PlanningTask(
                 date = null,
                 tsodd = tsoddList[1],
                 task = taskList[3],
                 selected = null,
             ),
-            ScheduledTask(
-                id = null,
-                schedule = null,
+            PlanningTask(
                 date = null,
                 tsodd = tsoddList[1],
                 task = taskList[3],
