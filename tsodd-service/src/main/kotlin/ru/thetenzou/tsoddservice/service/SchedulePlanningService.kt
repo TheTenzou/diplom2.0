@@ -15,7 +15,6 @@ import java.time.LocalDate
 @Service
 class SchedulePlanningService(
     private val solverManager: SolverManager<PlanningSchedule, Long>,
-//    private  val scoreManager: ScoreManager<PlanningSchedule>,
 ) {
 
     fun planSchedule() {
