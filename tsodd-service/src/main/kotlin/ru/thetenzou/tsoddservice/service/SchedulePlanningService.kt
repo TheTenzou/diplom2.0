@@ -2,7 +2,9 @@ package ru.thetenzou.tsoddservice.service
 
 import org.locationtech.jts.geom.GeometryFactory
 import org.optaplanner.core.api.solver.SolverManager
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import ru.thetenzou.tsoddservice.model.crew.Crew
 import ru.thetenzou.tsoddservice.model.solver.PlanningSchedule
 import ru.thetenzou.tsoddservice.model.solver.PlanningTask
 import ru.thetenzou.tsoddservice.model.task.Task
@@ -16,6 +18,9 @@ import java.time.LocalDate
 class SchedulePlanningService(
     private val solverManager: SolverManager<PlanningSchedule, Long>,
 ) {
+    companion object {
+        private val logger = LoggerFactory.getLogger(SchedulePlanningService::class.java)
+    }
 
     fun planSchedule() {
         solverManager.solveAndListen(
@@ -49,19 +54,20 @@ class SchedulePlanningService(
 
     private fun saveProblem(planningSchedule: PlanningSchedule) {
         println("new solution")
-        planningSchedule.listOfScheduledTask?.forEach { it.print() }
+        planningSchedule.scheduledTaskList?.forEach { it.print() }
     }
 
     private fun Any?.toGreenString() = "\u001B[32m${toString()}\u001B[0m"
 
-    private fun PlanningTask.print() = println(
-        "tsodd name: ${tsodd?.name?.name.toGreenString().padStart(30)}; " +
-                "task name: ${task?.name.toGreenString().padStart(25)}; " +
-                "date: ${date?.year.toGreenString()} ${
-                    date?.month.toGreenString().padStart(7)
-                } ${date?.dayOfMonth.toGreenString().padStart(4)}; " +
-                "status: $selected"
-    )
+    private fun PlanningTask.print() =
+        logger.info(
+            "tsodd name: ${tsodd?.name?.name.toGreenString().padStart(30)}; " +
+                    "task name: ${task?.name.toGreenString().padStart(25)}; " +
+                    "date: ${date?.year.toGreenString()} ${
+                        date?.month.toGreenString().padStart(7)
+                    } ${date?.dayOfMonth.toGreenString().padStart(4)}; " +
+                    "status: ${crew?.name.toGreenString()}"
+        )
 
     private val firstTaskGroup =
         TaskGroup(id = 1L, name = "first group", tsoddType = firstTsoddType, tasks = emptyList())
@@ -107,48 +113,64 @@ class SchedulePlanningService(
         ),
     )
 
+    val crewList = listOf(
+        Crew(
+            id = 1L,
+            name = "first crew"
+        ),
+        Crew(
+            id = 2L,
+            name = "second crew"
+        ),
+        Crew(
+            id = 3L,
+            name = "third crew"
+        ),
+    )
+
+    val scheduledTaskList = listOf(
+        PlanningTask(
+            date = null,
+            tsodd = tsoddList[0],
+            task = taskList[0],
+            crew = null,
+        ),
+        PlanningTask(
+            date = null,
+            tsodd = tsoddList[0],
+            task = taskList[0],
+            crew = null,
+        ),
+        PlanningTask(
+            date = null,
+            tsodd = tsoddList[0],
+            task = taskList[1],
+            crew = null,
+        ),
+        PlanningTask(
+            date = null,
+            tsodd = tsoddList[0],
+            task = taskList[2],
+            crew = null,
+        ),
+        PlanningTask(
+            date = null,
+            tsodd = tsoddList[1],
+            task = taskList[3],
+            crew = null,
+        ),
+        PlanningTask(
+            date = null,
+            tsodd = tsoddList[1],
+            task = taskList[3],
+            crew = null,
+        ),
+    )
 
     private fun getProblem(id: Long) = PlanningSchedule(
         availableDates = listOf(LocalDate.now(), LocalDate.now().plusDays(1)),
-        selected = listOf(false, true),
-        listOfScheduledTask = listOf(
-            PlanningTask(
-                date = null,
-                tsodd = tsoddList[0],
-                task = taskList[0],
-                selected = null,
-            ),
-            PlanningTask(
-                date = null,
-                tsodd = tsoddList[0],
-                task = taskList[0],
-                selected = null,
-            ),
-            PlanningTask(
-                date = null,
-                tsodd = tsoddList[0],
-                task = taskList[1],
-                selected = null,
-            ),
-            PlanningTask(
-                date = null,
-                tsodd = tsoddList[0],
-                task = taskList[2],
-                selected = null,
-            ),
-            PlanningTask(
-                date = null,
-                tsodd = tsoddList[1],
-                task = taskList[3],
-                selected = null,
-            ),
-            PlanningTask(
-                date = null,
-                tsodd = tsoddList[1],
-                task = taskList[3],
-                selected = null,
-            ),
-        )
+        availableCrews = crewList,
+        scheduledTaskList = scheduledTaskList,
     )
 
 }

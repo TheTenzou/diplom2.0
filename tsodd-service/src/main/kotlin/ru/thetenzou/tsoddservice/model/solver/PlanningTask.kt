@@ -2,6 +2,7 @@ package ru.thetenzou.tsoddservice.model.solver
 
 import org.optaplanner.core.api.domain.entity.PlanningEntity
 import org.optaplanner.core.api.domain.variable.PlanningVariable
+import ru.thetenzou.tsoddservice.model.crew.Crew
 import ru.thetenzou.tsoddservice.model.task.Task
 import ru.thetenzou.tsoddservice.model.tsodd.Tsodd
 import java.time.LocalDate
@@ -10,10 +11,10 @@ import java.time.LocalDate
 data class PlanningTask(
     var tsodd: Tsodd?,
     var task: Task?,
-    @PlanningVariable(valueRangeProviderRefs = ["dateRange"])
+    @PlanningVariable(valueRangeProviderRefs = ["dateRange"], nullable = true)
     var date: LocalDate?,
-    @PlanningVariable(valueRangeProviderRefs = ["selectedRange"])
-    var selected: Boolean?,
+    @PlanningVariable(valueRangeProviderRefs = ["crewRange"], nullable = true)
+    var crew: Crew?,
 ) {
     constructor() : this(null, null, null, null)
 }

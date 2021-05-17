@@ -10,21 +10,32 @@ import ru.thetenzou.tsoddservice.model.solver.PlanningTask
 class PlanningScheduleConstraintProvider : ConstraintProvider {
     override fun defineConstraints(constraintFactory: ConstraintFactory): Array<Constraint> {
         return arrayOf<Constraint>(
-            selected(constraintFactory),
-            selectedCount(constraintFactory),
+            assignCrew(constraintFactory),
+            crewLimit(constraintFactory),
+            assignDate(constraintFactory),
+            sameDay(constraintFactory),
         )
     }
 
-    private fun selected(constraintFactory: ConstraintFactory): Constraint {
-        return constraintFactory.from(PlanningTask::class.java)
-            .filter { it.selected == true }
-            .reward("selected", HardSoftScore.ONE_SOFT)
-    }
+    private fun assignCrew(constraintFactory: ConstraintFactory) =
+        constraintFactory.from(PlanningTask::class.java)
+            .filter { it.crew != null }
+            .reward("assign crew", HardSoftScore.ONE_SOFT)
 
-    private fun selectedCount(constraintFactory: ConstraintFactory): Constraint {
-        return constraintFactory.from(PlanningTask::class.java)
-            .groupBy(PlanningTask::selected, count())
-            .filter { selected, count -> selected!! && count > 3 }
-            .penalize("selected count constraint", HardSoftScore.ONE_HARD)
-    }
+    private fun crewLimit(constraintFactory: ConstraintFactory) =
+        constraintFactory.from(PlanningTask::class.java)
+            .groupBy(PlanningTask::crew, count())
+            .filter { crew, count -> crew != null && count > 3 }
+            .penalize("crew limit", HardSoftScore.ONE_HARD)
+
+    private fun assignDate(constraintFactory: ConstraintFactory) =
+        constraintFactory.from(PlanningTask::class.java)
+            .filter { task -> task.date != null && task.crew != null }
+            .reward("assign crew and date", HardSoftScore.ONE_HARD)
+
+    private fun sameDay(constraintFactory: ConstraintFactory) =
+        constraintFactory.from(PlanningTask::class.java)
+            .groupBy(PlanningTask::date, count())
+            .filter { date, count -> date != null && count > 4 }
+            .penalize("penalize same day", HardSoftScore.ONE_HARD)
 }
