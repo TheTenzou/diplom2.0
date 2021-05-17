@@ -5,7 +5,7 @@ import org.optaplanner.core.api.score.stream.Constraint
 import org.optaplanner.core.api.score.stream.ConstraintCollectors.count
 import org.optaplanner.core.api.score.stream.ConstraintFactory
 import org.optaplanner.core.api.score.stream.ConstraintProvider
-import ru.thetenzou.tsoddservice.model.schedule.ScheduledTask
+import ru.thetenzou.tsoddservice.model.solver.PlanningTask
 
 class PlanningScheduleConstraintProvider : ConstraintProvider {
     override fun defineConstraints(constraintFactory: ConstraintFactory): Array<Constraint> {

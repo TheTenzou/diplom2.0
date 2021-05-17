@@ -1,4 +1,4 @@
-package ru.thetenzou.tsoddservice.solver
+package ru.thetenzou.tsoddservice.model.solver
 
 import org.optaplanner.core.api.domain.entity.PlanningEntity
 import org.optaplanner.core.api.domain.variable.PlanningVariable
