@@ -30,6 +30,8 @@ dependencies {
 	implementation("org.flywaydb:flyway-core")
     implementation("org.optaplanner:optaplanner-spring-boot-starter:8.6.0.Final")
 
+	implementation("com.integralblue:log4jdbc-spring-boot-starter:2.0.0")
+
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")

@@ -22,3 +22,13 @@ Authorization: Bearer {{accessToken}}
 ###
 GET http://localhost:8080/api/tsodd/v1/helloAdmin
 Authorization: Bearer {{accessToken}}
+
+###
+POST http://localhost:8080/api/tsodd/v1/solve HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "test",
+    "startDate": "2021-05-17",
+    "endDate": "2021-05-20"
+}

@@ -10,15 +10,16 @@ import java.time.LocalDate
 
 @PlanningSolution
 class PlanningSchedule(
+    val id: Long?,
     @ValueRangeProvider(id = "dateRange")
     val availableDates: List<LocalDate>?,
     @ValueRangeProvider(id = "crewRange")
     val availableCrews: List<Crew>?,
     @PlanningEntityCollectionProperty
-    val scheduledTaskList: List<PlanningTask>?,
+    val planningTaskList: List<PlanningTask>?,
 ) {
     @PlanningScore
     lateinit var score: HardSoftScore
 
-    constructor() : this(null, null, null)
+    constructor() : this(null, null, null, null)
 }

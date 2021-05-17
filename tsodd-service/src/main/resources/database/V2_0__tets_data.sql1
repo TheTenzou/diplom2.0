@@ -1,0 +1,16 @@
+insert into tsodd_types (name, task_group_id, id) values ('first type', NULL, 1);
+insert into tsodd_types (name, task_group_id, id) values ('first type', NULL, 2);
+insert into tsodd_names (name, type_id, id) values ('first tsodd name', 1, 3);
+insert into tsodd_names (name, type_id, id) values ('second tsodd name', 2, 4);
+insert into tsodd_conditions (name, id) values ('condition', 5);
+insert into tsodds (condition_id, coordinates, name_id, visibility, id) values (5, 'GEOMETRYCOLLECTION(POINT(2 0))', 3, 1.0, 6);
+insert into tsodds (condition_id, coordinates, name_id, visibility, id) values (NULL, 'GEOMETRYCOLLECTION(POINT(12 21))', 4, 0.7, 7);
+insert into task_group (name, id) values ('first group', 8);
+insert into task_group (name, id) values ('first group', 9);
+insert into tasks (duration_hours, effectiveness, money, name, task_group_id, time_interval, id) values (2, 2, 5.0, 'first task', 8, 10, 10);
+insert into tasks (duration_hours, effectiveness, money, name, task_group_id, time_interval, id) values (3, 1, 4.0, 'second task', 8, 5, 11);
+insert into tasks (duration_hours, effectiveness, money, name, task_group_id, time_interval, id) values (3, 1, 4.0, 'third task', 8, 5, 12);
+insert into tasks (duration_hours, effectiveness, money, name, task_group_id, time_interval, id) values (3, 1, 4.0, 'forth task', 9, 5, 13);
+insert into crews (name, id) values ('first crew', 14);
+insert into crews (name, id) values ('second crew', 15);
+insert into crews (name, id) values ('third crew', 16);

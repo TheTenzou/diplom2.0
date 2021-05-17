@@ -10,6 +10,11 @@ spring:
     database-platform: org.hibernate.spatial.dialect.postgis.PostgisDialect
     generate-ddl: false
     show-sql: false
+#    properties:
+#      hibernate:
+#        show_sql: true
+#        use_sql_comments: true
+#        format_sql: true
   data:
     rest:
       base-path: api/tsodd/v1
@@ -22,3 +27,13 @@ jwt:
 
 optaplanner:
   solver-config-xml: solverConfig.xml
+
+logging:
+  level:
+    jdbc:
+      resultsettable: fatal
+      sqltiming: fatal
+      sqlonly: fatal
+      audit: fatal
+      resultset: fatal
+      connection: fatal

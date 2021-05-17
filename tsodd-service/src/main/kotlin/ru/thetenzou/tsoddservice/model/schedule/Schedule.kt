@@ -25,6 +25,6 @@ data class Schedule(
     var endDate: LocalDate,
 
     @OneToMany
-    var scheduledTask: List<ScheduledTask>,
+    var scheduledTask: List<ScheduledTask>?,
 
 )

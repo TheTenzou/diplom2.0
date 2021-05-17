@@ -1,8 +1,7 @@
 package ru.thetenzou.tsoddservice.controller
 
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import ru.thetenzou.tsoddservice.request.SolveRequestDto
 import ru.thetenzou.tsoddservice.service.SchedulePlanningService
 
 
@@ -12,10 +11,10 @@ class SolverController(
     private val schedulePlanningService: SchedulePlanningService
 ) {
 
-    @GetMapping("/solve")
-    fun solve(): String {
+    @PostMapping("/solve")
+    fun solve(@RequestBody request: SolveRequestDto): String {
 
-        schedulePlanningService.planSchedule()
+        schedulePlanningService.planSchedule(request.name, request.startDate, request.endDate)
 
         return "look at console"
     }
