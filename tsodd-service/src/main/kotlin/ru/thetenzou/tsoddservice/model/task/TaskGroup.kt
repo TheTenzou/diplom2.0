@@ -11,9 +11,9 @@ data class TaskGroup(
     var id: Long,
     @Column(name = "name")
     var name: String,
-    @OneToOne(mappedBy = "taskGroup")
-    var tsoddType: TsoddType?,
-    @OneToMany(mappedBy = "taskGroup")
+    @ManyToMany(mappedBy = "taskGroup")
+    var tsoddType: List<TsoddType>?,
+    @OneToMany(mappedBy = "taskGroup", fetch = FetchType.EAGER)
     var tasks: List<Task>,
 )
 

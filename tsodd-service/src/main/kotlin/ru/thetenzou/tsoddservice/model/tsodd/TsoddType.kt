@@ -11,7 +11,7 @@ data class TsoddType(
     var id: Long,
     @Column(name = "name")
     var name: String,
-    @OneToOne
-    @JoinColumn(name = "task_group_id", referencedColumnName = "id")
-    var taskGroup: TaskGroup?,
+    @ManyToMany
+//    @JoinColumn(name = "task_group_id", referencedColumnName = "id")
+    var taskGroup: List<TaskGroup>?,
 )
