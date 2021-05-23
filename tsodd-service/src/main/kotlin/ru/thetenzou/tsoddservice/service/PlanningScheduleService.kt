@@ -66,7 +66,7 @@ class PlanningScheduleService(
     }
 
     fun saveSchedule(planningSchedule: PlanningSchedule) {
-        logger.info("New scheduled have been saved")
+        logger.info("New scheduled has been saved")
 
         val tasks = planningSchedule.planningTaskList ?: return
         val scheduleId = planningSchedule.id ?: return

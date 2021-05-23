@@ -35,8 +35,8 @@ class TsoddServiceApplication(
 
     fun initdb() = CommandLineRunner {
 
-        var firstTsoddType = TsoddType(id = 0L, "first type", taskGroup = null)
-        var secondTsoddType = TsoddType(id = 0L, "first type", taskGroup = null)
+        val firstTsoddType = TsoddType(id = 0L, "first type", taskGroup = null)
+        val secondTsoddType = TsoddType(id = 0L, "first type", taskGroup = null)
 
         val firstTsoddName = TsoddName(id = 0L, tsoddType = firstTsoddType, name = "first tsodd name")
         val secondTsoddName = TsoddName(id = 0L, tsoddType = secondTsoddType, name = "second tsodd name")

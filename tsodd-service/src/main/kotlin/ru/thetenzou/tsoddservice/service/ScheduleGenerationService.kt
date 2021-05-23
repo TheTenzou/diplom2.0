@@ -14,7 +14,7 @@ class ScheduleGenerationService(
 
     fun planSchedule(name: String, startDate: LocalDate, endDate: LocalDate) {
         if (startDate > endDate) {
-            throw IllegalArgumentException("start date have to be before end date")
+            throw IllegalArgumentException("start date has to be before end date")
         }
 
         val scheduleId = planningScheduleService.createNewSchedule(name, startDate, endDate)

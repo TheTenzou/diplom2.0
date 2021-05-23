@@ -16,7 +16,7 @@ class PlanningTaskService(
 ) {
 
     fun getPlanningTasks(days: Long): List<PlanningTask> {
-        logger.info("Possible list of task have been generated for $days days interval")
+        logger.info("Possible list of task has been generated for $days days interval")
         val tsoddList = tsoddRepository.findAll()
 
         val planningTaskList = ArrayList<PlanningTask>()
