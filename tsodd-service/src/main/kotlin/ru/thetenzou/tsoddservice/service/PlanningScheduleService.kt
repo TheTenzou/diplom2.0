@@ -5,26 +5,33 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ru.thetenzou.tsoddservice.model.schedule.Schedule
-import ru.thetenzou.tsoddservice.model.schedule.ScheduledTask
-import ru.thetenzou.tsoddservice.model.solver.PlanningSchedule
+import ru.thetenzou.tsoddservice.model.solver.TsoddScheduleProblem
 import ru.thetenzou.tsoddservice.repository.crew.CrewRepository
 import ru.thetenzou.tsoddservice.repository.schedule.ScheduleRepository
-import ru.thetenzou.tsoddservice.repository.schedule.ScheduledTaskRepository
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import java.util.stream.Collectors
 
+/**
+ * TsoddScheduleProblemService manage tsodd schedule planning problem in the process of planning
+ */
 @Service
 @Transactional
-class PlanningScheduleService(
+class TsoddScheduleProblemService(
     private val scheduleRepository: ScheduleRepository,
-    private val scheduledTaskRepository: ScheduledTaskRepository,
     private val crewRepository: CrewRepository,
 
     private val planningTaskService: PlanningTaskService,
 ) {
 
+    /**
+     * createNewSchedule create and save new schedule empty to database
+     *
+     * @param name name of new schedule
+     * @param startDate starting date of schedule
+     * @param endDate ending date of schedule
+     */
     fun createNewSchedule(name: String, startDate: LocalDate, endDate: LocalDate): Long {
         logger.info("Create new schedule")
 
@@ -42,7 +49,13 @@ class PlanningScheduleService(
         return savedSchedule.id
     }
 
-    fun getSchedule(id: Long): PlanningSchedule {
+    /**
+     * getPlanningSchedule init new PlanningSchedule problem base on schedule id
+     *
+     * @param id schedule id
+     * @return new problem with initial values
+     */
+    fun getPlanningSchedule(id: Long): TsoddScheduleProblem {
         val scheduleOptional = scheduleRepository.findById(id)
 
         if (scheduleOptional.isEmpty) {
@@ -57,19 +70,24 @@ class PlanningScheduleService(
 
         val days = ChronoUnit.DAYS.between(schedule.startDate, schedule.endDate)
 
-        return PlanningSchedule(
-            id = schedule.id,
+        return TsoddScheduleProblem(
+            scheduleId = schedule.id,
             availableDates = availableDates,
             availableCrews = crews,
             planningTaskList = planningTaskService.getPlanningTasks(days)
         )
     }
 
-    fun saveSchedule(planningSchedule: PlanningSchedule) {
+    /**
+     * savePlanningSchedule save solved schedule problem to database
+     *
+     * @param tsoddScheduleProblem - schedule problem
+     */
+    fun savePlanningSchedule(tsoddScheduleProblem: TsoddScheduleProblem) {
         logger.info("New scheduled has been saved")
 
-        val tasks = planningSchedule.planningTaskList ?: return
-        val scheduleId = planningSchedule.id ?: return
+        val tasks = tsoddScheduleProblem.planningTaskList ?: return
+        val scheduleId = tsoddScheduleProblem.scheduleId ?: return
 
         val scheduleOptional = scheduleRepository.findById(scheduleId)
         if (scheduleOptional.isEmpty) {
@@ -77,15 +95,10 @@ class PlanningScheduleService(
         }
         val schedule = scheduleOptional.get()
 
-        val validTasks = tasks.filter { it.date != null && it.crew != null }
-
-        val scheduledTaskList =
-            validTasks.map { ScheduledTask(id = 0L, schedule, it.date, it.tsodd!!, it.task!!, it.crew!!) }
-
-        scheduledTaskRepository.saveAll(scheduledTaskList)
+        planningTaskService.save(schedule, tasks)
     }
 
     companion object {
-        val logger: Logger = LoggerFactory.getLogger(PlanningScheduleService::class.java)
+        val logger: Logger = LoggerFactory.getLogger(TsoddScheduleProblemService::class.java)
     }
 }
