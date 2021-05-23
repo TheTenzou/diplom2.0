@@ -17,6 +17,8 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
         )
     }
 
+    // TODO update rules
+
     private fun assignCrew(constraintFactory: ConstraintFactory) =
         constraintFactory.from(PlanningTask::class.java)
             .filter { it.crew != null }

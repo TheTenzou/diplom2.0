@@ -11,23 +11,10 @@
         </termination>
         <constructionHeuristicType>FIRST_FIT</constructionHeuristicType>
     </constructionHeuristic>
-    <constructionHeuristic>
-        <termination>
-            <secondsSpentLimit>5</secondsSpentLimit>
-        </termination>
-        <constructionHeuristicType>CHEAPEST_INSERTION</constructionHeuristicType>
-    </constructionHeuristic>
-    <localSearch>
-        <termination>
-            <secondsSpentLimit>25</secondsSpentLimit>
-        </termination>
-        <localSearchType>LATE_ACCEPTANCE</localSearchType>
-    </localSearch>
     <localSearch>
         <termination>
             <secondsSpentLimit>35</secondsSpentLimit>
         </termination>
-        <localSearchType>TABU_SEARCH</localSearchType>
         <localSearchType>HILL_CLIMBING</localSearchType>
     </localSearch>
 </solver>

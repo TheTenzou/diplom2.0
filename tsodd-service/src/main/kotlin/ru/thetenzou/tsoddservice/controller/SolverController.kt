@@ -2,13 +2,13 @@ package ru.thetenzou.tsoddservice.controller
 
 import org.springframework.web.bind.annotation.*
 import ru.thetenzou.tsoddservice.request.SolveRequestDto
-import ru.thetenzou.tsoddservice.service.SchedulePlanningService
+import ru.thetenzou.tsoddservice.service.ScheduleGenerationService
 
 
 @RestController
 @RequestMapping("/api/tsodd/v1")
 class SolverController(
-    private val schedulePlanningService: SchedulePlanningService
+    private val schedulePlanningService: ScheduleGenerationService
 ) {
 
     @PostMapping("/solve")

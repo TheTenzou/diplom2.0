@@ -1,6 +1,9 @@
 package ru.thetenzou.tsoddservice.service
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import ru.thetenzou.tsoddservice.model.schedule.Schedule
 import ru.thetenzou.tsoddservice.model.schedule.ScheduledTask
 import ru.thetenzou.tsoddservice.model.solver.PlanningSchedule
@@ -13,6 +16,7 @@ import java.time.temporal.ChronoUnit
 import java.util.stream.Collectors
 
 @Service
+@Transactional
 class PlanningScheduleService(
     private val scheduleRepository: ScheduleRepository,
     private val scheduledTaskRepository: ScheduledTaskRepository,
@@ -22,6 +26,8 @@ class PlanningScheduleService(
 ) {
 
     fun createNewSchedule(name: String, startDate: LocalDate, endDate: LocalDate): Long {
+        logger.info("Create new schedule")
+
         val schedule = Schedule(
             id = 0L,
             name = name,
@@ -60,6 +66,8 @@ class PlanningScheduleService(
     }
 
     fun saveSchedule(planningSchedule: PlanningSchedule) {
+        logger.info("New scheduled have been saved")
+
         val tasks = planningSchedule.planningTaskList ?: return
         val scheduleId = planningSchedule.id ?: return
 
@@ -75,5 +83,9 @@ class PlanningScheduleService(
             validTasks.map { ScheduledTask(id = 0L, schedule, it.date, it.tsodd!!, it.task!!, it.crew!!) }
 
         scheduledTaskRepository.saveAll(scheduledTaskList)
+    }
+
+    companion object {
+        val logger: Logger = LoggerFactory.getLogger(PlanningScheduleService::class.java)
     }
 }
