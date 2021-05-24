@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*
 import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDetailDto
 import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDto
 import ru.thetenzou.tsoddservice.schedule.service.ScheduleService
-import ru.thetenzou.tsoddservice.util.PagedResponse
+import ru.thetenzou.tsoddservice.common.dto.PagedResponse
 
 /**
  * A ScheduleController is endpoint for schedule

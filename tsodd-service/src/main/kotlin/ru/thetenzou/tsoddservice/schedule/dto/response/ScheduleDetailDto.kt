@@ -2,8 +2,7 @@ package ru.thetenzou.tsoddservice.schedule.dto.response
 
 import org.springframework.data.domain.Page
 import ru.thetenzou.tsoddservice.schedule.model.Schedule
-import ru.thetenzou.tsoddservice.schedule.model.ScheduledTask
-import ru.thetenzou.tsoddservice.util.PagedResponse
+import ru.thetenzou.tsoddservice.common.dto.PagedResponse
 import java.time.LocalDate
 import java.time.LocalDateTime
 

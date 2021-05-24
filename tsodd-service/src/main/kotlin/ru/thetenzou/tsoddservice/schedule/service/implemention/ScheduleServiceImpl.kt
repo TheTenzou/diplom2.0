@@ -9,7 +9,7 @@ import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduledTaskDto
 import ru.thetenzou.tsoddservice.schedule.repository.ScheduleRepository
 import ru.thetenzou.tsoddservice.schedule.repository.ScheduledTaskRepository
 import ru.thetenzou.tsoddservice.schedule.service.ScheduleService
-import ru.thetenzou.tsoddservice.util.PagedResponse
+import ru.thetenzou.tsoddservice.common.dto.PagedResponse
 
 @Service
 class ScheduleServiceImpl(

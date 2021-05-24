@@ -1,4 +1,4 @@
-package ru.thetenzou.tsoddservice.util
+package ru.thetenzou.tsoddservice.common.dto
 
 import org.springframework.data.domain.Page
 

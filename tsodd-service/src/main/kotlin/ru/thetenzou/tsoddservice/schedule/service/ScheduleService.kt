@@ -2,7 +2,7 @@ package ru.thetenzou.tsoddservice.schedule.service
 
 import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDetailDto
 import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDto
-import ru.thetenzou.tsoddservice.util.PagedResponse
+import ru.thetenzou.tsoddservice.common.dto.PagedResponse
 
 /**
  * A ScheduleService
