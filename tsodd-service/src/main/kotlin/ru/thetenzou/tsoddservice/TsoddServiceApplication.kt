@@ -4,21 +4,20 @@ import org.locationtech.jts.geom.GeometryFactory
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.context.annotation.Bean
-import ru.thetenzou.tsoddservice.model.crew.Crew
-import ru.thetenzou.tsoddservice.model.task.Task
-import ru.thetenzou.tsoddservice.model.task.TaskGroup
-import ru.thetenzou.tsoddservice.model.tsodd.Tsodd
-import ru.thetenzou.tsoddservice.model.tsodd.TsoddCondition
-import ru.thetenzou.tsoddservice.model.tsodd.TsoddName
-import ru.thetenzou.tsoddservice.model.tsodd.TsoddType
-import ru.thetenzou.tsoddservice.repository.crew.CrewRepository
-import ru.thetenzou.tsoddservice.repository.task.TaskGroupRepository
-import ru.thetenzou.tsoddservice.repository.task.TaskRepository
-import ru.thetenzou.tsoddservice.repository.tsodd.TsoddConditionRepository
-import ru.thetenzou.tsoddservice.repository.tsodd.TsoddNameRepository
-import ru.thetenzou.tsoddservice.repository.tsodd.TsoddRepository
-import ru.thetenzou.tsoddservice.repository.tsodd.TsoddTypeRepository
+import ru.thetenzou.tsoddservice.crew.model.Crew
+import ru.thetenzou.tsoddservice.task.model.Task
+import ru.thetenzou.tsoddservice.task.model.TaskGroup
+import ru.thetenzou.tsoddservice.tsodd.model.Tsodd
+import ru.thetenzou.tsoddservice.tsodd.model.TsoddCondition
+import ru.thetenzou.tsoddservice.tsodd.model.TsoddName
+import ru.thetenzou.tsoddservice.tsodd.model.TsoddType
+import ru.thetenzou.tsoddservice.crew.repository.CrewRepository
+import ru.thetenzou.tsoddservice.task.repository.TaskGroupRepository
+import ru.thetenzou.tsoddservice.task.repository.TaskRepository
+import ru.thetenzou.tsoddservice.tsodd.repository.TsoddConditionRepository
+import ru.thetenzou.tsoddservice.tsodd.repository.TsoddNameRepository
+import ru.thetenzou.tsoddservice.tsodd.repository.TsoddRepository
+import ru.thetenzou.tsoddservice.tsodd.repository.TsoddTypeRepository
 
 @SpringBootApplication
 class TsoddServiceApplication(
