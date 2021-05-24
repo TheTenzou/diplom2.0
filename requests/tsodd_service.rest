@@ -50,12 +50,14 @@ Content-Type: application/json
 }
 
 ###
-PATCH  http://localhost:8080/api/tsodd/v1/schedule
+PATCH http://localhost:8080/api/tsodd/v1/schedule
 Content-Type: application/json
 
 {
     "id": "30",
     "name": "test update v2",
-    "startDate": "2021-05-17",
-    "endDate": "2021-05-30"
+    "endDate": "2021-05-29"
 }
+
+###
+DELETE http://localhost:8080/api/tsodd/v1/schedule/32

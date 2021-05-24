@@ -15,6 +15,7 @@ import ru.thetenzou.tsoddservice.common.dto.PagedResponse
 import ru.thetenzou.tsoddservice.schedule.dto.request.ScheduleRequestDto
 import ru.thetenzou.tsoddservice.schedule.model.Schedule
 import java.time.LocalDateTime
+import javax.persistence.EntityNotFoundException
 
 @Service
 class ScheduleServiceImpl(
@@ -37,7 +38,7 @@ class ScheduleServiceImpl(
         val result = scheduleRepository.findById(id)
 
         if (result.isEmpty) {
-            throw IllegalArgumentException("id does not exist")
+            throw EntityNotFoundException("Schedule with id: $id does not exist")
         }
 
         val schedule = result.get()
@@ -56,15 +57,22 @@ class ScheduleServiceImpl(
     }
 
     override fun createSchedule(scheduleRequest: ScheduleRequestDto): ScheduleDetailDto {
-        if (scheduleRequest.name == null || scheduleRequest.startDate == null || scheduleRequest.endDate == null) {
-            throw IllegalArgumentException("null field are not allowed")
+        if (scheduleRequest.name == null) {
+            throw IllegalArgumentException("Field name can't be null")
         }
+        if (scheduleRequest.startDate == null) {
+            throw IllegalArgumentException("Field startDate can't be null")
+        }
+        if (scheduleRequest.endDate == null) {
+            throw IllegalArgumentException("Field endDate can't be null")
+        }
+
         val newSchedule = Schedule(
             id = 0L,
-            name = scheduleRequest.name!!,
+            name = scheduleRequest.name,
             createdDate = LocalDateTime.now(),
-            startDate = scheduleRequest.startDate!!,
-            endDate = scheduleRequest.endDate!!,
+            startDate = scheduleRequest.startDate,
+            endDate = scheduleRequest.endDate,
             scheduledTask = null,
         )
         val savedSchedule = scheduleRepository.save(newSchedule)
@@ -78,7 +86,7 @@ class ScheduleServiceImpl(
         val result = scheduleRepository.findById(scheduleRequest.id)
 
         if (result.isEmpty) {
-            throw IllegalArgumentException("schedule id: ${scheduleRequest.id} doesn't exist")
+            throw EntityNotFoundException("schedule with id: ${scheduleRequest.id} doesn't exist")
         }
         val schedule = result.get()
         if (scheduleRequest.name != null) {
@@ -101,7 +109,7 @@ class ScheduleServiceImpl(
         val results = scheduleRepository.findById(id)
 
         if (results.isEmpty) {
-            throw IllegalArgumentException("schedule id: $id doesn't exist")
+            throw EntityNotFoundException("schedule with id: $id doesn't exist")
         }
         val schedule = results.get()
 

@@ -73,7 +73,7 @@ class ScheduleController(
         val schedule =
             scheduleService.createSchedule(scheduleRequest)
 
-        return ResponseEntity(schedule, HttpStatus.OK)
+        return ResponseEntity(schedule, HttpStatus.CREATED)
     }
 
     /**
@@ -107,4 +107,5 @@ class ScheduleController(
 
         return ResponseEntity(schedule, HttpStatus.OK)
     }
+
 }
