@@ -36,12 +36,24 @@ class ScheduleController(
         return ResponseEntity(response, HttpStatus.OK)
     }
 
+    /**
+     * getScheduleById returns schedule details
+     * list of scheduled tasks paginated
+     *
+     * @param id id of the schedule
+     * @param page number of page
+     * @param size size of the page
+     *
+     * @return paged response
+     */
     @GetMapping("/{id}")
     fun getScheduleById(
         @PathVariable id: Long,
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "100") size: Int,
     ): ResponseEntity<ScheduleDetailDto> {
 
-        val schedule = scheduleService.getScheduleById(id)
+        val schedule = scheduleService.getScheduleById(id, page, size)
 
         return ResponseEntity(schedule, HttpStatus.OK)
     }

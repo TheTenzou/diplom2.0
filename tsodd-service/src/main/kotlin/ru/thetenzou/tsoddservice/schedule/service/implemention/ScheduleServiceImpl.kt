@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDetailDto
 import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDto
+import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduledTaskDto
 import ru.thetenzou.tsoddservice.schedule.repository.ScheduleRepository
 import ru.thetenzou.tsoddservice.schedule.repository.ScheduledTaskRepository
 import ru.thetenzou.tsoddservice.schedule.service.ScheduleService
@@ -26,7 +27,7 @@ class ScheduleServiceImpl(
         return PagedResponse(pagedSchedulesDto)
     }
 
-    override fun getScheduleById(id: Long): ScheduleDetailDto {
+    override fun getScheduleById(id: Long, page: Int, size: Int): ScheduleDetailDto {
         val result = scheduleRepository.findById(id)
 
         if (result.isEmpty) {
@@ -35,11 +36,15 @@ class ScheduleServiceImpl(
 
         val schedule = result.get()
 
-        val scheduledTaskList = scheduledTaskRepository.getBySchedule(schedule)
+        val paging = PageRequest.of(page, size)
+
+        val scheduledTaskPage = scheduledTaskRepository.getBySchedule(schedule, paging)
+
+        val scheduledTaskDtoPage = scheduledTaskPage.map { ScheduledTaskDto(it) }
 
         return ScheduleDetailDto(
             schedule = schedule,
-            tasks = scheduledTaskList,
+            tasks = scheduledTaskDtoPage,
         )
     }
 

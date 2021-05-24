@@ -23,8 +23,10 @@ interface ScheduleService {
      * getScheduleById finds required schedule
      *
      * @param id id of the schedule
+     * @param page number of the page
+     * @param size size of the page
      *
      * @return schedule dto
      */
-    fun getScheduleById(id: Long): ScheduleDetailDto
+    fun getScheduleById(id: Long, page: Int, size: Int): ScheduleDetailDto
 }
