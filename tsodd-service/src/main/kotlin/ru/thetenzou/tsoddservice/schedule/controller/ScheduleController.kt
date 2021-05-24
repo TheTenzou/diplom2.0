@@ -1,12 +1,12 @@
 package ru.thetenzou.tsoddservice.schedule.controller
 
-import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import ru.thetenzou.tsoddservice.schedule.dto.ScheduleDetailDto
-import ru.thetenzou.tsoddservice.schedule.dto.response.SchedulePageResponse
+import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDetailDto
+import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDto
 import ru.thetenzou.tsoddservice.schedule.service.ScheduleService
+import ru.thetenzou.tsoddservice.util.PagedResponse
 
 /**
  * A ScheduleController is endpoint for schedule
@@ -29,10 +29,9 @@ class ScheduleController(
     fun getAllSchedules(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "10") size: Int,
-    ): ResponseEntity<SchedulePageResponse> {
-        val paging = PageRequest.of(page, size)
+    ): ResponseEntity<PagedResponse<ScheduleDto>> {
 
-        val response = scheduleService.getAllSchedules(paging)
+        val response = scheduleService.getAllSchedules(page, size)
 
         return ResponseEntity(response, HttpStatus.OK)
     }

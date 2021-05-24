@@ -1,14 +1,14 @@
 package ru.thetenzou.tsoddservice.schedule.service.implemention
 
 import org.slf4j.LoggerFactory
-import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
-import ru.thetenzou.tsoddservice.schedule.dto.ScheduleDetailDto
-import ru.thetenzou.tsoddservice.schedule.dto.ScheduleDto
-import ru.thetenzou.tsoddservice.schedule.dto.response.SchedulePageResponse
+import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDetailDto
+import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDto
 import ru.thetenzou.tsoddservice.schedule.repository.ScheduleRepository
 import ru.thetenzou.tsoddservice.schedule.repository.ScheduledTaskRepository
 import ru.thetenzou.tsoddservice.schedule.service.ScheduleService
+import ru.thetenzou.tsoddservice.util.PagedResponse
 
 @Service
 class ScheduleServiceImpl(
@@ -16,18 +16,14 @@ class ScheduleServiceImpl(
     private val scheduledTaskRepository: ScheduledTaskRepository,
 ) : ScheduleService {
 
-    override fun getAllSchedules(pageable: Pageable): SchedulePageResponse {
-        val results = scheduleRepository.findAll(pageable)
+    override fun getAllSchedules(page: Int, size: Int): PagedResponse<ScheduleDto> {
+        val paging = PageRequest.of(page, size)
 
-        return SchedulePageResponse(
-            total = results.totalElements,
-            page = results.number,
-            pageSize = results.size,
-            previousPage = if (results.hasPrevious()) results.number - 1 else 0,
-            nextPage = if (results.hasNext()) results.number + 1 else 0,
-            totalPages = results.totalPages,
-            data = results.content.map { ScheduleDto(it) },
-        )
+        val pagedSchedules = scheduleRepository.findAll(paging)
+
+        val pagedSchedulesDto = pagedSchedules.map { schedule -> ScheduleDto(schedule) }
+
+        return PagedResponse(pagedSchedulesDto)
     }
 
     override fun getScheduleById(id: Long): ScheduleDetailDto {

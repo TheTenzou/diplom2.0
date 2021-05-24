@@ -1,4 +1,4 @@
-package ru.thetenzou.tsoddservice.schedule.dto
+package ru.thetenzou.tsoddservice.schedule.dto.response
 
 import ru.thetenzou.tsoddservice.schedule.model.Schedule
 import ru.thetenzou.tsoddservice.schedule.model.ScheduledTask

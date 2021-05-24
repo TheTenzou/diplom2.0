@@ -1,9 +1,8 @@
 package ru.thetenzou.tsoddservice.schedule.service
 
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
-import ru.thetenzou.tsoddservice.schedule.dto.ScheduleDetailDto
-import ru.thetenzou.tsoddservice.schedule.dto.response.SchedulePageResponse
+import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDetailDto
+import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDto
+import ru.thetenzou.tsoddservice.util.PagedResponse
 
 /**
  * A ScheduleService
@@ -13,11 +12,12 @@ interface ScheduleService {
     /**
      * getAllSchedules returns paged schedule data according to pageable parameters
      *
-     * @param pageable define pagination
+     * @param page number of the page
+     * @param size size of the page
      *
      * @return paged response
      */
-    fun getAllSchedules(pageable: Pageable): SchedulePageResponse
+    fun getAllSchedules(page: Int, size: Int): PagedResponse<ScheduleDto>
 
     /**
      * getScheduleById finds required schedule
