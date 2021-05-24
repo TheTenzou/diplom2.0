@@ -22,7 +22,7 @@ class TsoddScheduleProblemService(
     private val scheduleRepository: ScheduleRepository,
     private val crewRepository: CrewRepository,
 
-    private val planningTaskService: PlanningTaskService,
+    private val plannedTaskService: PlannedTaskService,
 ) {
 
     /**
@@ -74,7 +74,7 @@ class TsoddScheduleProblemService(
             scheduleId = schedule.id,
             availableDates = availableDates,
             availableCrews = crews,
-            planningTaskList = planningTaskService.getPlanningTasks(days)
+            planningTaskList = plannedTaskService.getPlanningTasks(days)
         )
     }
 
@@ -95,7 +95,7 @@ class TsoddScheduleProblemService(
         }
         val schedule = scheduleOptional.get()
 
-        planningTaskService.save(schedule, tasks)
+        plannedTaskService.save(schedule, tasks)
     }
 
     companion object {

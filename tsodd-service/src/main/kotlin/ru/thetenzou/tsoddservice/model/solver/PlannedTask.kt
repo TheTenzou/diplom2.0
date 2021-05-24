@@ -16,7 +16,7 @@ import java.time.LocalDate
  * @param crew crew that perform this task
  */
 @PlanningEntity
-data class PlanningTask(
+data class PlannedTask(
 
     var tsodd: Tsodd?,
 

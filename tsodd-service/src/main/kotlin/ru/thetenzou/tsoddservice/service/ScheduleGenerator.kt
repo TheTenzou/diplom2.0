@@ -10,12 +10,12 @@ import java.time.LocalDate
  * A ScheduleGenerator generate new schedules asynchronously
  *
  * @param solverManager OptaPlanner solver for solving multiple problems
- * @param planningScheduleService service for managing PlanningSchedules
+ * @param tsoddScheduleProblemService service for managing PlanningSchedules
  */
 @Service
 class ScheduleGenerator(
     private val solverManager: SolverManager<TsoddScheduleProblem, Long>,
-    private val planningScheduleService: TsoddScheduleProblemService,
+    private val tsoddScheduleProblemService: TsoddScheduleProblemService,
 ) {
 
     /**
@@ -30,13 +30,13 @@ class ScheduleGenerator(
             throw IllegalArgumentException("start date has to be before end date")
         }
 
-        val scheduleId = planningScheduleService.createNewSchedule(name, startDate, endDate)
+        val scheduleId = tsoddScheduleProblemService.createNewSchedule(name, startDate, endDate)
 
         logger.info("Start generating schedule")
         solverManager.solve(
             scheduleId,
-            planningScheduleService::getPlanningSchedule,
-            planningScheduleService::savePlanningSchedule,
+            tsoddScheduleProblemService::getPlanningSchedule,
+            tsoddScheduleProblemService::savePlanningSchedule,
         )
     }
 

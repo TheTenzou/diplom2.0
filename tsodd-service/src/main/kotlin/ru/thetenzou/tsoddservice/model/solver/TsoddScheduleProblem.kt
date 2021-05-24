@@ -29,7 +29,7 @@ class TsoddScheduleProblem(
     val availableCrews: List<Crew>?,
 
     @PlanningEntityCollectionProperty
-    val planningTaskList: List<PlanningTask>?,
+    val planningTaskList: List<PlannedTask>?,
 ) {
     @PlanningScore
     lateinit var score: HardSoftScore
