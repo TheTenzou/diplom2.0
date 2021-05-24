@@ -7,6 +7,7 @@ import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDetailDto
 import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDto
 import ru.thetenzou.tsoddservice.schedule.service.ScheduleService
 import ru.thetenzou.tsoddservice.common.dto.PagedResponse
+import ru.thetenzou.tsoddservice.schedule.dto.request.ScheduleRequestDto
 
 /**
  * A ScheduleController is endpoint for schedule
@@ -54,6 +55,23 @@ class ScheduleController(
     ): ResponseEntity<ScheduleDetailDto> {
 
         val schedule = scheduleService.getScheduleById(id, page, size)
+
+        return ResponseEntity(schedule, HttpStatus.OK)
+    }
+
+    /**
+     * createSchedule create new empty schedule
+     *
+     * @param scheduleRequest holds incoming request body
+     *
+     * @return saved schedule
+     */
+    @PutMapping
+    fun createSchedule(
+        @RequestBody scheduleRequest: ScheduleRequestDto,
+    ): ResponseEntity<ScheduleDetailDto> {
+        val schedule =
+            scheduleService.createSchedule(scheduleRequest.name, scheduleRequest.startDate, scheduleRequest.endDate)
 
         return ResponseEntity(schedule, HttpStatus.OK)
     }

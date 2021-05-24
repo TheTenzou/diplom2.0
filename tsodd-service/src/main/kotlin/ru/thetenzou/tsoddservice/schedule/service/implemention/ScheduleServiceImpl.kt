@@ -1,6 +1,7 @@
 package ru.thetenzou.tsoddservice.schedule.service.implemention
 
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDetailDto
@@ -10,6 +11,10 @@ import ru.thetenzou.tsoddservice.schedule.repository.ScheduleRepository
 import ru.thetenzou.tsoddservice.schedule.repository.ScheduledTaskRepository
 import ru.thetenzou.tsoddservice.schedule.service.ScheduleService
 import ru.thetenzou.tsoddservice.common.dto.PagedResponse
+import ru.thetenzou.tsoddservice.schedule.dto.request.ScheduleRequestDto
+import ru.thetenzou.tsoddservice.schedule.model.Schedule
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Service
 class ScheduleServiceImpl(
@@ -46,6 +51,20 @@ class ScheduleServiceImpl(
             schedule = schedule,
             tasks = scheduledTaskDtoPage,
         )
+    }
+
+    override fun createSchedule(name: String, startDate: LocalDate, endDate: LocalDate): ScheduleDetailDto {
+        val newSchedule = Schedule(
+            id = 0L,
+            name = name,
+            createdDate = LocalDateTime.now(),
+            startDate = startDate,
+            endDate = endDate,
+            scheduledTask = null,
+        )
+        val savedSchedule = scheduleRepository.save(newSchedule)
+
+        return ScheduleDetailDto(savedSchedule, Page.empty())
     }
 
     companion object {
