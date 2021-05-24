@@ -1,4 +1,4 @@
-package ru.thetenzou.tsoddservice.schedule.request
+package ru.thetenzou.tsoddservice.schedule.dto.request
 
 import java.time.LocalDate
 
