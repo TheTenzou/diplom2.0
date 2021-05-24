@@ -97,6 +97,20 @@ class ScheduleServiceImpl(
         return ScheduleDetailDto(savedSchedule, Page.empty())
     }
 
+    override fun deleteSchedule(id: Long): ScheduleDetailDto {
+        val results = scheduleRepository.findById(id)
+
+        if (results.isEmpty) {
+            throw IllegalArgumentException("schedule id: $id doesn't exist")
+        }
+        val schedule = results.get()
+
+        scheduleRepository.delete(schedule)
+
+        logger.info("schedule with id: $id has been deleted")
+        return ScheduleDetailDto(schedule, Page.empty())
+    }
+
     companion object {
         val logger: Logger = LoggerFactory.getLogger(ScheduleServiceImpl::class.java)
     }

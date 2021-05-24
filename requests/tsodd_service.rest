@@ -34,7 +34,28 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8080/api/tsodd/v1/schedule?page=0
+GET http://localhost:8080/api/tsodd/v1/schedule?page=0&size=20
 
 ###
-GET http://localhost:8080/api/tsodd/v1/schedule/17
+GET http://localhost:8080/api/tsodd/v1/schedule/18?size=2
+
+###
+PUT http://localhost:8080/api/tsodd/v1/schedule
+Content-Type: application/json
+
+{
+    "name": "test input",
+    "startDate": "2021-05-17",
+    "endDate": "2021-05-30"
+}
+
+###
+PATCH  http://localhost:8080/api/tsodd/v1/schedule
+Content-Type: application/json
+
+{
+    "id": "30",
+    "name": "test update v2",
+    "startDate": "2021-05-17",
+    "endDate": "2021-05-30"
+}

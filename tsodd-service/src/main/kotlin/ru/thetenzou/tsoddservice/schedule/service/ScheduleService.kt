@@ -49,4 +49,13 @@ interface ScheduleService {
      * @return updated schedule
      */
     fun updateSchedule(scheduleRequest: ScheduleRequestDto): ScheduleDetailDto
+
+    /**
+     * deleteSchedule delete existing schedule
+     *
+     * @param id id of the schedule
+     *
+     * @return deleted schedule
+     */
+    fun deleteSchedule(id: Long): ScheduleDetailDto
 }

@@ -91,4 +91,20 @@ class ScheduleController(
 
         return ResponseEntity(schedule, HttpStatus.OK)
     }
+
+    /**
+     * deleteSchedule delete existing schedule
+     *
+     * @param id id of the schedule
+     *
+     * @return deleted schedule
+     */
+    @DeleteMapping("/{id}")
+    fun deleteSchedule(
+        @PathVariable id: Long
+    ): ResponseEntity<ScheduleDetailDto> {
+        val schedule = scheduleService.deleteSchedule(id)
+
+        return ResponseEntity(schedule, HttpStatus.OK)
+    }
 }

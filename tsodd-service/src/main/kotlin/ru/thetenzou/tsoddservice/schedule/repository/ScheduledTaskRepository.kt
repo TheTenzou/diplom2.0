@@ -11,4 +11,6 @@ import ru.thetenzou.tsoddservice.schedule.model.ScheduledTask
 interface ScheduledTaskRepository : JpaRepository<ScheduledTask, Long> {
 
     fun getBySchedule(schedule: Schedule, pageable: Pageable): Page<ScheduledTask>
+
+    fun getBySchedule(schedule: Schedule): List<ScheduledTask>
 }

@@ -52,6 +52,6 @@ data class Schedule(
     /**
      *  list of scheduled tasks
      */
-    @OneToMany(mappedBy = "schedule")
+    @OneToMany(mappedBy = "schedule", cascade = [CascadeType.ALL])
     var scheduledTask: List<ScheduledTask>?,
 )
