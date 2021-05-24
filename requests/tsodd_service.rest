@@ -32,3 +32,9 @@ Content-Type: application/json
     "startDate": "2021-05-17",
     "endDate": "2021-05-30"
 }
+
+###
+GET http://localhost:8080/api/tsodd/v1/schedule?page=0
+
+###
+GET http://localhost:8080/api/tsodd/v1/schedule/17

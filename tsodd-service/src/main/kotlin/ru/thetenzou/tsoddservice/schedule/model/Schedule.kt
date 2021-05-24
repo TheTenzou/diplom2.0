@@ -24,7 +24,7 @@ data class Schedule(
     @Column(name = "end_date")
     var endDate: LocalDate,
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     var scheduledTask: List<ScheduledTask>?,
 
     )
