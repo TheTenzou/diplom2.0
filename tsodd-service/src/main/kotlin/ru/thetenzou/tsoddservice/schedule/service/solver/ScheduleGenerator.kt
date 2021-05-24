@@ -1,4 +1,4 @@
-package ru.thetenzou.tsoddservice.schedule.service
+package ru.thetenzou.tsoddservice.schedule.service.solver
 
 import org.optaplanner.core.api.solver.SolverManager
 import org.slf4j.LoggerFactory

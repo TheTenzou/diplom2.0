@@ -1,8 +1,8 @@
 package ru.thetenzou.tsoddservice.schedule.controller
 
 import org.springframework.web.bind.annotation.*
-import ru.thetenzou.tsoddservice.schedule.request.SolveRequestDto
-import ru.thetenzou.tsoddservice.schedule.service.ScheduleGenerator
+import ru.thetenzou.tsoddservice.schedule.dto.request.SolveRequestDto
+import ru.thetenzou.tsoddservice.schedule.service.solver.ScheduleGenerator
 
 
 @RestController
