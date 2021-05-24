@@ -35,11 +35,18 @@ interface ScheduleService {
     /**
      * createSchedule create new empty schedule
      *
-     * @param name name of the schedule
-     * @param startDate start of the schedule
-     * @param endDate end of the schedule
+     * @param scheduleRequest holds values of created schedule
      *
      * @return created schedule
      */
-    fun createSchedule(name: String, startDate: LocalDate, endDate: LocalDate): ScheduleDetailDto
+    fun createSchedule(scheduleRequest: ScheduleRequestDto): ScheduleDetailDto
+
+    /**
+     * createSchedule update existing schedule
+     *
+     * @param scheduleRequest holds new values of schedule
+     *
+     * @return updated schedule
+     */
+    fun updateSchedule(scheduleRequest: ScheduleRequestDto): ScheduleDetailDto
 }

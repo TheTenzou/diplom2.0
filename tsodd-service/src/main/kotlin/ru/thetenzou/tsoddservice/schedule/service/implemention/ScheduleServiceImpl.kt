@@ -14,9 +14,7 @@ import ru.thetenzou.tsoddservice.schedule.service.ScheduleService
 import ru.thetenzou.tsoddservice.common.dto.PagedResponse
 import ru.thetenzou.tsoddservice.schedule.dto.request.ScheduleRequestDto
 import ru.thetenzou.tsoddservice.schedule.model.Schedule
-import java.time.LocalDate
 import java.time.LocalDateTime
-import kotlin.math.log10
 
 @Service
 class ScheduleServiceImpl(
@@ -57,18 +55,45 @@ class ScheduleServiceImpl(
         )
     }
 
-    override fun createSchedule(name: String, startDate: LocalDate, endDate: LocalDate): ScheduleDetailDto {
+    override fun createSchedule(scheduleRequest: ScheduleRequestDto): ScheduleDetailDto {
+        if (scheduleRequest.name == null || scheduleRequest.startDate == null || scheduleRequest.endDate == null) {
+            throw IllegalArgumentException("null field are not allowed")
+        }
         val newSchedule = Schedule(
             id = 0L,
-            name = name,
+            name = scheduleRequest.name!!,
             createdDate = LocalDateTime.now(),
-            startDate = startDate,
-            endDate = endDate,
+            startDate = scheduleRequest.startDate!!,
+            endDate = scheduleRequest.endDate!!,
             scheduledTask = null,
         )
         val savedSchedule = scheduleRepository.save(newSchedule)
 
         logger.info("schedule has been created with id: ${savedSchedule.id} and name: ${savedSchedule.name}")
+        return ScheduleDetailDto(savedSchedule, Page.empty())
+    }
+
+    override fun updateSchedule(scheduleRequest: ScheduleRequestDto): ScheduleDetailDto {
+
+        val result = scheduleRepository.findById(scheduleRequest.id)
+
+        if (result.isEmpty) {
+            throw IllegalArgumentException("schedule id: ${scheduleRequest.id} doesn't exist")
+        }
+        val schedule = result.get()
+        if (scheduleRequest.name != null) {
+            schedule.name = scheduleRequest.name
+        }
+        if (scheduleRequest.startDate != null) {
+            schedule.startDate = scheduleRequest.startDate
+        }
+        if (scheduleRequest.endDate != null) {
+            schedule.endDate = scheduleRequest.endDate
+        }
+
+        val savedSchedule = scheduleRepository.save(schedule)
+
+        logger.info("schedule has been updated with id: ${savedSchedule.id} and name: ${savedSchedule.name}")
         return ScheduleDetailDto(savedSchedule, Page.empty())
     }
 

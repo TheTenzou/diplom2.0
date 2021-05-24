@@ -8,7 +8,7 @@ import java.time.LocalDate
  */
 data class ScheduleRequestDto(
     val id: Long,
-    val name: String,
-    val startDate: LocalDate,
-    val endDate: LocalDate,
+    val name: String?,
+    val startDate: LocalDate?,
+    val endDate: LocalDate?,
 )

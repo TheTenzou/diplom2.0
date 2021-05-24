@@ -71,7 +71,23 @@ class ScheduleController(
         @RequestBody scheduleRequest: ScheduleRequestDto,
     ): ResponseEntity<ScheduleDetailDto> {
         val schedule =
-            scheduleService.createSchedule(scheduleRequest.name, scheduleRequest.startDate, scheduleRequest.endDate)
+            scheduleService.createSchedule(scheduleRequest)
+
+        return ResponseEntity(schedule, HttpStatus.OK)
+    }
+
+    /**
+     * updateSchedule update existing schedule
+     *
+     * @param scheduleRequest holds incoming request body
+     *
+     * @return updated schedule
+     */
+    @PatchMapping
+    fun updateSchedule(
+        @RequestBody scheduleRequest: ScheduleRequestDto,
+    ): ResponseEntity<ScheduleDetailDto> {
+        val schedule = scheduleService.updateSchedule(scheduleRequest)
 
         return ResponseEntity(schedule, HttpStatus.OK)
     }
