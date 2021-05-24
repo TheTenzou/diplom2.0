@@ -1,5 +1,6 @@
 package ru.thetenzou.tsoddservice.schedule.service.implemention
 
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -15,6 +16,7 @@ import ru.thetenzou.tsoddservice.schedule.dto.request.ScheduleRequestDto
 import ru.thetenzou.tsoddservice.schedule.model.Schedule
 import java.time.LocalDate
 import java.time.LocalDateTime
+import kotlin.math.log10
 
 @Service
 class ScheduleServiceImpl(
@@ -29,6 +31,7 @@ class ScheduleServiceImpl(
 
         val pagedSchedulesDto = pagedSchedules.map { schedule -> ScheduleDto(schedule) }
 
+        logger.info("fetched ${pagedSchedulesDto.size} schedules")
         return PagedResponse(pagedSchedulesDto)
     }
 
@@ -47,6 +50,7 @@ class ScheduleServiceImpl(
 
         val scheduledTaskDtoPage = scheduledTaskPage.map { ScheduledTaskDto(it) }
 
+        logger.info("fetched detail info about schedule with id: ${schedule.id}")
         return ScheduleDetailDto(
             schedule = schedule,
             tasks = scheduledTaskDtoPage,
@@ -64,10 +68,11 @@ class ScheduleServiceImpl(
         )
         val savedSchedule = scheduleRepository.save(newSchedule)
 
+        logger.info("schedule has been created with id: ${savedSchedule.id} and name: ${savedSchedule.name}")
         return ScheduleDetailDto(savedSchedule, Page.empty())
     }
 
     companion object {
-        val logger = LoggerFactory.getLogger(ScheduleServiceImpl::class.java)
+        val logger: Logger = LoggerFactory.getLogger(ScheduleServiceImpl::class.java)
     }
 }
