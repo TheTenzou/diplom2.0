@@ -10,16 +10,12 @@ spring:
     database-platform: org.hibernate.spatial.dialect.postgis.PostgisDialect
     generate-ddl: false
     show-sql: false
-#    properties:
-#      hibernate:
-#        show_sql: true
-#        use_sql_comments: true
-#        format_sql: true
   data:
     rest:
       base-path: api/tsodd/v1
   flyway:
     locations: classpath:database
+
 jwt:
   token:
     secret: ${ACCESS_TOKEN_SECRET:accessTokenSecret}

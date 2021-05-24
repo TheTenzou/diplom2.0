@@ -53,7 +53,7 @@ class PlannedTaskService(
         val validTasks = tasks.filter { it.date != null && it.crew != null }
 
         val scheduledTaskList =
-            validTasks.map { ScheduledTask(id = 0L, schedule, it.date, it.tsodd!!, it.task!!, it.crew!!) }
+            validTasks.map { ScheduledTask(id = 0L, schedule, it.date, it.tsodd!!, it.taskType!!, it.crew!!) }
 
         scheduledTaskRepository.saveAll(scheduledTaskList)
     }
@@ -70,7 +70,7 @@ class PlannedTaskService(
         val plannedTaskList = ArrayList<PlannedTask>()
 
         val taskList =
-            tsodd.name.tsoddType.taskGroup?.stream()?.flatMap { it.tasks.stream() }?.collect(Collectors.toList())
+            tsodd.type.tsoddGroup.taskGroup?.stream()?.flatMap { it.taskType.stream() }?.collect(Collectors.toList())
                 ?: return emptyList()
 
         for (task in taskList) {
