@@ -15,7 +15,6 @@ data class ScheduleDetailDto (
     val createdDate: LocalDateTime,
     val startDate: LocalDate,
     val endDate: LocalDate,
-//    val taskList: List<ScheduledTaskDto>,
     val tasks: PagedResponse<ScheduledTaskDto>
 ) {
 

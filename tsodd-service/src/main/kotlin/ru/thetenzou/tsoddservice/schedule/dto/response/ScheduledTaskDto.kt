@@ -1,23 +1,30 @@
 package ru.thetenzou.tsoddservice.schedule.dto.response
 
-import ru.thetenzou.tsoddservice.crew.model.Crew
+import ru.thetenzou.tsoddservice.crew.dto.response.CrewDto
 import ru.thetenzou.tsoddservice.schedule.model.ScheduledTask
-import ru.thetenzou.tsoddservice.task.model.TaskType
-import ru.thetenzou.tsoddservice.tsodd.model.Tsodd
+import ru.thetenzou.tsoddservice.task.dto.response.TaskTypeMinimalDto
+import ru.thetenzou.tsoddservice.tsodd.dto.response.TsoddMinimalDto
 import java.time.LocalDate
 
+/**
+ * A ScheduledTaskDto is data transfer object for scheduled task
+ */
 data class ScheduledTaskDto(
     val id: Long?,
     val date: LocalDate?,
-    val tsodd: Tsodd,
-    val taskType: TaskType,
-    val crew: Crew,
+    val tsodd: TsoddMinimalDto,
+    val taskType: TaskTypeMinimalDto,
+    val crew: CrewDto,
 ) {
+
+    /**
+     * Init ScheduledTaskDto base on given ScheduledTask
+     */
     constructor(scheduledTask: ScheduledTask) : this(
         id = scheduledTask.id,
         date = scheduledTask.date,
-        tsodd = scheduledTask.tsodd,
-        taskType = scheduledTask.taskType,
-        crew = scheduledTask.crew,
+        tsodd = TsoddMinimalDto(scheduledTask.tsodd),
+        taskType = TaskTypeMinimalDto(scheduledTask.taskType),
+        crew = CrewDto(scheduledTask.crew),
     )
 }
