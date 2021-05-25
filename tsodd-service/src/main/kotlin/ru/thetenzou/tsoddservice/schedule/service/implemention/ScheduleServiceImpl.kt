@@ -31,7 +31,7 @@ class ScheduleServiceImpl(
 
         val pagedSchedulesDto = pagedSchedules.map { schedule -> ScheduleDto(schedule) }
 
-        logger.info("fetched ${pagedSchedulesDto.size} schedules")
+        logger.info("Fetched ${pagedSchedulesDto.totalElements} schedules")
         return PagedResponse(pagedSchedulesDto)
     }
 
@@ -50,7 +50,7 @@ class ScheduleServiceImpl(
 
         val scheduledTaskDtoPage = scheduledTaskPage.map { ScheduledTaskDto(it) }
 
-        logger.info("fetched detail info about schedule with id: ${schedule.id}")
+        logger.info("Fetched detail info about schedule with id: ${schedule.id}")
         return ScheduleDetailDto(
             schedule = schedule,
             tasks = scheduledTaskDtoPage,
@@ -79,7 +79,7 @@ class ScheduleServiceImpl(
         )
         val savedSchedule = scheduleRepository.save(newSchedule)
 
-        logger.info("schedule has been created with id: ${savedSchedule.id} and name: ${savedSchedule.name}")
+        logger.info("Schedule has been created with id: ${savedSchedule.id} and name: ${savedSchedule.name}")
 
         return ScheduleDto(savedSchedule)
     }
@@ -104,7 +104,7 @@ class ScheduleServiceImpl(
 
         val savedSchedule = scheduleRepository.save(schedule)
 
-        logger.info("schedule has been updated with id: ${savedSchedule.id} and name: ${savedSchedule.name}")
+        logger.info("Schedule has been updated with id: ${savedSchedule.id} and name: ${savedSchedule.name}")
 
         return ScheduleDto(savedSchedule)
     }
@@ -119,7 +119,7 @@ class ScheduleServiceImpl(
 
         scheduleRepository.delete(schedule)
 
-        logger.info("schedule with id: $id has been deleted")
+        logger.info("Schedule with id: $id has been deleted")
 
         return ScheduleDto(schedule)
     }
