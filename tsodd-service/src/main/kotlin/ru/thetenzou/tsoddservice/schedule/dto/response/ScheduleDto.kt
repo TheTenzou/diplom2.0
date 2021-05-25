@@ -13,6 +13,7 @@ data class ScheduleDto(
     val createdDate: LocalDateTime,
     val startDate: LocalDate,
     val endDate: LocalDate,
+    val status: String,
 ) {
 
     /**
@@ -24,5 +25,6 @@ data class ScheduleDto(
         createdDate = schedule.createdDate,
         startDate = schedule.startDate,
         endDate = schedule.endDate,
+        status = schedule.status.name
     )
 }

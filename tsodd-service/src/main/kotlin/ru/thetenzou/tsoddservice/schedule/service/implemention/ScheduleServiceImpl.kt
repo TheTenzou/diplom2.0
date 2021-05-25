@@ -57,7 +57,7 @@ class ScheduleServiceImpl(
         )
     }
 
-    override fun createSchedule(scheduleRequest: ScheduleRequestDto): ScheduleDetailDto {
+    override fun createSchedule(scheduleRequest: ScheduleRequestDto): ScheduleDto {
         if (scheduleRequest.name == null) {
             throw IllegalArgumentException("Field name can't be null")
         }
@@ -80,10 +80,11 @@ class ScheduleServiceImpl(
         val savedSchedule = scheduleRepository.save(newSchedule)
 
         logger.info("schedule has been created with id: ${savedSchedule.id} and name: ${savedSchedule.name}")
-        return ScheduleDetailDto(savedSchedule, Page.empty())
+
+        return ScheduleDto(savedSchedule)
     }
 
-    override fun updateSchedule(scheduleRequest: ScheduleRequestDto): ScheduleDetailDto {
+    override fun updateSchedule(scheduleRequest: ScheduleRequestDto): ScheduleDto {
 
         val result = scheduleRepository.findById(scheduleRequest.id)
 
@@ -104,10 +105,11 @@ class ScheduleServiceImpl(
         val savedSchedule = scheduleRepository.save(schedule)
 
         logger.info("schedule has been updated with id: ${savedSchedule.id} and name: ${savedSchedule.name}")
-        return ScheduleDetailDto(savedSchedule, Page.empty())
+
+        return ScheduleDto(savedSchedule)
     }
 
-    override fun deleteSchedule(id: Long): ScheduleDetailDto {
+    override fun deleteSchedule(id: Long): ScheduleDto {
         val results = scheduleRepository.findById(id)
 
         if (results.isEmpty) {
@@ -118,7 +120,8 @@ class ScheduleServiceImpl(
         scheduleRepository.delete(schedule)
 
         logger.info("schedule with id: $id has been deleted")
-        return ScheduleDetailDto(schedule, Page.empty())
+
+        return ScheduleDto(schedule)
     }
 
     companion object {

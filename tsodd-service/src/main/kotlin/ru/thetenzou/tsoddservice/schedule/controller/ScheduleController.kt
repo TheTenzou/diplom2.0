@@ -85,11 +85,9 @@ class ScheduleController(
      * @return saved schedule
      */
     @PutMapping
-    fun createSchedule(
-        @RequestBody scheduleRequest: ScheduleRequestDto,
-    ): ResponseEntity<ScheduleDetailDto> {
-        val schedule =
-            scheduleService.createSchedule(scheduleRequest)
+    fun createSchedule(@RequestBody scheduleRequest: ScheduleRequestDto): ResponseEntity<ScheduleDto> {
+
+        val schedule = scheduleService.createSchedule(scheduleRequest)
 
         return ResponseEntity(schedule, HttpStatus.CREATED)
     }
@@ -102,9 +100,8 @@ class ScheduleController(
      * @return updated schedule
      */
     @PatchMapping
-    fun updateSchedule(
-        @RequestBody scheduleRequest: ScheduleRequestDto,
-    ): ResponseEntity<ScheduleDetailDto> {
+    fun updateSchedule(@RequestBody scheduleRequest: ScheduleRequestDto): ResponseEntity<ScheduleDto> {
+
         val schedule = scheduleService.updateSchedule(scheduleRequest)
 
         return ResponseEntity(schedule, HttpStatus.OK)
@@ -118,9 +115,8 @@ class ScheduleController(
      * @return deleted schedule
      */
     @DeleteMapping("/{id}")
-    fun deleteSchedule(
-        @PathVariable id: Long
-    ): ResponseEntity<ScheduleDetailDto> {
+    fun deleteSchedule(@PathVariable id: Long): ResponseEntity<ScheduleDto> {
+
         val schedule = scheduleService.deleteSchedule(id)
 
         return ResponseEntity(schedule, HttpStatus.OK)

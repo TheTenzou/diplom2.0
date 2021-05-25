@@ -15,6 +15,7 @@ data class ScheduleDetailDto (
     val createdDate: LocalDateTime,
     val startDate: LocalDate,
     val endDate: LocalDate,
+    val status: String,
     val tasks: PagedResponse<ScheduledTaskDto>
 ) {
 
@@ -27,6 +28,7 @@ data class ScheduleDetailDto (
         createdDate = schedule.createdDate,
         startDate = schedule.startDate,
         endDate = schedule.endDate,
+        status = schedule.status.name,
         tasks = PagedResponse(tasks),
     )
 }

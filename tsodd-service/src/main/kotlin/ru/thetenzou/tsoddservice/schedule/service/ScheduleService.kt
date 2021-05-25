@@ -39,7 +39,7 @@ interface ScheduleService {
      *
      * @return created schedule
      */
-    fun createSchedule(scheduleRequest: ScheduleRequestDto): ScheduleDetailDto
+    fun createSchedule(scheduleRequest: ScheduleRequestDto): ScheduleDto
 
     /**
      * createSchedule update existing schedule
@@ -48,7 +48,7 @@ interface ScheduleService {
      *
      * @return updated schedule
      */
-    fun updateSchedule(scheduleRequest: ScheduleRequestDto): ScheduleDetailDto
+    fun updateSchedule(scheduleRequest: ScheduleRequestDto): ScheduleDto
 
     /**
      * deleteSchedule delete existing schedule
@@ -57,5 +57,5 @@ interface ScheduleService {
      *
      * @return deleted schedule
      */
-    fun deleteSchedule(id: Long): ScheduleDetailDto
+    fun deleteSchedule(id: Long): ScheduleDto
 }
