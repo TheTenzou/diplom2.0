@@ -28,6 +28,7 @@ dependencies {
 	implementation("org.n52.jackson:jackson-datatype-jts:1.2.6")
 	implementation("io.jsonwebtoken:jjwt:0.9.1")
 	implementation("org.flywaydb:flyway-core")
+	implementation("io.springfox:springfox-boot-starter:3.0.0")
     implementation("org.optaplanner:optaplanner-spring-boot-starter:8.6.0.Final")
 
 	implementation("com.integralblue:log4jdbc-spring-boot-starter:2.0.0")

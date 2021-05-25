@@ -5,19 +5,19 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import ru.thetenzou.tsoddservice.crew.model.Crew
-import ru.thetenzou.tsoddservice.task.model.TaskType
-import ru.thetenzou.tsoddservice.task.model.TaskGroup
-import ru.thetenzou.tsoddservice.tsodd.model.Tsodd
-import ru.thetenzou.tsoddservice.tsodd.model.TsoddCondition
-import ru.thetenzou.tsoddservice.tsodd.model.TsoddType
-import ru.thetenzou.tsoddservice.tsodd.model.TsoddGroup
 import ru.thetenzou.tsoddservice.crew.repository.CrewRepository
+import ru.thetenzou.tsoddservice.task.model.TaskGroup
+import ru.thetenzou.tsoddservice.task.model.TaskType
 import ru.thetenzou.tsoddservice.task.repository.TaskGroupRepository
 import ru.thetenzou.tsoddservice.task.repository.TaskTypeRepository
+import ru.thetenzou.tsoddservice.tsodd.model.Tsodd
+import ru.thetenzou.tsoddservice.tsodd.model.TsoddCondition
+import ru.thetenzou.tsoddservice.tsodd.model.TsoddGroup
+import ru.thetenzou.tsoddservice.tsodd.model.TsoddType
 import ru.thetenzou.tsoddservice.tsodd.repository.TsoddConditionRepository
-import ru.thetenzou.tsoddservice.tsodd.repository.TsoddTypeRepository
-import ru.thetenzou.tsoddservice.tsodd.repository.TsoddRepository
 import ru.thetenzou.tsoddservice.tsodd.repository.TsoddGroupRepository
+import ru.thetenzou.tsoddservice.tsodd.repository.TsoddRepository
+import ru.thetenzou.tsoddservice.tsodd.repository.TsoddTypeRepository
 
 @SpringBootApplication
 class TsoddServiceApplication(

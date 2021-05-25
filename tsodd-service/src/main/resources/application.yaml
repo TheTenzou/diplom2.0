@@ -16,10 +16,13 @@ spring:
   flyway:
     locations: classpath:database
 
-jwt:
-  token:
-    secret: ${ACCESS_TOKEN_SECRET:accessTokenSecret}
-    expired: ${ACCESS_TOKEN_EXPIRATION:600}
+springfox:
+  documentation:
+    swaggerUi:
+      baseUrl: /api/tsodd
+    swagger:
+      v2:
+        path: /api/tsodd/api-docs
 
 optaplanner:
   solver-config-xml: solverConfig.xml
@@ -33,3 +36,8 @@ logging:
       audit: fatal
       resultset: fatal
       connection: fatal
+
+jwt:
+  token:
+    secret: ${ACCESS_TOKEN_SECRET:accessTokenSecret}
+    expired: ${ACCESS_TOKEN_EXPIRATION:600}
