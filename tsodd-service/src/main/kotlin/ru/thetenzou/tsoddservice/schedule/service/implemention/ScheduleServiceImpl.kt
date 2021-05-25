@@ -14,6 +14,7 @@ import ru.thetenzou.tsoddservice.schedule.service.ScheduleService
 import ru.thetenzou.tsoddservice.common.dto.PagedResponse
 import ru.thetenzou.tsoddservice.schedule.dto.request.ScheduleRequestDto
 import ru.thetenzou.tsoddservice.schedule.model.Schedule
+import ru.thetenzou.tsoddservice.schedule.model.solver.ScheduleStatus
 import java.time.LocalDateTime
 import javax.persistence.EntityNotFoundException
 
@@ -73,6 +74,7 @@ class ScheduleServiceImpl(
             createdDate = LocalDateTime.now(),
             startDate = scheduleRequest.startDate,
             endDate = scheduleRequest.endDate,
+            status = ScheduleStatus.GENERATED,
             scheduledTask = null,
         )
         val savedSchedule = scheduleRepository.save(newSchedule)

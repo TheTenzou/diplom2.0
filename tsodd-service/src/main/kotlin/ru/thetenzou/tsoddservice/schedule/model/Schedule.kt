@@ -1,5 +1,6 @@
 package ru.thetenzou.tsoddservice.schedule.model
 
+import ru.thetenzou.tsoddservice.schedule.model.solver.ScheduleStatus
 import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -12,6 +13,7 @@ import javax.persistence.*
  * @param createdDate date of creation
  * @param startDate date when schedule begins
  * @param endDate date when schedule ends
+ * @param status describe is schedule in the process of generating
  * @param scheduledTask list of scheduled tasks
  */
 @Entity
@@ -48,6 +50,13 @@ data class Schedule(
      */
     @Column(name = "end_date")
     var endDate: LocalDate,
+
+    /**
+     * status describe is schedule in the process of generating
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    var status: ScheduleStatus,
 
     /**
      *  list of scheduled tasks
