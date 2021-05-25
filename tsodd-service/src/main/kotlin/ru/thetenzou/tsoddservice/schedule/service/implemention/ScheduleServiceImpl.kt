@@ -4,6 +4,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDetailDto
 import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDto
@@ -44,7 +45,7 @@ class ScheduleServiceImpl(
 
         val schedule = result.get()
 
-        val paging = PageRequest.of(page, size)
+        val paging = PageRequest.of(page, size, Sort.by("date"))
 
         val scheduledTaskPage = scheduledTaskRepository.getBySchedule(schedule, paging)
 
