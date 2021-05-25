@@ -8,6 +8,8 @@ import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDto
 import ru.thetenzou.tsoddservice.schedule.service.ScheduleService
 import ru.thetenzou.tsoddservice.common.dto.PagedResponse
 import ru.thetenzou.tsoddservice.schedule.dto.request.ScheduleRequestDto
+import ru.thetenzou.tsoddservice.schedule.dto.request.SolveRequestDto
+import ru.thetenzou.tsoddservice.schedule.service.solver.ScheduleGenerator
 
 /**
  * A ScheduleController is endpoint for schedule
@@ -16,7 +18,23 @@ import ru.thetenzou.tsoddservice.schedule.dto.request.ScheduleRequestDto
 @RequestMapping("/api/tsodd/v1/schedule")
 class ScheduleController(
     private val scheduleService: ScheduleService,
+    private val schedulePlanningService: ScheduleGenerator,
 ) {
+
+    /**
+     * generateSchedule starts process of generating schedule
+     *
+     * @param request incoming request
+     *
+     * @return generating schedule
+     */
+    @PostMapping("/generate")
+    fun generateNewSchedule(@RequestBody request: SolveRequestDto): ResponseEntity<ScheduleDto> {
+
+        val schedule = schedulePlanningService.generateSchedule(request.name, request.startDate, request.endDate)
+
+        return ResponseEntity(schedule, HttpStatus.ACCEPTED)
+    }
 
     /**
      * getAllSchedules return paged response

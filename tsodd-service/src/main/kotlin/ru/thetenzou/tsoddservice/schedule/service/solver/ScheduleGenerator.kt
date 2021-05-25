@@ -3,6 +3,7 @@ package ru.thetenzou.tsoddservice.schedule.service.solver
 import org.optaplanner.core.api.solver.SolverManager
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDto
 import ru.thetenzou.tsoddservice.schedule.model.solver.TsoddScheduleProblem
 import java.time.LocalDate
 
@@ -24,20 +25,24 @@ class ScheduleGenerator(
      * @param name name of new schedule
      * @param startDate starting date of schedule
      * @param endDate ending date of schedule
+     *
+     * @return schedule generating schedule
      */
-    fun generateSchedule(name: String, startDate: LocalDate, endDate: LocalDate) {
+    fun generateSchedule(name: String, startDate: LocalDate, endDate: LocalDate): ScheduleDto {
         if (startDate > endDate) {
             throw IllegalArgumentException("start date has to be before end date")
         }
 
-        val scheduleId = tsoddScheduleProblemService.createNewSchedule(name, startDate, endDate)
+        val schedule = tsoddScheduleProblemService.createNewSchedule(name, startDate, endDate)
 
         logger.info("Start generating schedule")
         solverManager.solve(
-            scheduleId,
+            schedule.id,
             tsoddScheduleProblemService::getPlanningSchedule,
             tsoddScheduleProblemService::savePlanningSchedule,
         )
+
+        return ScheduleDto(schedule)
     }
 
     companion object {

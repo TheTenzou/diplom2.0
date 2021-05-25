@@ -32,8 +32,10 @@ class TsoddScheduleProblemService(
      * @param name name of new schedule
      * @param startDate starting date of schedule
      * @param endDate ending date of schedule
+     *
+     * @return created schedule
      */
-    fun createNewSchedule(name: String, startDate: LocalDate, endDate: LocalDate): Long {
+    fun createNewSchedule(name: String, startDate: LocalDate, endDate: LocalDate): Schedule {
         logger.info("Create new schedule")
 
         val schedule = Schedule(
@@ -46,15 +48,14 @@ class TsoddScheduleProblemService(
             scheduledTask = null,
         )
 
-        val savedSchedule = scheduleRepository.save(schedule)
-
-        return savedSchedule.id
+        return scheduleRepository.save(schedule)
     }
 
     /**
      * getPlanningSchedule init new PlanningSchedule problem base on schedule id
      *
      * @param id schedule id
+     *
      * @return new problem with initial values
      */
     fun getPlanningSchedule(id: Long): TsoddScheduleProblem {
