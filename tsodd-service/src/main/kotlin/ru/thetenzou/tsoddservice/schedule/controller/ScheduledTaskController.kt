@@ -2,10 +2,7 @@ package ru.thetenzou.tsoddservice.schedule.controller
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import ru.thetenzou.tsoddservice.schedule.dto.request.ScheduledTaskRequestDto
 import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduledTaskDetailDto
 import ru.thetenzou.tsoddservice.schedule.service.ScheduledTaskService
@@ -33,5 +30,22 @@ class ScheduledTaskController(
 
         return ResponseEntity(scheduledTask, HttpStatus.CREATED)
 
+    }
+
+    /**
+     * updateScheduledTask update given schedule
+     *
+     * @param request holds incoming request body
+     *
+     * @return update scheduled task
+     */
+    @PatchMapping
+    fun updateScheduledTask(@RequestBody request: ScheduledTaskRequestDto): ResponseEntity<ScheduledTaskDetailDto> {
+        if (request.id == 0L) {
+            throw IllegalArgumentException("")
+        }
+        val scheduledTask = scheduledTaskService.updateScheduledTask(request)
+
+        return ResponseEntity(scheduledTask, HttpStatus.OK)
     }
 }

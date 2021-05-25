@@ -16,4 +16,13 @@ interface ScheduledTaskService {
      * @return created schedule
      */
     fun createScheduledTask(scheduledTaskDto: ScheduledTaskRequestDto): ScheduledTaskDetailDto
+
+    /**
+     * updateScheduledTask update scheduled task
+     *
+     * @param scheduledTaskDto holds values of created schedule
+     *
+     * @return updated schedule
+     */
+    fun updateScheduledTask(scheduledTaskDto: ScheduledTaskRequestDto): ScheduledTaskDetailDto
 }
