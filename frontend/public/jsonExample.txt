@@ -1,0 +1,10 @@
+const args = {
+  url: '/api/account/details',
+  method: 'put',
+  headers: {
+    Authorization: `Bearer ${accessToken.value}`,
+  },
+  data: {
+    someField: 'field value'
+  }
+}
