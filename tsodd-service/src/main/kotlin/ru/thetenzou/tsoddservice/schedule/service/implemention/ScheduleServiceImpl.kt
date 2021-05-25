@@ -14,7 +14,7 @@ import ru.thetenzou.tsoddservice.schedule.service.ScheduleService
 import ru.thetenzou.tsoddservice.common.dto.PagedResponse
 import ru.thetenzou.tsoddservice.schedule.dto.request.ScheduleRequestDto
 import ru.thetenzou.tsoddservice.schedule.model.Schedule
-import ru.thetenzou.tsoddservice.schedule.model.solver.ScheduleStatus
+import ru.thetenzou.tsoddservice.schedule.model.ScheduleStatus
 import java.time.LocalDateTime
 import javax.persistence.EntityNotFoundException
 

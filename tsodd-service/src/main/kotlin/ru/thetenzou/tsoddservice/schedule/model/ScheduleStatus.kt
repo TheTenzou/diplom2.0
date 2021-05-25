@@ -1,4 +1,4 @@
-package ru.thetenzou.tsoddservice.schedule.model.solver
+package ru.thetenzou.tsoddservice.schedule.model
 
 /**
  * A ScheduleStatus describe is schedule in the process of generating

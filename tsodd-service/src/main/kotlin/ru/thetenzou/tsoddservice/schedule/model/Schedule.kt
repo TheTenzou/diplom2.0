@@ -1,6 +1,5 @@
 package ru.thetenzou.tsoddservice.schedule.model
 
-import ru.thetenzou.tsoddservice.schedule.model.solver.ScheduleStatus
 import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.persistence.*

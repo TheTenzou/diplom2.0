@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional
 import ru.thetenzou.tsoddservice.schedule.model.Schedule
 import ru.thetenzou.tsoddservice.schedule.model.solver.TsoddScheduleProblem
 import ru.thetenzou.tsoddservice.crew.repository.CrewRepository
-import ru.thetenzou.tsoddservice.schedule.model.solver.ScheduleStatus
+import ru.thetenzou.tsoddservice.schedule.model.ScheduleStatus
 import ru.thetenzou.tsoddservice.schedule.repository.ScheduleRepository
 import java.time.LocalDate
 import java.time.LocalDateTime
