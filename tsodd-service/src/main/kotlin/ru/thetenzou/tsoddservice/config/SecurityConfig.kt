@@ -16,9 +16,12 @@ class SecurityConfig(
     private val jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint
 ) : WebSecurityConfigurerAdapter() {
 
-    private val HELLO_ENDPOINT = "/api/tsodd/v1/hello"
-    private val HELLO_USER_ENDPOINT = "/api/tsodd/v1/helloUser"
-    private val HELLO_ADMIN_ENDPOINT = "/api/tsodd/v1/helloAdmin"
+    companion object {
+        private val HELLO_ENDPOINT = "/api/tsodd/v1/hello"
+        private val HELLO_USER_ENDPOINT = "/api/tsodd/v1/helloUser"
+        private val HELLO_ADMIN_ENDPOINT = "/api/tsodd/v1/helloAdmin"
+        private val SECURE_ENDPOINT = "/api/tsodd/v1/**"
+    }
 
     @Bean
     override fun authenticationManagerBean(): AuthenticationManager {
@@ -30,6 +33,7 @@ class SecurityConfig(
             .csrf().disable()
             .authorizeRequests()
             .antMatchers(HELLO_ENDPOINT).permitAll()
+            .antMatchers(SECURE_ENDPOINT).hasRole("USER")
             .antMatchers(HELLO_USER_ENDPOINT).hasRole("USER")
             .antMatchers(HELLO_ADMIN_ENDPOINT).hasRole("ADMIN")
             .and()
