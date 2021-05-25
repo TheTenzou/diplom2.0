@@ -12,8 +12,8 @@
 docker-compose up
 ```
 
-- Приложение запускается на порте 8080
-- Web ui для mongo на ходится на порту 8081
-- web ui для Redis на 8082
-- web ui для Postgres на 16543
+- Приложение запускается на 8080 порте
+- Web ui для mongo на ходится на 8081 порте
+- web ui для Redis на 8082 порте
+- web ui для Postgres на 16543 порте
 - [swagger ui](http://localhost:8080/api/tsodd/swagger-ui/) для tsodd-servise на `http://localhost:8080/api/tsodd/swagger-ui/`
