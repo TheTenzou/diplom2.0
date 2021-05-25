@@ -25,4 +25,13 @@ interface ScheduledTaskService {
      * @return updated schedule
      */
     fun updateScheduledTask(scheduledTaskDto: ScheduledTaskRequestDto): ScheduledTaskDetailDto
+
+    /**
+     * deleteScheduledTask delete scheduled task
+     *
+     * @param scheduledTaskId id of the scheduled task
+     *
+     * @return deleted schedule
+     */
+    fun deleteScheduledTask(scheduledTaskId: Long): ScheduledTaskDetailDto
 }

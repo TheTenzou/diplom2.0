@@ -4,6 +4,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import ru.thetenzou.tsoddservice.schedule.service.converter.DtoToScheduledTaskConverter
 import ru.thetenzou.tsoddservice.schedule.dto.request.ScheduledTaskRequestDto
+import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDto
 import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduledTaskDetailDto
 import ru.thetenzou.tsoddservice.schedule.repository.ScheduledTaskRepository
 import ru.thetenzou.tsoddservice.schedule.service.ScheduledTaskService
@@ -41,6 +42,22 @@ class ScheduledTaskServiceImp(
         logger.info("Scheduled task with id: ${savedScheduledTask.id} has benn updated")
 
         return ScheduledTaskDetailDto(savedScheduledTask)
+    }
+
+    override fun deleteScheduledTask(scheduledTaskId: Long): ScheduledTaskDetailDto {
+
+        val results = scheduledTaskRepository.findById(scheduledTaskId)
+
+        if (results.isEmpty) {
+            throw EntityNotFoundException("schedule with id: $scheduledTaskId doesn't exist")
+        }
+        val schedule = results.get()
+
+        scheduledTaskRepository.delete(schedule)
+
+        ScheduleServiceImpl.logger.info("Schedule with id: $scheduledTaskId has been deleted")
+
+        return ScheduledTaskDetailDto(schedule)
     }
 
 
