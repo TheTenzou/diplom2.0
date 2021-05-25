@@ -7,7 +7,7 @@ import ru.thetenzou.tsoddservice.schedule.dto.request.ScheduleRequestDto
 import java.time.LocalDate
 
 /**
- * A ScheduleService
+ * A ScheduleService provide logic for working with schedule
  */
 interface ScheduleService {
 
