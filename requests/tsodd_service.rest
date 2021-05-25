@@ -23,8 +23,9 @@ Authorization: Bearer {{accessToken}}
 GET http://localhost:8080/api/tsodd/v1/helloAdmin
 Authorization: Bearer {{accessToken}}
 
-###
-POST http://localhost:8080/api/tsodd/v1/solve HTTP/1.1
+### generate new schedule
+POST http://localhost:8080/api/tsodd/v1/schedule/generate
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
@@ -33,14 +34,17 @@ Content-Type: application/json
     "endDate": "2021-05-30"
 }
 
-###
+### get list of schedules
 GET http://localhost:8080/api/tsodd/v1/schedule?page=0&size=20
+Authorization: Bearer {{accessToken}}
 
-###
+### get schedule details
 GET http://localhost:8080/api/tsodd/v1/schedule/18?size=2
+Authorization: Bearer {{accessToken}}
 
-###
+### create schedule
 PUT http://localhost:8080/api/tsodd/v1/schedule
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
@@ -49,8 +53,9 @@ Content-Type: application/json
     "endDate": "2021-05-30"
 }
 
-###
+### update schedule
 PATCH http://localhost:8080/api/tsodd/v1/schedule
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
@@ -59,5 +64,37 @@ Content-Type: application/json
     "endDate": "2021-05-29"
 }
 
-###
-DELETE http://localhost:8080/api/tsodd/v1/schedule/32
+### delete scedule
+DELETE http://localhost:8080/api/tsodd/v1/schedule/41
+Authorization: Bearer {{accessToken}}
+
+### create schedules task
+PUT http://localhost:8080/api/tsodd/v1/scheduledTask
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "schedule": 17,
+    "date": "2021-05-27",
+    "tsodd": 8,
+    "taskType": 13,
+    "crew": 14
+}
+
+### update schedules task
+PATCH http://localhost:8080/api/tsodd/v1/scheduledTask
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "id": 44,
+    "schedule": 17,
+    "date": "2021-05-27",
+    "tsodd": 8,
+    "taskType": 13,
+    "crew": 14
+}
+
+### delete schedules task
+DELETE http://localhost:8080/api/tsodd/v1/scheduledTask/100
+Authorization: Bearer {{accessToken}}
