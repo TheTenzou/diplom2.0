@@ -1,4 +1,4 @@
-package ru.thetenzou.tsoddservice.schedule.converter
+package ru.thetenzou.tsoddservice.schedule.service.converter
 
 import org.springframework.stereotype.Component
 import ru.thetenzou.tsoddservice.crew.model.Crew

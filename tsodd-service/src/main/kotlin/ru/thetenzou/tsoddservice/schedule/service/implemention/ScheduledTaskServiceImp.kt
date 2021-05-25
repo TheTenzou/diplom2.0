@@ -2,7 +2,7 @@ package ru.thetenzou.tsoddservice.schedule.service.implemention
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import ru.thetenzou.tsoddservice.schedule.converter.DtoToScheduledTaskConverter
+import ru.thetenzou.tsoddservice.schedule.service.converter.DtoToScheduledTaskConverter
 import ru.thetenzou.tsoddservice.schedule.dto.request.ScheduledTaskRequestDto
 import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduledTaskDetailDto
 import ru.thetenzou.tsoddservice.schedule.repository.ScheduledTaskRepository
