@@ -21,7 +21,7 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
             workDayLimit(constraintFactory),
             allCrews(constraintFactory),
             crewLoadBalance(constraintFactory),
-            maxEffectivness(constraintFactory),
+            maxEffectiveness(constraintFactory),
         )
 
     private fun assignTask(constraintFactory: ConstraintFactory) =
@@ -82,7 +82,7 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
                 }
             )
 
-    private fun maxEffectivness(constraintFactory: ConstraintFactory) =
+    private fun maxEffectiveness(constraintFactory: ConstraintFactory) =
         constraintFactory
             .from(PlannedTask::class.java)
             .filter { task -> task.crew != null && task.date != null }
@@ -90,6 +90,6 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
             .reward(
                 "max effectiveness",
                 HardSoftScore.ONE_HARD,
-                fun(effectiveness): Int { return effectiveness }
+                fun(effectiveness): Int { return 1_000_000 * effectiveness }
             )
 }
