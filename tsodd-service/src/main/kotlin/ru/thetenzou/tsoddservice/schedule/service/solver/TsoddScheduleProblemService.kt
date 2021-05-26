@@ -4,10 +4,11 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import ru.thetenzou.tsoddservice.schedule.model.Schedule
-import ru.thetenzou.tsoddservice.schedule.model.solver.TsoddScheduleProblem
 import ru.thetenzou.tsoddservice.crew.repository.CrewRepository
+import ru.thetenzou.tsoddservice.schedule.model.Schedule
 import ru.thetenzou.tsoddservice.schedule.model.ScheduleStatus
+import ru.thetenzou.tsoddservice.schedule.model.solver.PlannedTask
+import ru.thetenzou.tsoddservice.schedule.model.solver.TsoddScheduleProblem
 import ru.thetenzou.tsoddservice.schedule.repository.ScheduleRepository
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -89,6 +90,8 @@ class TsoddScheduleProblemService(
     fun savePlanningSchedule(tsoddScheduleProblem: TsoddScheduleProblem) {
         logger.info("New scheduled has been saved")
 
+        tsoddScheduleProblem.planningTaskList?.forEach { logger.info(it.toNiceString()) }
+
         val tasks = tsoddScheduleProblem.planningTaskList ?: return
         val scheduleId = tsoddScheduleProblem.scheduleId ?: return
 
@@ -104,6 +107,18 @@ class TsoddScheduleProblemService(
 
         scheduleRepository.save(schedule)
     }
+
+    private fun Any?.toGreenString() = "\u001B[32m${toString()}\u001B[0m"
+
+    private fun PlannedTask.toNiceString() =
+        "tsodd name: ${tsodd?.type?.name.toGreenString().padStart(30)}; " +
+                "task name: ${taskType?.name.toGreenString().padStart(25)}; " +
+                "duration: ${taskType?.durationHours.toGreenString().padStart(3)}; " +
+                "date: ${date?.year.toGreenString()} " +
+                    "${date?.month.toGreenString().padStart(7)} " +
+                    "${date?.dayOfMonth.toGreenString().padStart(4)}; " +
+                "crew: ${crew?.name.toGreenString()}"
+
 
     companion object {
         val logger: Logger = LoggerFactory.getLogger(TsoddScheduleProblemService::class.java)

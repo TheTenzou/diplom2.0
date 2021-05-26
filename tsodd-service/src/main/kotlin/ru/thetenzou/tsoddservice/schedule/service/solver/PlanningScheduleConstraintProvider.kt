@@ -1,43 +1,76 @@
 package ru.thetenzou.tsoddservice.schedule.service.solver
 
+import org.optaplanner.core.api.domain.constraintweight.ConstraintConfiguration
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore
-import org.optaplanner.core.api.score.stream.Constraint
-import org.optaplanner.core.api.score.stream.ConstraintCollectors.count
+import org.optaplanner.core.api.score.stream.ConstraintCollectors.sum
+import org.optaplanner.core.api.score.stream.ConstraintCollectors.toList
 import org.optaplanner.core.api.score.stream.ConstraintFactory
 import org.optaplanner.core.api.score.stream.ConstraintProvider
+import org.optaplanner.core.api.score.stream.Joiners
+import ru.thetenzou.tsoddservice.crew.model.Crew
 import ru.thetenzou.tsoddservice.schedule.model.solver.PlannedTask
+import java.time.temporal.ChronoUnit
+import kotlin.math.absoluteValue
 
+@ConstraintConfiguration
 class PlanningScheduleConstraintProvider : ConstraintProvider {
-    override fun defineConstraints(constraintFactory: ConstraintFactory): Array<Constraint> {
-        return arrayOf<Constraint>(
-            assignCrew(constraintFactory),
-            crewLimit(constraintFactory),
-            assignDate(constraintFactory),
-            sameDay(constraintFactory),
+    override fun defineConstraints(constraintFactory: ConstraintFactory) =
+        arrayOf(
+            assignTask(constraintFactory),
+            intervalsLimit(constraintFactory),
+            workDayLimit(constraintFactory),
+            crewLoadBalance(constraintFactory),
         )
-    }
+
+    private fun assignTask(constraintFactory: ConstraintFactory) =
+        constraintFactory
+            .from(PlannedTask::class.java)
+            .filter { task -> task.date == null || task.crew == null }
+            .penalize("assign task", HardSoftScore.ofHard(1_000_000))
+
+    private fun intervalsLimit(constraintFactory: ConstraintFactory) =
+        constraintFactory
+            .from(PlannedTask::class.java)
+            .join(
+                PlannedTask::class.java,
+                Joiners.equal(PlannedTask::tsodd),
+                Joiners.equal(PlannedTask::taskType),
+            )
+            .filter { task1, task2 -> task1.date != null && task2.date != null }
+            .reward(
+                "interval between tasks",
+                HardSoftScore.ONE_SOFT,
+                fun(task1, task2): Int {
+                    val interval = ChronoUnit.DAYS.between(task1.date, task2.date).toInt()
+                    val requiredInterval = task1.taskType?.timeIntervalInDays ?: return 0
+                    val delta = (requiredInterval - interval).absoluteValue + 1
+                    return 1_000_000 / delta
+                }
+            )
+
+    private fun workDayLimit(constraintFactory: ConstraintFactory) =
+        constraintFactory
+            .from(PlannedTask::class.java)
+            .filter { task -> task.crew != null && task.date != null }
+            .groupBy(PlannedTask::crew, PlannedTask::date, sum { task -> task.taskType?.durationHours ?: 0 })
+            .filter { _, _, totalSum -> totalSum > 8 }
+            .penalize("work hour limit", HardSoftScore.ofHard(1_000_000))
 
     // TODO update rules
-
-    private fun assignCrew(constraintFactory: ConstraintFactory) =
-        constraintFactory.from(PlannedTask::class.java)
-            .filter { it.crew != null }
-            .reward("assign crew", HardSoftScore.ONE_SOFT)
-
-    private fun crewLimit(constraintFactory: ConstraintFactory) =
-        constraintFactory.from(PlannedTask::class.java)
-            .groupBy(PlannedTask::crew, count())
-            .filter { crew, count -> crew != null && count > 3 }
-            .penalize("crew limit", HardSoftScore.ONE_HARD)
-
-    private fun assignDate(constraintFactory: ConstraintFactory) =
-        constraintFactory.from(PlannedTask::class.java)
-            .filter { task -> task.date != null && task.crew != null }
-            .reward("assign crew and date", HardSoftScore.ONE_HARD)
-
-    private fun sameDay(constraintFactory: ConstraintFactory) =
-        constraintFactory.from(PlannedTask::class.java)
-            .groupBy(PlannedTask::date, count())
-            .filter { date, count -> date != null && count > 4 }
-            .penalize("penalize same day", HardSoftScore.ONE_HARD)
+    private fun crewLoadBalance(constraintFactory: ConstraintFactory) =
+        constraintFactory
+            .from(PlannedTask::class.java)
+            .filter { task -> task.crew != null && task.date != null }
+            .groupBy(PlannedTask::crew, sum { task -> task.taskType?.durationHours ?: 0 })
+            .groupBy(fun(_, _):Int {return 1}, toList(fun(v1, v2):Pair<Crew?, Int> {return v1 to v2}))
+            .reward(
+                "crew load balance",
+                HardSoftScore.ONE_SOFT,
+                fun(_, v2): Int {
+                    val maxWorkLoad = v2.maxOf { it.second }
+                    val minWorkLoad = v2.minOf { it.second }
+                    val delta = (maxWorkLoad - minWorkLoad).absoluteValue + 1
+                    return 1_000_000/delta
+                }
+            )
 }
