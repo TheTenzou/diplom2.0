@@ -21,6 +21,7 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
             workDayLimit(constraintFactory),
             allCrews(constraintFactory),
             crewLoadBalance(constraintFactory),
+            maxEffectivness(constraintFactory),
         )
 
     private fun assignTask(constraintFactory: ConstraintFactory) =
@@ -69,7 +70,7 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
             .from(PlannedTask::class.java)
             .filter { task -> task.crew != null && task.date != null }
             .groupBy(PlannedTask::crew, sum { task -> task.taskType?.durationHours ?: 0 })
-            .groupBy(fun(_, _):Int {return 1}, toList(fun(v1, v2):Pair<Crew?, Int> {return v1 to v2}))
+            .groupBy(fun(_, _): Int { return 1 }, toList(fun(v1, v2): Pair<Crew?, Int> { return v1 to v2 }))
             .reward(
                 "crew load balance",
                 HardSoftScore.ONE_SOFT,
@@ -77,7 +78,18 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
                     val maxWorkLoad = v2.maxOf { it.second }
                     val minWorkLoad = v2.minOf { it.second }
                     val delta = (maxWorkLoad - minWorkLoad).absoluteValue + 1
-                    return 1_000_000/delta
+                    return 1_000_000 / delta
                 }
+            )
+
+    private fun maxEffectivness(constraintFactory: ConstraintFactory) =
+        constraintFactory
+            .from(PlannedTask::class.java)
+            .filter { task -> task.crew != null && task.date != null }
+            .groupBy(sum { task -> task.taskType?.effectiveness ?: 0 })
+            .reward(
+                "max effectiveness",
+                HardSoftScore.ONE_HARD,
+                fun(effectiveness): Int { return effectiveness }
             )
 }
