@@ -19,6 +19,7 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
             assignTask(constraintFactory),
             intervalsLimit(constraintFactory),
             workDayLimit(constraintFactory),
+            allCrews(constraintFactory),
             crewLoadBalance(constraintFactory),
         )
 
@@ -56,7 +57,13 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
             .filter { _, _, totalSum -> totalSum > 8 }
             .penalize("work hour limit", HardSoftScore.ofHard(1_000_000))
 
-    // TODO update rules
+    private fun allCrews(constraintFactory: ConstraintFactory) =
+        constraintFactory
+            .from(PlannedTask::class.java)
+            .filter { task -> task.crew != null && task.date != null }
+            .groupBy(PlannedTask::crew)
+            .reward("load all crews", HardSoftScore.ofHard(1_000_000))
+
     private fun crewLoadBalance(constraintFactory: ConstraintFactory) =
         constraintFactory
             .from(PlannedTask::class.java)
