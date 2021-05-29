@@ -19,7 +19,7 @@ export default class App extends Component {
         <Router>
           <Switch>
             <Route exact path="/">
-              <MainNavigation />
+              <MainNavigation sideBar={true}/>
               <Home />
             </Route>
             <Route path="/about">
