@@ -25,7 +25,7 @@ export default class App extends Component {
               <MainNavigation />
               <About />
             </Route>
-            <Route path="/tsoddSchedules">
+            <Route path="/tsoddSchedules/:page">
               <MainNavigation />
               <TsoddSchedulesList />
             </Route>
@@ -37,7 +37,7 @@ export default class App extends Component {
               <Authentication />
             </Route>
             <Route path="/adminPanel">
-              <MainNavigation />
+              {/* <MainNavigation /> */}
               <AdminPanel />
             </Route>
           </Switch>
