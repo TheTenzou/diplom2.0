@@ -10,6 +10,7 @@ import javax.persistence.*
  * @param id is id of the record
  * @param name name of the schedule
  * @param createdDate date of creation
+ * @param resourceLimit max limit of resources
  * @param startDate date when schedule begins
  * @param endDate date when schedule ends
  * @param status describe is schedule in the process of generating
@@ -37,6 +38,12 @@ data class Schedule(
      */
     @Column(name = "created_date")
     var createdDate: LocalDateTime,
+
+    /**
+     * max limit of resources
+     */
+    @Column(name = "resource_limit")
+    var resourceLimit: Double,
 
     /**
      *  date when schedule begins

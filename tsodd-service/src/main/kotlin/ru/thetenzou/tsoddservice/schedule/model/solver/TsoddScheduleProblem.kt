@@ -3,6 +3,7 @@ package ru.thetenzou.tsoddservice.schedule.model.solver
 import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty
 import org.optaplanner.core.api.domain.solution.PlanningScore
 import org.optaplanner.core.api.domain.solution.PlanningSolution
+import org.optaplanner.core.api.domain.solution.ProblemFactProperty
 import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore
 import ru.thetenzou.tsoddservice.crew.model.Crew
@@ -22,6 +23,9 @@ class TsoddScheduleProblem(
 
     val scheduleId: Long?,
 
+    @ProblemFactProperty
+    val parameters: ScheduleParameters?,
+
     @ValueRangeProvider(id = "dateRange")
     val availableDates: List<LocalDate>?,
 
@@ -37,5 +41,9 @@ class TsoddScheduleProblem(
     /**
      * default constructor required for OptaPlanner
      */
-    constructor() : this(null, null, null, null)
+    constructor() : this(null, null, null, null, null)
 }
+
+data class ScheduleParameters (
+    val resourceLimit: Double,
+)

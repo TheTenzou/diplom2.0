@@ -8,7 +8,7 @@ import ru.thetenzou.tsoddservice.schedule.dto.response.ScheduleDto
 import ru.thetenzou.tsoddservice.schedule.service.ScheduleService
 import ru.thetenzou.tsoddservice.common.dto.PagedResponse
 import ru.thetenzou.tsoddservice.schedule.dto.request.ScheduleRequestDto
-import ru.thetenzou.tsoddservice.schedule.dto.request.SolveRequestDto
+import ru.thetenzou.tsoddservice.schedule.dto.request.GenerateScheduleDto
 import ru.thetenzou.tsoddservice.schedule.service.solver.ScheduleGenerator
 
 /**
@@ -29,9 +29,9 @@ class ScheduleController(
      * @return generating schedule
      */
     @PostMapping("/generate")
-    fun generateNewSchedule(@RequestBody request: SolveRequestDto): ResponseEntity<ScheduleDto> {
+    fun generateNewSchedule(@RequestBody request: GenerateScheduleDto): ResponseEntity<ScheduleDto> {
 
-        val schedule = schedulePlanningService.generateSchedule(request.name, request.startDate, request.endDate)
+        val schedule = schedulePlanningService.generateSchedule(request.name, request.resourcesLimit, request.startDate, request.endDate)
 
         return ResponseEntity(schedule, HttpStatus.ACCEPTED)
     }

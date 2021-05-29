@@ -9,6 +9,7 @@ import java.time.LocalDate
 data class ScheduleRequestDto(
     val id: Long,
     val name: String?,
+    val resourceLimit: Double,
     val startDate: LocalDate?,
     val endDate: LocalDate?,
 )

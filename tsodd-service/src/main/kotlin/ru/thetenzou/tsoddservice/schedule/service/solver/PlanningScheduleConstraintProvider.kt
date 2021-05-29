@@ -2,13 +2,14 @@ package ru.thetenzou.tsoddservice.schedule.service.solver
 
 import org.optaplanner.core.api.domain.constraintweight.ConstraintConfiguration
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore
-import org.optaplanner.core.api.score.stream.ConstraintCollectors.sum
-import org.optaplanner.core.api.score.stream.ConstraintCollectors.toList
+import org.optaplanner.core.api.score.stream.ConstraintCollectors.*
 import org.optaplanner.core.api.score.stream.ConstraintFactory
 import org.optaplanner.core.api.score.stream.ConstraintProvider
 import org.optaplanner.core.api.score.stream.Joiners
 import ru.thetenzou.tsoddservice.crew.model.Crew
 import ru.thetenzou.tsoddservice.schedule.model.solver.PlannedTask
+import ru.thetenzou.tsoddservice.schedule.model.solver.ScheduleParameters
+import java.math.BigDecimal
 import java.time.temporal.ChronoUnit
 import kotlin.math.absoluteValue
 
@@ -22,6 +23,7 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
             allCrews(constraintFactory),
             crewLoadBalance(constraintFactory),
             maxEffectiveness(constraintFactory),
+            resourceLimit(constraintFactory),
         )
 
     private fun assignTask(constraintFactory: ConstraintFactory) =
@@ -38,7 +40,7 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
                 Joiners.equal(PlannedTask::tsodd),
                 Joiners.equal(PlannedTask::taskType),
             )
-            .filter { task1, task2 -> task1.date != null && task2.date != null }
+            .filter { task1, task2 -> task1.date != null && task2.date != null && task1.crew != null && task2.crew != null}
             .reward(
                 "interval between tasks",
                 HardSoftScore.ONE_SOFT,
@@ -56,7 +58,7 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
             .filter { task -> task.crew != null && task.date != null }
             .groupBy(PlannedTask::crew, PlannedTask::date, sum { task -> task.taskType?.durationHours ?: 0 })
             .filter { _, _, totalSum -> totalSum > 8 }
-            .penalize("work hour limit", HardSoftScore.ofHard(1_000_000))
+            .penalize("work hour limit", HardSoftScore.ofHard(1_000_000_000))
 
     private fun allCrews(constraintFactory: ConstraintFactory) =
         constraintFactory
@@ -91,5 +93,24 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
                 "max effectiveness",
                 HardSoftScore.ONE_HARD,
                 fun(effectiveness): Int { return 1_000_000 * effectiveness }
+            )
+
+    private fun resourceLimit(constraintFactory: ConstraintFactory) =
+        constraintFactory
+            .from(PlannedTask::class.java)
+            .filter { task -> task.crew != null && task.date != null }
+            .groupBy( sumBigDecimal { task -> BigDecimal.valueOf(task.taskType?.moneyResources ?: 0.0) })
+            .join(ScheduleParameters::class.java)
+            .penalize(
+                "resourceLimit",
+                HardSoftScore.ONE_HARD,
+                fun(totalResources, resourceLimit): Int {
+//                    println("total resources $totalResources")
+//                    println("limit ${resourceLimit.resourceLimit}")
+                    if (totalResources > BigDecimal.valueOf(resourceLimit.resourceLimit ?: 0.0)) {
+                        return 1_000_000_000
+                    }
+                    return 0
+                },
             )
 }

@@ -8,6 +8,7 @@ import ru.thetenzou.tsoddservice.crew.repository.CrewRepository
 import ru.thetenzou.tsoddservice.schedule.model.Schedule
 import ru.thetenzou.tsoddservice.schedule.model.ScheduleStatus
 import ru.thetenzou.tsoddservice.schedule.model.solver.PlannedTask
+import ru.thetenzou.tsoddservice.schedule.model.solver.ScheduleParameters
 import ru.thetenzou.tsoddservice.schedule.model.solver.TsoddScheduleProblem
 import ru.thetenzou.tsoddservice.schedule.repository.ScheduleRepository
 import java.time.LocalDate
@@ -31,18 +32,20 @@ class TsoddScheduleProblemService(
      * createNewSchedule create and save new schedule empty to database
      *
      * @param name name of new schedule
+     * @param resourceLimit max limit of resources
      * @param startDate starting date of schedule
      * @param endDate ending date of schedule
      *
      * @return created schedule
      */
-    fun createNewSchedule(name: String, startDate: LocalDate, endDate: LocalDate): Schedule {
+    fun createNewSchedule(name: String, resourceLimit:Double, startDate: LocalDate, endDate: LocalDate): Schedule {
         logger.info("Create new schedule")
 
         val schedule = Schedule(
             id = 0L,
             name = name,
             createdDate = LocalDateTime.now(),
+            resourceLimit = resourceLimit,
             startDate = startDate,
             endDate = endDate,
             status = ScheduleStatus.GENERATING,
@@ -76,6 +79,7 @@ class TsoddScheduleProblemService(
 
         return TsoddScheduleProblem(
             scheduleId = schedule.id,
+            parameters = ScheduleParameters(schedule.resourceLimit),
             availableDates = availableDates,
             availableCrews = crews,
             planningTaskList = plannedTaskService.getPlanningTasks(days)
@@ -114,6 +118,7 @@ class TsoddScheduleProblemService(
         "tsodd name: ${tsodd?.type?.name.toGreenString().padStart(30)}; " +
                 "task name: ${taskType?.name.toGreenString().padStart(25)}; " +
                 "duration: ${taskType?.durationHours.toGreenString().padStart(3)}; " +
+                "resources: ${taskType?.moneyResources.toGreenString().padStart(4)}; " +
                 "date: ${date?.year.toGreenString()} " +
                     "${date?.month.toGreenString().padStart(7)} " +
                     "${date?.dayOfMonth.toGreenString().padStart(4)}; " +

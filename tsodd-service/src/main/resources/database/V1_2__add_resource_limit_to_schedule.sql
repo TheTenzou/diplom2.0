@@ -1,0 +1,1 @@
+alter table schedules add column resource_limit float8;

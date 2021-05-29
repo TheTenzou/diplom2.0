@@ -28,12 +28,12 @@ class ScheduleGenerator(
      *
      * @return schedule generating schedule
      */
-    fun generateSchedule(name: String, startDate: LocalDate, endDate: LocalDate): ScheduleDto {
+    fun generateSchedule(name: String, resourceLimit:Double, startDate: LocalDate, endDate: LocalDate): ScheduleDto {
         if (startDate > endDate) {
             throw IllegalArgumentException("start date has to be before end date")
         }
 
-        val schedule = tsoddScheduleProblemService.createNewSchedule(name, startDate, endDate)
+        val schedule = tsoddScheduleProblemService.createNewSchedule(name, resourceLimit, startDate, endDate)
 
         logger.info("Start generating schedule")
         solverManager.solve(
