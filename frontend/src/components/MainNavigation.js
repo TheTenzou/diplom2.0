@@ -50,7 +50,7 @@ export default class MainNavigation extends Component {
           <Collapse navbar id="navbar">
             <Navbar.Nav mr="auto">
               <Nav.ItemLink href="/" active>Главная</Nav.ItemLink>
-              <Nav.ItemLink href="/table1">Таблица №1</Nav.ItemLink>
+              <Nav.ItemLink href="/tsoddSchedules">План обслуживания ТСОДД</Nav.ItemLink>
               <Nav.ItemLink href="/table2">Таблица №2</Nav.ItemLink>
               <Nav.ItemLink href="/about">Дополнительная информация</Nav.ItemLink>
               <div id="modalRoot"></div>
