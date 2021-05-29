@@ -50,7 +50,7 @@ class ScheduleController(
         @RequestParam(defaultValue = "10") size: Int,
     ): ResponseEntity<PagedResponse<ScheduleDto>> {
 
-        val response = scheduleService.getAllSchedules(page, size)
+        val response = scheduleService.getAllSchedules(page - 1, size)
 
         return ResponseEntity(response, HttpStatus.OK)
     }

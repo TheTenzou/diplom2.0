@@ -55,7 +55,7 @@ data class PagedResponse<T>(
         page = page.number + 1,
         pageSize = page.size,
         previousPage = if (page.hasPrevious()) page.number - 1 else 0,
-        nextPage = if (page.hasNext()) page.number + 1 else 0,
+        nextPage = if (page.hasNext()) page.number + 1 else page.number,
         totalPages = page.totalPages,
         data = page.content,
     )
