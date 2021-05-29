@@ -1,9 +1,11 @@
 package ru.thetenzou.tsoddservice
 
+import org.locationtech.jts.geom.Coordinate
 import org.locationtech.jts.geom.GeometryFactory
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.context.annotation.Bean
 import ru.thetenzou.tsoddservice.crew.model.Crew
 import ru.thetenzou.tsoddservice.crew.repository.CrewRepository
 import ru.thetenzou.tsoddservice.task.model.TaskGroup
@@ -51,14 +53,21 @@ class TsoddServiceApplication(
                 type = firstTsoddType,
                 visibility = 1.0,
                 condition = tsoddCondition,
-                coordinates = GeometryFactory().createGeometryCollection(),
+                coordinates = GeometryFactory().createGeometryCollection(
+                    arrayOf(
+                        GeometryFactory().createPoint(Coordinate(1.0, 1.0)),
+                        GeometryFactory().createPoint(Coordinate(1.0, 2.0)),
+                    )),
             ),
             Tsodd(
                 id = 0L,
                 type = secondTsoddType,
                 visibility = 0.7,
                 condition = null,
-                coordinates = GeometryFactory().createGeometryCollection(),
+                coordinates = GeometryFactory().createGeometryCollection(
+                    arrayOf(
+                        GeometryFactory().createPoint(Coordinate(3.0, 3.0)),
+                    )),
             ),
         )
 
