@@ -1,5 +1,6 @@
 package ru.thetenzou.tsoddservice.schedule.dto.response
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import org.springframework.data.domain.Page
 import ru.thetenzou.tsoddservice.schedule.model.Schedule
 import ru.thetenzou.tsoddservice.common.dto.PagedResponse
@@ -12,8 +13,11 @@ import java.time.LocalDateTime
 data class ScheduleDetailDto (
     val id: Long,
     val name: String,
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm")
     val createdDate: LocalDateTime,
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     val startDate: LocalDate,
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     val endDate: LocalDate,
     val status: String,
     val tasks: PagedResponse<ScheduledTaskDto>

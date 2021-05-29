@@ -1,5 +1,6 @@
 package ru.thetenzou.tsoddservice.schedule.dto.response
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import ru.thetenzou.tsoddservice.crew.dto.response.CrewDto
 import ru.thetenzou.tsoddservice.schedule.model.ScheduledTask
 import ru.thetenzou.tsoddservice.task.dto.response.TaskTypeMinimalDto
@@ -11,6 +12,7 @@ import java.time.LocalDate
  */
 data class ScheduledTaskDto(
     val id: Long?,
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     val date: LocalDate?,
     val tsodd: TsoddMinimalDto,
     val taskType: TaskTypeMinimalDto,
