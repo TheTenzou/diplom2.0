@@ -63,7 +63,9 @@ services:
       - "8080"
     depends_on:
       - postgis-tsodd
-    command: ./wait-for.sh ${POSTGIS_TSODD_HOST}:${POSTGIS_TSODD_PORT} -- java -jar tsodd-service.jar
+    command: >
+      ./wait-for.sh ${POSTGIS_TSODD_HOST}:${POSTGIS_TSODD_PORT} --timeout=180
+      -- java -jar tsodd-service.jar
 
   user-service-reids:
     container_name: ${REDIS_HOST}
