@@ -25,7 +25,7 @@ function ScheduleTable({ crew, schedule }) {
   let table = [<tr>{firstRow}</tr>];
 
   if (schedule) {
-    const days = [...schedule.keys()].sort();
+    const days = [...schedule.keys()];
 
     days.map((day) => {
       const crewsTasks = schedule.get(day);
