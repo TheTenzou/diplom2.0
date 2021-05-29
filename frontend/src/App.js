@@ -5,6 +5,7 @@ import MyMap from "./components/Map";
 import Authentication from "./components/AuthWindow";
 import AdminPanel from "./components/AdminPanel";
 import TsoddSchedulesList from "./pages/TsoddSchedulesList";
+import TsoddSchedule from "./pages/TsoddSchedule";
 
 import axios from "axios";
 import React, { Component, useEffect, useState } from "react";
@@ -28,6 +29,10 @@ export default class App extends Component {
             <Route path="/tsoddSchedules/:page">
               <MainNavigation />
               <TsoddSchedulesList />
+            </Route>
+            <Route path="/tsoddSchedule/:id">
+              <MainNavigation />
+              <TsoddSchedule/>
             </Route>
             <Route path="/table2">
               <MainNavigation />

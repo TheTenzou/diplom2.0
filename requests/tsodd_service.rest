@@ -36,7 +36,7 @@ Content-Type: application/json
 }
 
 ### get list of schedules
-GET http://localhost:8080/api/tsodd/v1/schedule?page=0&size=20
+GET http://localhost:8080/api/tsodd/v1/schedule?page=1&size=20
 Authorization: Bearer {{accessToken}}
 
 ### get schedule details
