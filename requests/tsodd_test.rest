@@ -1,0 +1,48 @@
+###
+POST http://localhost:8080/api/tsodd/v1/tsodds 
+Content-Type: application/json
+
+{
+    "visibility" : 0.1,
+    "coordinates" : {
+        "type" : "GeometryCollection",
+        "geometries" : [ {
+            "type" : "Point",
+            "coordinates" : [ 1, 1 ]
+        }, {
+            "type" : "Point",
+            "coordinates" : [ 1, 2 ]
+        } ]
+    },
+    "type": "http://localhost:8080/api/tsodd/v1/tsoddTypes/5",
+    "condition": ""
+}
+
+###
+POST http://localhost:8080/api/tsodd/v1/tsoddConditions 
+Content-Type: application/json
+
+{
+    "name": "test"
+}
+
+###
+POST http://localhost:8080/api/tsodd/v1/tsoddTypes
+Content-Type: application/json
+
+{
+    "name": "test",
+    "tsoddGroup": "http://localhost:8080/api/tsodd/v1/tsoddGroups/3"
+}
+
+###
+POST http://localhost:8080/api/tsodd/v1/tsoddGroups
+Content-Type: application/json
+
+{
+    "name": "test 2",
+    "tsoddGroup": [
+        "http://localhost:8080/api/tsodd/v1/taskGroups/1",
+        "http://localhost:8080/api/tsodd/v1/taskGroups/2"
+    ]
+}
