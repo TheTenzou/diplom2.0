@@ -76,8 +76,14 @@ const AuthForm = () => {
           localStorage.setItem("refreshToken", r.data.refreshToken);
           setRedirect(true);
         }).catch((er) => {
-          setErrorMessage(er.response.statusText);
           console.log(er.response);
+          if (er.response.data.error.message !== undefined) {
+            setErrorMessage(er.response.data.error.message);
+          } else if (er.response.data.message !== undefined) {
+            setErrorMessage(er.response.data.message);
+          } else {
+            setErrorMessage(er.response.statusText);
+          }
         });
       }}>Войти</Button>
       <p>{redirect ? <Redirect to="/" /> : ''}</p>
