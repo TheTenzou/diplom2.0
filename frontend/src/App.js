@@ -5,7 +5,7 @@ import MyMap from "./components/Map";
 import Authentication from "./components/AuthWindow";
 import AdminPanel from "./components/AdminPanel";
 import TsoddSchedulesList from "./pages/TsoddSchedulesList";
-import TsoddSchedule from "./pages/TsoddSchedule";
+import TsoddSchedule from "./pages/tsoddSchedule/TsoddSchedule";
 
 import axios from "axios";
 import React, { Component, useEffect, useState } from "react";
