@@ -1,28 +1,21 @@
 import React from "react";
-import { Alert } from "bootstrap-4-react";
+
+import "../css/table.css";
 
 function ScheduleTable({ crew, schedule }) {
-  const cellStyle = { width: "200px" };
-  let firstRow = [
-    <td>
-      <Alert success style={cellStyle}>
-        {" "}
-        {" "}
-      </Alert>
-    </td>,
-  ];
+  let firstRow = [<th></th>];
 
   crew?.forEach((crew) => {
-    firstRow.push(
-      <td>
-        <Alert success style={cellStyle}>
-          {crew.name}
-        </Alert>
-      </td>
-    );
+    firstRow.push(<th>{crew.name}</th>);
   });
 
-  let table = [<tr>{firstRow}</tr>];
+  let table = [
+    <thead>
+      <tr>{firstRow}</tr>
+    </thead>,
+  ];
+
+  let tableBody = [];
 
   if (schedule) {
     const days = [...schedule.keys()];
@@ -30,36 +23,30 @@ function ScheduleTable({ crew, schedule }) {
     days.forEach((day) => {
       const crewsTasks = schedule.get(day);
 
-      let dayTaskList = [
-        <td>
-          <Alert success style={cellStyle}>
-            {day}
-          </Alert>
-        </td>,
-      ];
+      let dayTaskList = [<th>{day}</th>];
       crew?.forEach((crew) => {
         let crewTasks = [];
         if (crewsTasks.has(crew.id)) {
           crewsTasks.get(crew.id).forEach((task) => {
             crewTasks.push(
-              <Alert success style={cellStyle}>
+              <div>
                 {task.taskType.name + " "}
+                <br />
                 {task.tsodd.typeName}
-              </Alert>
+              </div>
             );
           });
-        } else {
-          crewTasks.push(<Alert success style={cellStyle}>{" "}</Alert>)
         }
         dayTaskList.push(<td>{crewTasks}</td>);
       });
-      table.push(<tr>{dayTaskList}</tr>);
+      tableBody.push(<tr>{dayTaskList}</tr>);
     });
+    table.push(<tbody>{tableBody}</tbody>);
   }
 
   return (
     <>
-      <table>{table}</table>
+      <table className="styled-table">{table}</table>
     </>
   );
 }

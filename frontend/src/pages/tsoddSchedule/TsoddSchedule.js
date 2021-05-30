@@ -42,11 +42,13 @@ function TsoddSchedule() {
   }, [setCrewList]);
 
   return (
-    <BDiv mx="auto" className="tableFlows">
+    <>
+    {/* <BDiv mx="auto" className="tableFlows"> */}
       Schedule
       <br />
       <ScheduleTable crew={crewList} schedule={schedule}/>
-    </BDiv>
+    {/* </BDiv> */}
+    </>
   );
 }
 
