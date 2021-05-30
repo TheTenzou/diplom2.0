@@ -11,6 +11,7 @@ import javax.persistence.*
  * @param visibility describe how visible this tsodd is. Max value 1, min value 0
  * @param condition current condition of the tsodd
  * @param coordinates collection of the points that describe tsodd location
+ * @param positionDescription describe position of the tsodd
  */
 @Entity
 @Table(name = "tsodds")
@@ -42,9 +43,16 @@ data class Tsodd(
     @ManyToOne
     @JoinColumn(name = "condition_id")
     var condition: TsoddCondition?,
+
     /**
      * collection of the points that describe tsodd location
      */
     @Column(name = "coordinates")
     var coordinates: GeometryCollection,
+
+    /**
+     * describe position of the tsodd
+     */
+    @Column(name = "position_description")
+    var positionDescription: String,
 )

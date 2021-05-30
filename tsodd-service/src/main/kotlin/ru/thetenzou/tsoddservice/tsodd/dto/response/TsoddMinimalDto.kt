@@ -10,6 +10,7 @@ import ru.thetenzou.tsoddservice.tsodd.model.Tsodd
  * @param typeName name of the tsodd type
  * @param groupName name of the tsodd group
  * @param coordinates tsodd coordinates
+ * @param positionDescription describe position of the tsodd
  */
 data class TsoddMinimalDto(
 
@@ -32,6 +33,11 @@ data class TsoddMinimalDto(
      * tsodd coordinates
      */
     val coordinates: GeometryCollection,
+
+    /**
+     * describe position of the tsodd
+     */
+    var positionDescription: String,
 ) {
 
     /**
@@ -41,6 +47,7 @@ data class TsoddMinimalDto(
         id = tsodd.id,
         typeName = tsodd.type.name,
         groupName = tsodd.type.tsoddGroup.name,
-        coordinates = tsodd.coordinates
+        coordinates = tsodd.coordinates,
+        positionDescription = tsodd.positionDescription
     )
 }

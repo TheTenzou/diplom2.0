@@ -58,6 +58,7 @@ class TsoddServiceApplication(
                         GeometryFactory().createPoint(Coordinate(1.0, 1.0)),
                         GeometryFactory().createPoint(Coordinate(1.0, 2.0)),
                     )),
+                positionDescription = "placed some where"
             ),
             Tsodd(
                 id = 0L,
@@ -68,6 +69,7 @@ class TsoddServiceApplication(
                     arrayOf(
                         GeometryFactory().createPoint(Coordinate(3.0, 3.0)),
                     )),
+                positionDescription = "placed some where"
             ),
         )
 
