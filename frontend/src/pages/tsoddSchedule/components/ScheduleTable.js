@@ -1,4 +1,5 @@
 import React from "react";
+import { Button, Badge, Row, Col } from "bootstrap-4-react";
 
 import "../css/table.css";
 
@@ -29,10 +30,17 @@ function ScheduleTable({ crew, schedule }) {
         if (crewsTasks.has(crew.id)) {
           crewsTasks.get(crew.id).forEach((task) => {
             crewTasks.push(
-              <div>
-                {task.taskType.name + " "}
-                <br />
-                {task.tsodd.typeName}
+              <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                <div>
+                  {task.taskType.name + " "}
+                  <br />
+                  {task.tsodd.typeName}
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+                  <Badge primary style={{marginBottom: ".2rem"}}>&#9998;</Badge>
+                  <Badge danger>&#10008;</Badge>
+                </div>
               </div>
             );
           });

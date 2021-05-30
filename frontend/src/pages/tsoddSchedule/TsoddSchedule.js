@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { BDiv } from "bootstrap-4-react";
+import { BDiv, Button } from "bootstrap-4-react";
 
 import ScheduleTable from "./components/ScheduleTable";
 
@@ -54,6 +54,8 @@ function TsoddSchedule() {
       Дата создания: {scheduleInfo?.createdDate} <br/>
       Дата начала: {scheduleInfo?.startDate} <br/>
       Дата окончания: {scheduleInfo?.endDate} <br/>
+      <p/>
+      <Button success>Добавить задачу</Button>
       <ScheduleTable crew={crewList} schedule={schedule} />
     </BDiv>
   );
