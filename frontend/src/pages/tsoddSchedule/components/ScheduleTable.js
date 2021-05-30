@@ -30,18 +30,32 @@ function ScheduleTable({ crew, schedule }) {
         if (crewsTasks.has(crew.id)) {
           crewsTasks.get(crew.id).forEach((task) => {
             crewTasks.push(
-              <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <div>
                   {task.taskType.name}
-                  <br/>
+                  <br />
                   {task.tsodd.typeName}
-                  <br/>
+                  <br />
                   {task.tsodd.positionDescription}
                 </div>
 
-                <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-                  <Badge primary style={{marginBottom: ".2rem"}}>&#9998;</Badge>
-                  <Badge danger>&#10008;</Badge>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Badge primary className="btn btn-outline-light" style={{ marginBottom: ".2rem" }}>&#9998;</Badge>
+                  <Badge danger className="btn btn-outline-light">&#10008;</Badge>
                 </div>
               </div>
             );
