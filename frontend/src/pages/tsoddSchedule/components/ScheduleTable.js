@@ -12,7 +12,7 @@ function ScheduleTable({ crew, schedule }) {
     </td>,
   ];
 
-  crew?.map((crew) => {
+  crew?.forEach((crew) => {
     firstRow.push(
       <td>
         <Alert success style={cellStyle}>
@@ -27,7 +27,7 @@ function ScheduleTable({ crew, schedule }) {
   if (schedule) {
     const days = [...schedule.keys()];
 
-    days.map((day) => {
+    days.forEach((day) => {
       const crewsTasks = schedule.get(day);
 
       let dayTaskList = [
@@ -37,10 +37,10 @@ function ScheduleTable({ crew, schedule }) {
           </Alert>
         </td>,
       ];
-      crew?.map((crew) => {
+      crew?.forEach((crew) => {
         let crewTasks = [];
         if (crewsTasks.has(crew.id)) {
-          crewsTasks.get(crew.id).map((task) => {
+          crewsTasks.get(crew.id).forEach((task) => {
             crewTasks.push(
               <Alert success style={cellStyle}>
                 {task.taskType.name + " "}

@@ -15,7 +15,7 @@ function TsoddSchedule() {
       let scheduleResponse = response.data
 
       let schedule = new Map();
-      scheduleResponse.tasks.data.map((task) => {
+      scheduleResponse.tasks.data.forEach((task) => {
 
         if (!schedule.has(task.date)) {
           schedule.set(task.date, new Map())
@@ -31,7 +31,7 @@ function TsoddSchedule() {
       })
       setSchedule(schedule);
     });
-  }, [setSchedule]);
+  }, [setSchedule, id]);
 
   const [crewList, setCrewList] = useState(null);
 

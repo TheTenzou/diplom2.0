@@ -2,7 +2,7 @@ import "../App.css";
 import axios from "axios";
 
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { BDiv, Card, Button, ButtonGroup } from "bootstrap-4-react";
 
 function TsoddSchedulesList() {
@@ -14,7 +14,7 @@ function TsoddSchedulesList() {
     axios.get(`/api/tsodd/v1/schedule?page=${page}`).then((response) => {
       setScheduleList(response.data);
     });
-  }, [setScheduleList]);
+  }, [setScheduleList, page]);
 
   const itemList = scheduleList?.data.map((schedule) => {
     const scheduleStatus =
