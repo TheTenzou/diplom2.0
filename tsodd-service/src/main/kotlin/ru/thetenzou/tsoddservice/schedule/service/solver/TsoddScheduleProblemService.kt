@@ -94,7 +94,7 @@ class TsoddScheduleProblemService(
     fun savePlanningSchedule(tsoddScheduleProblem: TsoddScheduleProblem) {
         logger.info("New scheduled has been saved")
 
-        tsoddScheduleProblem.planningTaskList?.forEach { logger.info(it.toNiceString()) }
+        // tsoddScheduleProblem.planningTaskList?.forEach { logger.info(it.toNiceString()) }
 
         val tasks = tsoddScheduleProblem.planningTaskList ?: return
         val scheduleId = tsoddScheduleProblem.scheduleId ?: return

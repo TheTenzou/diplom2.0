@@ -5,7 +5,6 @@ import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore
 import org.optaplanner.core.api.score.stream.ConstraintCollectors.*
 import org.optaplanner.core.api.score.stream.ConstraintFactory
 import org.optaplanner.core.api.score.stream.ConstraintProvider
-import org.optaplanner.core.api.score.stream.Joiners
 import ru.thetenzou.tsoddservice.crew.model.Crew
 import ru.thetenzou.tsoddservice.schedule.model.solver.PlannedTask
 import ru.thetenzou.tsoddservice.schedule.model.solver.ScheduleParameters
@@ -35,20 +34,32 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
     private fun intervalsLimit(constraintFactory: ConstraintFactory) =
         constraintFactory
             .from(PlannedTask::class.java)
-            .join(
-                PlannedTask::class.java,
-                Joiners.equal(PlannedTask::tsodd),
-                Joiners.equal(PlannedTask::taskType),
-            )
-            .filter { task1, task2 -> task1.date != null && task2.date != null && task1.crew != null && task2.crew != null}
+            .filter { task -> task.date != null && task.crew != null }
+            .groupBy(PlannedTask::taskType, PlannedTask::tsodd, toList(PlannedTask::date))
             .reward(
                 "interval between tasks",
-                HardSoftScore.ONE_SOFT,
-                fun(task1, task2): Int {
-                    val interval = ChronoUnit.DAYS.between(task1.date, task2.date).toInt()
-                    val requiredInterval = task1.taskType?.timeIntervalInDays ?: return 0
-                    val delta = (requiredInterval - interval).absoluteValue + 1
-                    return 1_000_000 / delta
+                HardSoftScore.ONE_HARD,
+                fun(taskType, v, dateList): Int {
+                    dateList.sortBy { it }
+                    val intervalCount = dateList.size -1
+                    if (intervalCount == 0) {
+                        return 1_000_000
+                    }
+
+                    val requiredInterval = taskType?.timeIntervalInDays ?: return 0
+                    var averageDelta = 0
+                    for(i in 0 until intervalCount) {
+                        val interval = ChronoUnit.DAYS.between(dateList[i], dateList[i+1]).toInt()
+                        val delta = (requiredInterval - interval).absoluteValue + 1
+                        averageDelta += delta
+                    }
+                    averageDelta /= intervalCount
+//                    if (dateList.size > 2) {
+//                        print("${taskType.name} ${v?.type?.name} date list: $dateList: ")
+//                    }
+//                    println(averageDelta)
+                    return 1_000_000 / averageDelta
+
                 }
             )
 
@@ -99,14 +110,12 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
         constraintFactory
             .from(PlannedTask::class.java)
             .filter { task -> task.crew != null && task.date != null }
-            .groupBy( sumBigDecimal { task -> BigDecimal.valueOf(task.taskType?.moneyResources ?: 0.0) })
+            .groupBy(sumBigDecimal { task -> BigDecimal.valueOf(task.taskType?.moneyResources ?: 0.0) })
             .join(ScheduleParameters::class.java)
             .penalize(
                 "resourceLimit",
                 HardSoftScore.ONE_HARD,
                 fun(totalResources, resourceLimit): Int {
-//                    println("total resources $totalResources")
-//                    println("limit ${resourceLimit.resourceLimit}")
                     if (totalResources > BigDecimal.valueOf(resourceLimit.resourceLimit ?: 0.0)) {
                         return 1_000_000_000
                     }
