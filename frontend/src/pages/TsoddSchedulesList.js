@@ -36,7 +36,7 @@ function TsoddSchedulesList() {
   });
 
   return (
-    <BDiv mx="auto" className="tsoddScheduleList">
+    <BDiv mx="auto" className="tsoddSchedule">
       <h2>План обслуживания ТСОДД</h2>
       <br />
       <Button success>Сгенерировать расписание</Button> <p />
