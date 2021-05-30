@@ -32,9 +32,11 @@ function ScheduleTable({ crew, schedule }) {
             crewTasks.push(
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                 <div>
-                  {task.taskType.name + " "}
-                  <br />
+                  {task.taskType.name}
+                  <br/>
                   {task.tsodd.typeName}
+                  <br/>
+                  {task.tsodd.positionDescription}
                 </div>
 
                 <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
