@@ -29,7 +29,9 @@ function TsoddSchedulesList() {
           <Card.Text>
             дата создания: {schedule.createdDate} {scheduleStatus}
           </Card.Text>
-          <Button info as="a" href={"/tsoddSchedule/" + schedule.id}>Подробней</Button>
+          <Button info as="a" href={"/tsoddSchedule/" + schedule.id}>
+            Подробней
+          </Button>
         </Card.Body>
       </Card>
     );
@@ -47,9 +49,8 @@ function TsoddSchedulesList() {
           secondary
           mr="sm-2"
           as="a"
-          href={
-            "/tsoddSchedules/" + (scheduleList ? scheduleList.previousPage : 0)
-          }
+          disabled={scheduleList?.previousPage == page}
+          href={"/tsoddSchedules/" + (scheduleList ? scheduleList.previousPage : 1)}
         >
           Предыдущая страница
         </Button>
@@ -57,7 +58,8 @@ function TsoddSchedulesList() {
           secondary
           mr="sm-2"
           as="a"
-          href={"/tsoddSchedules/" + (scheduleList ? scheduleList.nextPage : 0)}
+          disabled={scheduleList?.nextPage == page}
+          href={"/tsoddSchedules/" + (scheduleList ? scheduleList.nextPage : 1)}
         >
           Следующая страница
         </Button>
