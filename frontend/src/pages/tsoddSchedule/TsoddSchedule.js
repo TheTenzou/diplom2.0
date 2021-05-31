@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { BDiv, Button } from "bootstrap-4-react";
+import { BDiv, Button, Badge } from "bootstrap-4-react";
 
 import ScheduleTable from "./components/ScheduleTable";
 
@@ -14,13 +14,13 @@ function TsoddSchedule() {
   useEffect(() => {
     axios.get(`/api/tsodd/v1/schedule/${id}?size=240`).then((response) => {
       let scheduleResponse = response.data;
-      
+
       setScheduleInfo({
-        name : scheduleResponse.name,
-        createdDate : scheduleResponse.createdDate,
-        startDate : scheduleResponse.startDate,
-        endDate : scheduleResponse.endDate
-      })
+        name: scheduleResponse.name,
+        createdDate: scheduleResponse.createdDate,
+        startDate: scheduleResponse.startDate,
+        endDate: scheduleResponse.endDate,
+      });
 
       let schedule = new Map();
       scheduleResponse.tasks.data.forEach((task) => {
@@ -37,7 +37,7 @@ function TsoddSchedule() {
       });
       setSchedule(schedule);
     });
-  }, [setSchedule, id , setScheduleInfo]);
+  }, [setSchedule, id, setScheduleInfo]);
 
   const [crewList, setCrewList] = useState(null);
 
@@ -50,12 +50,23 @@ function TsoddSchedule() {
   return (
     <BDiv mx="auto" className="tsoddSchedule">
       <h3>План обслуживания ТСОДД</h3>
-      Название: {scheduleInfo?.name} <br/>
-      Дата создания: {scheduleInfo?.createdDate} <br/>
-      Дата начала: {scheduleInfo?.startDate} <br/>
-      Дата окончания: {scheduleInfo?.endDate} <br/>
-      <p/>
-      <Button success>Добавить задачу</Button>
+      Название: {scheduleInfo?.name} <br />
+      Дата создания: {scheduleInfo?.createdDate} <br />
+      Дата начала: {scheduleInfo?.startDate} <br />
+      Дата окончания: {scheduleInfo?.endDate} <br />
+      <p />
+      <div>
+        <Button primary style={{ marginRight: ".2rem" }}>
+          Обновить <Badge primary>&#9998;</Badge>
+        </Button>
+        <Button danger>
+          Удалить <Badge danger>&#10008;</Badge>
+        </Button>
+      </div>
+      <p />
+      <Button success>
+        Добавить задачу <Badge success>+</Badge>
+      </Button>
       <ScheduleTable crew={crewList} schedule={schedule} />
     </BDiv>
   );

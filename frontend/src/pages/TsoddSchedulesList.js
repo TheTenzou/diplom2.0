@@ -49,7 +49,7 @@ function TsoddSchedulesList() {
           secondary
           mr="sm-2"
           as="a"
-          disabled={scheduleList?.previousPage == page}
+          disabled={scheduleList?.previousPage === page}
           href={"/tsoddSchedules/" + (scheduleList ? scheduleList.previousPage : 1)}
         >
           Предыдущая страница
@@ -58,7 +58,7 @@ function TsoddSchedulesList() {
           secondary
           mr="sm-2"
           as="a"
-          disabled={scheduleList?.nextPage == page}
+          disabled={scheduleList?.nextPage === page}
           href={"/tsoddSchedules/" + (scheduleList ? scheduleList.nextPage : 1)}
         >
           Следующая страница
