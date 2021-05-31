@@ -58,7 +58,9 @@ export default class MainNavigation extends Component {
               <Nav.ItemLink href="/tsoddSchedules/1">
                 План обслуживания ТСОДД
               </Nav.ItemLink>
-              <Nav.ItemLink href="/table2">Таблица №2</Nav.ItemLink>
+              <Nav.ItemLink href="/table2">
+                План по модернизации УДС
+              </Nav.ItemLink>
               <Nav.ItemLink href="/about">
                 Дополнительная информация
               </Nav.ItemLink>
