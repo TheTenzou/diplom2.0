@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Badge, Row, Col } from "bootstrap-4-react";
+import { Badge } from "bootstrap-4-react";
 
 import "../css/table.css";
 
@@ -39,11 +39,11 @@ function ScheduleTable({ crew, schedule }) {
                 }}
               >
                 <div>
-                  {task.taskType.name}
+                  Задача: {task.taskType.name}
                   <br />
-                  {task.tsodd.typeName}
+                  ТСОДД: {task.tsodd.typeName}
                   <br />
-                  {task.tsodd.positionDescription}
+                  Местоположение: {task.tsodd.positionDescription}
                 </div>
 
                 <div
@@ -54,7 +54,8 @@ function ScheduleTable({ crew, schedule }) {
                     alignItems: "center",
                   }}
                 >
-                  <Badge primary className="btn btn-outline-light" style={{ marginBottom: ".2rem" }}>&#9998;</Badge>
+                  <Badge info className="btn btn-outline-light" style={{marginBottom: ".2rem"}}>&#127760;</Badge>
+                  <Badge primary className="btn btn-outline-light" style={{marginBottom: ".2rem"}}>&#9998;</Badge>
                   <Badge danger className="btn btn-outline-light">&#10008;</Badge>
                 </div>
               </div>
