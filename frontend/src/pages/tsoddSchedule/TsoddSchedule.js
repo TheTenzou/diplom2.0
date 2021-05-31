@@ -20,6 +20,8 @@ function TsoddSchedule() {
         createdDate: scheduleResponse.createdDate,
         startDate: scheduleResponse.startDate,
         endDate: scheduleResponse.endDate,
+        resourceLimit: scheduleResponse.resourceLimit,
+        totalResources: scheduleResponse.totalResources
       });
 
       let schedule = new Map();
@@ -54,6 +56,8 @@ function TsoddSchedule() {
       Дата создания: {scheduleInfo?.createdDate} <br />
       Дата начала: {scheduleInfo?.startDate} <br />
       Дата окончания: {scheduleInfo?.endDate} <br />
+      Ограниченме ресурсов: {scheduleInfo?.resourceLimit} тыс.р.<br />
+      Требуесое колличество ресурсов: {scheduleInfo?.totalResources} тыс.р.<br />
       <p />
       <div>
         <Button primary style={{ marginRight: ".2rem" }}>
