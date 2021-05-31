@@ -15,6 +15,8 @@ data class ScheduleDetailDto (
     val name: String,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm")
     val createdDate: LocalDateTime,
+    val resourceLimit: Double,
+    val totalResources: Double,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     val startDate: LocalDate,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
@@ -30,6 +32,8 @@ data class ScheduleDetailDto (
         id = schedule.id,
         name = schedule.name,
         createdDate = schedule.createdDate,
+        resourceLimit = schedule.resourceLimit,
+        totalResources = schedule.totalResources,
         startDate = schedule.startDate,
         endDate = schedule.endDate,
         status = schedule.status.name,
