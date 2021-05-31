@@ -5,7 +5,7 @@ import org.optaplanner.core.api.domain.solution.PlanningScore
 import org.optaplanner.core.api.domain.solution.PlanningSolution
 import org.optaplanner.core.api.domain.solution.ProblemFactProperty
 import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider
-import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore
+import org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScore
 import ru.thetenzou.tsoddservice.crew.model.Crew
 import java.time.LocalDate
 
@@ -36,7 +36,7 @@ class TsoddScheduleProblem(
     val planningTaskList: List<PlannedTask>?,
 ) {
     @PlanningScore
-    lateinit var score: HardSoftScore
+    lateinit var score: HardMediumSoftScore
 
     /**
      * default constructor required for OptaPlanner
