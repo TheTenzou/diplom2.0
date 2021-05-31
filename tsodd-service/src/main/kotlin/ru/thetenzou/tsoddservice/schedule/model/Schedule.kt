@@ -11,6 +11,7 @@ import javax.persistence.*
  * @param name name of the schedule
  * @param createdDate date of creation
  * @param resourceLimit max limit of resources
+ * @param totalResources total amount of resources required to perform this schedule
  * @param startDate date when schedule begins
  * @param endDate date when schedule ends
  * @param status describe is schedule in the process of generating
@@ -44,6 +45,12 @@ data class Schedule(
      */
     @Column(name = "resource_limit")
     var resourceLimit: Double,
+
+    /**
+     * total amount of resources required to perform this schedule
+     */
+    @Column(name = "total_resources")
+    var totalResources: Double,
 
     /**
      *  date when schedule begins

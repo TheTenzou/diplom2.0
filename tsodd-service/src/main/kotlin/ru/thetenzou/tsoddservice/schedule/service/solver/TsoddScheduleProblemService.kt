@@ -46,6 +46,7 @@ class TsoddScheduleProblemService(
             name = name,
             createdDate = LocalDateTime.now(),
             resourceLimit = resourceLimit,
+            totalResources = 0.0,
             startDate = startDate,
             endDate = endDate,
             status = ScheduleStatus.GENERATING,
@@ -94,7 +95,7 @@ class TsoddScheduleProblemService(
     fun savePlanningSchedule(tsoddScheduleProblem: TsoddScheduleProblem) {
         logger.info("New scheduled has been saved")
 
-        // tsoddScheduleProblem.planningTaskList?.forEach { logger.info(it.toNiceString()) }
+         tsoddScheduleProblem.planningTaskList?.forEach { logger.info(it.toNiceString()) }
 
         val tasks = tsoddScheduleProblem.planningTaskList ?: return
         val scheduleId = tsoddScheduleProblem.scheduleId ?: return
@@ -103,11 +104,16 @@ class TsoddScheduleProblemService(
         if (scheduleOptional.isEmpty) {
             return
         }
+
+        val totalResources = tasks.sumOf { task -> task.taskType?.moneyResources ?: 0.0 }
+
         val schedule = scheduleOptional.get()
 
         plannedTaskService.save(schedule, tasks)
 
         schedule.status = ScheduleStatus.GENERATED
+
+        schedule.totalResources = totalResources
 
         scheduleRepository.save(schedule)
     }

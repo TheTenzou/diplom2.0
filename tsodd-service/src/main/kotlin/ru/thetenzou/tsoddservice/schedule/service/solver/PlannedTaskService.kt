@@ -30,7 +30,6 @@ class PlannedTaskService(
      * @return list of planned tasks
      */
     fun getPlanningTasks(days: Long): List<PlannedTask> {
-        logger.info("Possible list of task has been generated for $days days interval")
 
         val tsoddList = tsoddRepository.findAll()
         val plannedTaskList = ArrayList<PlannedTask>()
@@ -39,6 +38,7 @@ class PlannedTaskService(
             plannedTaskList.addAll(getPlannedTasksForTsodd(it, days))
         }
 
+        logger.info("${plannedTaskList.size} Possible task has been generated for $days days interval")
         return plannedTaskList
     }
 

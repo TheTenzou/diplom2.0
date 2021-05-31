@@ -74,6 +74,7 @@ class ScheduleServiceImpl(
             name = scheduleRequest.name,
             createdDate = LocalDateTime.now(),
             resourceLimit = scheduleRequest.resourceLimit,
+            totalResources = 0.0,
             startDate = scheduleRequest.startDate,
             endDate = scheduleRequest.endDate,
             status = ScheduleStatus.GENERATED,
