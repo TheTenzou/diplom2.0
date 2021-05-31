@@ -38,7 +38,7 @@ class TsoddScheduleProblemService(
      *
      * @return created schedule
      */
-    fun createNewSchedule(name: String, resourceLimit:Double, startDate: LocalDate, endDate: LocalDate): Schedule {
+    fun createNewSchedule(name: String, resourceLimit: Double, startDate: LocalDate, endDate: LocalDate): Schedule {
         logger.info("Create new schedule")
 
         val schedule = Schedule(
@@ -95,7 +95,7 @@ class TsoddScheduleProblemService(
     fun savePlanningSchedule(tsoddScheduleProblem: TsoddScheduleProblem) {
         logger.info("New scheduled has been saved")
 
-         tsoddScheduleProblem.planningTaskList?.forEach { logger.info(it.toNiceString()) }
+        tsoddScheduleProblem.planningTaskList?.forEach { logger.info(it.toNiceString()) }
 
         val tasks = tsoddScheduleProblem.planningTaskList ?: return
         val scheduleId = tsoddScheduleProblem.scheduleId ?: return
@@ -105,7 +105,9 @@ class TsoddScheduleProblemService(
             return
         }
 
-        val totalResources = tasks.sumOf { task -> task.taskType?.moneyResources ?: 0.0 }
+        val totalResources = tasks
+            .filter { task -> task.crew != null && task.date != null }
+            .sumOf { task -> task.taskType?.moneyResources ?: 0.0 }
 
         val schedule = scheduleOptional.get()
 
@@ -126,8 +128,8 @@ class TsoddScheduleProblemService(
                 "duration: ${taskType?.durationHours.toGreenString().padStart(3)}; " +
                 "resources: ${taskType?.moneyResources.toGreenString().padStart(4)}; " +
                 "date: ${date?.year.toGreenString()} " +
-                    "${date?.month.toGreenString().padStart(7)} " +
-                    "${date?.dayOfMonth.toGreenString().padStart(4)}; " +
+                "${date?.month.toGreenString().padStart(7)} " +
+                "${date?.dayOfMonth.toGreenString().padStart(4)}; " +
                 "crew: ${crew?.name.toGreenString()}"
 
 
