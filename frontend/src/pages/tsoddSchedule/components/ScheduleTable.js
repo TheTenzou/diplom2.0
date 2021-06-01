@@ -39,7 +39,7 @@ function ScheduleTable({ crew, schedule }) {
                 <div>
                   Задача: {task.taskType.name}
                   <br />
-                  ТСОДД: {task.tsodd.typeName}
+                  ТСОДД: {task.tsodd.typeName} Номер: {task.tsodd.id}
                   <br />
                   Местоположение: {task.tsodd.positionDescription}
                 </div>
