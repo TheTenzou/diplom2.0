@@ -1,0 +1,22 @@
+### login request
+# @name loginRequest
+POST  http://localhost:8080/api/users/v1/auth/login
+Content-Type: application/json
+
+{
+    "login":"admin",
+    "password": "admin"
+}
+
+### response variable
+@accessToken = {{loginRequest.response.body.$.accessToken}}
+
+###
+PUT http://localhost:8080/api/uds/v1/upgradePlan
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "name": "test input",
+    "resourceLimit": 27.0
+}
