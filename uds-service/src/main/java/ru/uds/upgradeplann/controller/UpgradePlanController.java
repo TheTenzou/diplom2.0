@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.uds.common.dto.PagedResponse;
 import ru.uds.upgradeplann.dto.request.UpgradePlanRequestDto;
 import ru.uds.upgradeplann.dto.response.UpgradePlanResponseDto;
 import ru.uds.upgradeplann.service.UpgradePlanService;
@@ -20,6 +21,16 @@ public class UpgradePlanController {
 
     public UpgradePlanController(UpgradePlanService upgradePlanService) {
         this.upgradePlanService = upgradePlanService;
+    }
+
+    @GetMapping
+    public ResponseEntity<PagedResponse<UpgradePlanResponseDto>> getAllUpgradePlans(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PagedResponse<UpgradePlanResponseDto> response = upgradePlanService.getAllUpgradePlans(page-1, size-1);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping

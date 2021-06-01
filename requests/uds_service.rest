@@ -11,6 +11,10 @@ Content-Type: application/json
 ### response variable
 @accessToken = {{loginRequest.response.body.$.accessToken}}
 
+
+###
+GET http://localhost:8080/api/uds/v1/upgradePlan?page=1&size=10
+Authorization: Bearer {{accessToken}}
 ###
 PUT http://localhost:8080/api/uds/v1/upgradePlan
 Authorization: Bearer {{accessToken}}
