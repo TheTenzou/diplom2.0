@@ -26,6 +26,7 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
             resourceLimit(constraintFactory),
             minDistance(constraintFactory),
             crewSkills(constraintFactory),
+            limitAmountOfDays(constraintFactory),
         )
 
     private fun assignTask(constraintFactory: ConstraintFactory) =
@@ -140,9 +141,17 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
                     return (1_000_000 / distance).toInt()
                 }
             )
+
     private fun crewSkills(constraintFactory: ConstraintFactory) =
         constraintFactory
             .from(PlannedTask::class.java)
             .filter { task -> !(task.crew?.taskTypeList?.contains(task.taskType) ?: false) }
             .penalize("crew task skill limit", HardMediumSoftScore.ONE_HARD)
+
+    private fun limitAmountOfDays(constraintFactory: ConstraintFactory) =
+        constraintFactory
+            .from(PlannedTask::class.java)
+            .filter { task -> task.date != null && task.crew != null }
+            .groupBy(PlannedTask::date)
+            .penalize("limit amount of days", HardMediumSoftScore.ofSoft(1_000_000))
 }
