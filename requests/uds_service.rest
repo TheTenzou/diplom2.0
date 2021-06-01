@@ -15,6 +15,7 @@ Content-Type: application/json
 ###
 GET http://localhost:8080/api/uds/v1/upgradePlan?page=1&size=10
 Authorization: Bearer {{accessToken}}
+
 ###
 PUT http://localhost:8080/api/uds/v1/upgradePlan
 Authorization: Bearer {{accessToken}}
@@ -24,3 +25,7 @@ Content-Type: application/json
     "name": "test input",
     "resourceLimit": 27.0
 }
+
+###
+DELETE http://localhost:8080/api/uds/v1/upgradePlan/1
+Authorization: Bearer {{accessToken}}

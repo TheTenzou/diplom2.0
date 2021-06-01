@@ -7,4 +7,5 @@ import ru.uds.upgradeplann.dto.response.UpgradePlanResponseDto;
 public interface UpgradePlanService {
     PagedResponse<UpgradePlanResponseDto> getAllUpgradePlans(int page, int size);
     UpgradePlanResponseDto saveUpgradePlan(UpgradePlanRequestDto upgradePlan);
+    UpgradePlanResponseDto deleteUpgradePlan(Long id);
 }

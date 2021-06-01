@@ -1,7 +1,5 @@
 package ru.uds.upgradeplann.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,5 +37,13 @@ public class UpgradePlanController {
         final UpgradePlanResponseDto response = upgradePlanService.saveUpgradePlan(upgradePlan);
 
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<UpgradePlanResponseDto> deleteUpgradePlan(@PathVariable Long id) {
+
+        UpgradePlanResponseDto upgradePlan = upgradePlanService.deleteUpgradePlan(id);
+
+        return new ResponseEntity<>(upgradePlan, HttpStatus.OK);
     }
 }

@@ -14,7 +14,9 @@ import ru.uds.upgradeplann.model.UpgradePlan;
 import ru.uds.upgradeplann.repository.UpgradePlanRepository;
 import ru.uds.upgradeplann.service.UpgradePlanService;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class UpgradePlanServiceImpl implements UpgradePlanService {
@@ -46,5 +48,19 @@ public class UpgradePlanServiceImpl implements UpgradePlanService {
 
         UpgradePlan savedUpgradePlan = upgradePlanRepository.save(upgradePlan);
         return new UpgradePlanResponseDto(savedUpgradePlan);
+    }
+
+    @Override
+    public UpgradePlanResponseDto deleteUpgradePlan(Long id) {
+         Optional<UpgradePlan> result = upgradePlanRepository.findById(id);
+
+         if (result.isEmpty()) {
+             throw new EntityNotFoundException("upgrade plan with id: " + id + " doesn't exist");
+         }
+         UpgradePlan upgradePlan = result.get();
+
+         upgradePlanRepository.delete(upgradePlan);
+
+         return new UpgradePlanResponseDto(upgradePlan);
     }
 }
