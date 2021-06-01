@@ -37,6 +37,7 @@ class TsoddServiceApplication(
     /**
      * generate initial data for tests
      */
+    @Bean
     fun initdb() = CommandLineRunner {
 
         val firstTsoddGroup = TsoddGroup(id = 0L, "дорожные светофоры", taskGroup = null)
@@ -56,11 +57,46 @@ class TsoddServiceApplication(
                 condition = tsoddCondition,
                 coordinates = GeometryFactory().createGeometryCollection(
                     arrayOf(
-                        GeometryFactory().createPoint(Coordinate(1.0, 1.0)),
-                        GeometryFactory().createPoint(Coordinate(1.0, 2.0)),
+                        GeometryFactory().createPoint(Coordinate(45.02171431907213, 38.96941571781291)),
                     )
                 ),
                 positionDescription = "ул. Красная 27"
+            ),
+            Tsodd(
+                id = 0L,
+                type = firstTsoddType,
+                visibility = 1.0,
+                condition = tsoddCondition,
+                coordinates = GeometryFactory().createGeometryCollection(
+                    arrayOf(
+                        GeometryFactory().createPoint(Coordinate(45.038732700905676, 38.97514777941537)),
+                    )
+                ),
+                positionDescription = "ул. Красная 127"
+            ),
+            Tsodd(
+                id = 0L,
+                type = firstTsoddType,
+                visibility = 1.0,
+                condition = tsoddCondition,
+                coordinates = GeometryFactory().createGeometryCollection(
+                    arrayOf(
+                        GeometryFactory().createPoint(Coordinate(45.022224982701765, 38.969540003062036)),
+                    )
+                ),
+                positionDescription = "ул. Красная 28"
+            ),
+            Tsodd(
+                id = 0L,
+                type = firstTsoddType,
+                visibility = 1.0,
+                condition = tsoddCondition,
+                coordinates = GeometryFactory().createGeometryCollection(
+                    arrayOf(
+                        GeometryFactory().createPoint(Coordinate(45.022354938909686, 38.969540003062036)),
+                    )
+                ),
+                positionDescription = "ул. Красная 29"
             ),
             Tsodd(
                 id = 0L,
@@ -69,10 +105,46 @@ class TsoddServiceApplication(
                 condition = null,
                 coordinates = GeometryFactory().createGeometryCollection(
                     arrayOf(
-                        GeometryFactory().createPoint(Coordinate(3.0, 3.0)),
+                        GeometryFactory().createPoint(Coordinate(45.0189295659401, 38.96847625683479)),
                     )
                 ),
                 positionDescription = "ул. Красная 17"
+            ),
+            Tsodd(
+                id = 0L,
+                type = secondTsoddType,
+                visibility = 0.7,
+                condition = null,
+                coordinates = GeometryFactory().createGeometryCollection(
+                    arrayOf(
+                        GeometryFactory().createPoint(Coordinate(45.019444238496426, 38.96866863427197)),
+                    )
+                ),
+                positionDescription = "ул. Красная 18"
+            ),
+            Tsodd(
+                id = 0L,
+                type = secondTsoddType,
+                visibility = 0.7,
+                condition = null,
+                coordinates = GeometryFactory().createGeometryCollection(
+                    arrayOf(
+                        GeometryFactory().createPoint(Coordinate(45.02148857488962, 38.96937957239384)),
+                    )
+                ),
+                positionDescription = "ул. Красная 26"
+            ),
+            Tsodd(
+                id = 0L,
+                type = secondTsoddType,
+                visibility = 0.7,
+                condition = null,
+                coordinates = GeometryFactory().createGeometryCollection(
+                    arrayOf(
+                        GeometryFactory().createPoint(Coordinate(45.022802064166505, 38.96969475645368)),
+                    )
+                ),
+                positionDescription = "ул. Красная 30"
             ),
         )
 
@@ -91,7 +163,7 @@ class TsoddServiceApplication(
                 taskType = emptyList()
             )
 
-        val taskTypeList = listOf(
+        val taskTypeListFirst = listOf(
             TaskType(
                 id = 0L,
                 name = "Ревизия светофора",
@@ -100,6 +172,7 @@ class TsoddServiceApplication(
                 durationHours = 1,
                 moneyResources = 2.0,
                 effectiveness = 4,
+                crewList = emptyList(),
             ),
             TaskType(
                 id = 0L,
@@ -109,6 +182,7 @@ class TsoddServiceApplication(
                 durationHours = 2,
                 moneyResources = 4.0,
                 effectiveness = 3,
+                crewList = emptyList(),
             ),
             TaskType(
                 id = 0L,
@@ -118,22 +192,26 @@ class TsoddServiceApplication(
                 durationHours = 5,
                 moneyResources = 4.0,
                 effectiveness = 7,
+                crewList = emptyList(),
             ),
-            TaskType(
-                id = 0L,
-                name = "Выявление неисправностей на предмет механических повреждений",
-                taskGroup = secondTaskGroup,
-                timeIntervalInDays = 30,
-                durationHours = 1,
-                moneyResources = 1.0,
-                effectiveness = 2,
-            ),
+        )
+        val taskTypeListSecond = listOf(
+                TaskType(
+                    id = 0L,
+                    name = "Выявление неисправностей на предмет механических повреждений",
+                    taskGroup = secondTaskGroup,
+                    timeIntervalInDays = 30,
+                    durationHours = 1,
+                    moneyResources = 1.0,
+                    effectiveness = 2,
+                    crewList = emptyList(),
+                ),
         )
 
         val crewList = listOf(
-            Crew(id = 0L, name = "Бригада 1"),
-            Crew(id = 0L, name = "Бригада 2"),
-            Crew(id = 0L, name = "Бригада 3"),
+            Crew(id = 0L, name = "Бригада 1", taskTypeList = taskTypeListFirst),
+            Crew(id = 0L, name = "Бригада 2", taskTypeList = taskTypeListFirst),
+            Crew(id = 0L, name = "Бригада 3", taskTypeList = taskTypeListSecond),
         )
 
         firstTsoddGroup.taskGroup = listOf(firstTaskGroup)
@@ -152,7 +230,8 @@ class TsoddServiceApplication(
 
         tsoddRepository.saveAll(tsoddList)
 
-        taskTypeRepository.saveAll(taskTypeList)
+        taskTypeRepository.saveAll(taskTypeListFirst)
+        taskTypeRepository.saveAll(taskTypeListSecond)
 
         crewRepository.saveAll(crewList)
     }

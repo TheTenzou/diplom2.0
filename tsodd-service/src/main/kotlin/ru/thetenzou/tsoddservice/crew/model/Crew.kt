@@ -1,5 +1,6 @@
 package ru.thetenzou.tsoddservice.crew.model
 
+import ru.thetenzou.tsoddservice.task.model.TaskType
 import javax.persistence.*
 
 /**
@@ -7,6 +8,7 @@ import javax.persistence.*
  *
  * @param id is id of the record
  * @param name name of the crew
+ * @param taskTypeList last of task this crew can perform
  */
 @Entity
 @Table(name = "crews")
@@ -24,4 +26,10 @@ data class Crew(
      */
     @Column(name = "name")
     var name: String,
+
+    /**
+     * last of task this crew can perform
+     */
+    @ManyToMany(fetch = FetchType.EAGER)
+    var taskTypeList: List<TaskType>,
 )

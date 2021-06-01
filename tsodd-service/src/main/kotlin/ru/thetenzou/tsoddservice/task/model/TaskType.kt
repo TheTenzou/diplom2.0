@@ -1,5 +1,6 @@
 package ru.thetenzou.tsoddservice.task.model
 
+import ru.thetenzou.tsoddservice.crew.model.Crew
 import javax.persistence.*
 
 /**
@@ -12,6 +13,7 @@ import javax.persistence.*
  * @param durationHours duration of this task in hours
  * @param moneyResources money that required to complete task
  * @param effectiveness effectiveness of this task
+ * @param crewList list of crews that can perform this task
  */
 @Entity
 @Table(name = "task_types")
@@ -60,4 +62,10 @@ data class TaskType(
      */
     @Column(name = "effectiveness")
     var effectiveness: Int,
+
+    /**
+     * list of crews that can perform this task
+     */
+    @ManyToMany
+    var crewList: List<Crew>,
 )
