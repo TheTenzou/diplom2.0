@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${POSTGIS_UDS_HOST:localhost}:${POSTGIS_UDS_PORT:5432}/${POSTGIS_UDS_DATABASE:testDBuds}
+    username: ${POSTGIS_UDS_USER:postgres}
+    password: ${POSTGIS_UDS_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.spatial.dialect.postgis.PostgisDialect
+    generate-ddl: true
+    show-sql: false
+  data:
+    rest:
+      base-path: api/tsodd/v1
