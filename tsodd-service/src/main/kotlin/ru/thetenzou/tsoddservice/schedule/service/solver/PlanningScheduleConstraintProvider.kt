@@ -25,6 +25,7 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
             maxEffectiveness(constraintFactory),
             resourceLimit(constraintFactory),
             minDistance(constraintFactory),
+            crewSkills(constraintFactory),
         )
 
     private fun assignTask(constraintFactory: ConstraintFactory) =
@@ -139,4 +140,9 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
                     return (1_000_000 / distance).toInt()
                 }
             )
+    private fun crewSkills(constraintFactory: ConstraintFactory) =
+        constraintFactory
+            .from(PlannedTask::class.java)
+            .filter { task -> !(task.crew?.taskTypeList?.contains(task.taskType) ?: false) }
+            .penalize("crew task skill limit", HardMediumSoftScore.ONE_HARD)
 }
