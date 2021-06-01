@@ -15,11 +15,15 @@ public class PlannedUpgrade {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany
+    @ManyToOne
+    @Column(name = "plan")
+    private UpgradePlan plan;
+
+    @ManyToOne
     @Column(name = "flow_id")
     private Flow flow;
 
-    @OneToMany
+    @ManyToOne
     @Column(name = "upgrade_event_id")
     private UpgradeEvent upgradeEvent;
 }

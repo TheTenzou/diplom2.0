@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -22,4 +23,7 @@ public class UpgradePlan {
 
     @Column(name = "resource_limit")
     private Double resourceLimit;
+
+    @OneToMany(mappedBy = "plan")
+    private List<PlannedUpgrade> plannedUpgradeList;
 }
