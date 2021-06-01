@@ -41,7 +41,8 @@ function TsoddSchedulesList() {
     <BDiv mx="auto" className="tsoddSchedule">
       <h2>План обслуживания ТСОДД</h2>
       <br />
-      <Button success>Сгенерировать расписание</Button> <p />
+      <Button success style={{marginRight: ".5rem"}}>Сгенерировать расписание</Button>
+      <Button>Создать расписание</Button> <p />
       {itemList}
       <p />
       <ButtonGroup>
