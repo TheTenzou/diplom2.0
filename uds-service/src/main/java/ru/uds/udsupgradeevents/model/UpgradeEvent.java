@@ -1,6 +1,5 @@
 package ru.uds.udsupgradeevents.model;
 
-
 import lombok.Data;
 
 import javax.persistence.*;

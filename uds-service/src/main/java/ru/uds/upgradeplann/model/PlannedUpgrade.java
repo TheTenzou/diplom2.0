@@ -16,14 +16,14 @@ public class PlannedUpgrade {
     private Long id;
 
     @ManyToOne
-    @Column(name = "plan")
+    @JoinColumn(name = "plan")
     private UpgradePlan plan;
 
     @ManyToOne
-    @Column(name = "flow_id")
+    @JoinColumn(name = "flow_id")
     private Flow flow;
 
     @ManyToOne
-    @Column(name = "upgrade_event_id")
+    @JoinColumn(name = "upgrade_event_id")
     private UpgradeEvent upgradeEvent;
 }
