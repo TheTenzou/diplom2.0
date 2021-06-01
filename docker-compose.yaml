@@ -4,6 +4,7 @@ volumes:
   mongo_data:
   redis_data:
   postgis_tsodd_data:
+  postgis_uds_data:
   pgadmin_data:
 
 services:
@@ -17,6 +18,8 @@ services:
       - frontend
     ports: 
       - "8080:80"
+    depends_on: 
+      - frontend
 
   frontend:
     container_name: frontend
@@ -30,6 +33,10 @@ services:
       - "3000"
     environment: 
       - CHOKIDAR_USEPOLLING=true
+    depends_on: 
+      - user-service
+      - tsodd-service
+      - uds-service
 
   user-service:
     container_name: user-service
@@ -62,10 +69,27 @@ services:
     expose: 
       - "8080"
     depends_on:
+      - user-service
       - postgis-tsodd
     command: >
       ./wait-for.sh ${POSTGIS_TSODD_HOST}:${POSTGIS_TSODD_PORT} --timeout=180
       -- java -jar tsodd-service.jar
+  
+  uds-service:
+    container_name: uds-service
+    build: 
+      context: ./uds-service
+      dockerfile: Dockerfile
+    env_file: 
+      - .env
+    expose: 
+      - "8080"
+    depends_on: 
+      - user-service
+      - postgis-uds
+    command: >
+      ./wait-for.sh ${POSTGIS_UDS_HOST}:${POSTGIS_UDS_PORT} --timeout=180
+      -- java -jar uds-service.jar
 
   user-service-reids:
     container_name: ${REDIS_HOST}
@@ -97,10 +121,22 @@ services:
       POSTGRES_USER: ${POSTGIS_TSODD_USER}
       POSTGRES_PASSWORD: ${POSTGIS_TSODD_PASSWORD}
       POSTGRES_DB: ${POSTGIS_TSODD_DATABASE}
-    ports:
-      - ${POSTGIS_TSODD_PORT}:${POSTGIS_TSODD_PORT}
+    expose:
+      - ${POSTGIS_TSODD_PORT}
     volumes:
       - "postgis_tsodd_data:/var/lib/postgresql/data"
+
+  postgis-uds:
+    container_name: ${POSTGIS_UDS_HOST}
+    image: postgis/postgis:latest
+    environment:
+      POSTGRES_USER: ${POSTGIS_UDS_USER}
+      POSTGRES_PASSWORD: ${POSTGIS_UDS_PASSWORD}
+      POSTGRES_DB: ${POSTGIS_UDS_DATABASE}
+    expose:
+      - ${POSTGIS_UDS_PORT}
+    volumes:
+      - "postgis_uds_data:/var/lib/postgresql/data"
 
   redis-commander:
     container_name: redis-commander
@@ -110,6 +146,9 @@ services:
       - REDIS_HOSTS=local:${REDIS_HOST}:${REDIS_PORT}
     ports:
       - "8082:8081"
+    depends_on: 
+      - user-service-redis
+      - nginx
 
   mongo-express:
     container_name: mongo-express
@@ -121,6 +160,7 @@ services:
       - ME_CONFIG_MONGODB_PORT=${MONGO_PORT}
     depends_on:
       - user-service-mongo
+      - nginx
   
   pgadmin:
     container_name: pgadmin
@@ -135,5 +175,7 @@ services:
       - "16543:80"
     depends_on:
       - postgis-tsodd
+      - postgis-uds
+      - nginx
     logging: 
       driver: "none"
