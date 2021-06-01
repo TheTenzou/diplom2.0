@@ -1,6 +1,7 @@
 package ru.uds.flow.model;
 
 import lombok.Data;
+import org.postgis.GeometryCollection;
 
 import javax.persistence.*;
 
@@ -13,4 +14,7 @@ public class Flow {
     private Long id;
     @Column(name = "name")
     private String name;
+
+    @Column(name = "coordinates")
+    private GeometryCollection coordinates;
 }
