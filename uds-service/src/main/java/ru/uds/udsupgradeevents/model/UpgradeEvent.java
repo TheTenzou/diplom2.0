@@ -1,4 +1,4 @@
-package ru.uds.udsUpdageEvents.model;
+package ru.uds.udsupgradeevents.model;
 
 
 import lombok.Data;
@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "update_events")
-public class UpgradeEvents {
+public class UpgradeEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

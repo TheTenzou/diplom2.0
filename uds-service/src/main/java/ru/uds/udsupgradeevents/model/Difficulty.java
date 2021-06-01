@@ -1,4 +1,4 @@
-package ru.uds.udsUpdageEvents.model;
+package ru.uds.udsupgradeevents.model;
 
 public enum Difficulty {
     HIGH,
