@@ -75,7 +75,7 @@ class TsoddScheduleProblemService(
 
         val availableDates = schedule.startDate
             .datesUntil(schedule.endDate)
-            .filter { date -> date.dayOfWeek != DayOfWeek.SATURDAY || date.dayOfWeek != DayOfWeek.SUNDAY }
+            .filter { date -> !(date.dayOfWeek == DayOfWeek.SATURDAY || date.dayOfWeek == DayOfWeek.SUNDAY) }
             .collect(Collectors.toList())
 
         val crews = crewRepository.findAll()
