@@ -11,6 +11,7 @@ import ru.thetenzou.tsoddservice.schedule.model.solver.PlannedTask
 import ru.thetenzou.tsoddservice.schedule.model.solver.ScheduleParameters
 import ru.thetenzou.tsoddservice.schedule.model.solver.TsoddScheduleProblem
 import ru.thetenzou.tsoddservice.schedule.repository.ScheduleRepository
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
@@ -72,7 +73,10 @@ class TsoddScheduleProblemService(
 
         val schedule = scheduleOptional.get()
 
-        val availableDates = schedule.startDate.datesUntil(schedule.endDate).collect(Collectors.toList())
+        val availableDates = schedule.startDate
+            .datesUntil(schedule.endDate)
+            .filter { date -> date.dayOfWeek != DayOfWeek.SATURDAY || date.dayOfWeek != DayOfWeek.SUNDAY }
+            .collect(Collectors.toList())
 
         val crews = crewRepository.findAll()
 
