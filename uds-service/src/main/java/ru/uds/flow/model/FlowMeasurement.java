@@ -13,7 +13,7 @@ public class FlowMeasurement {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "flow_id")
     private Flow flow;
 
