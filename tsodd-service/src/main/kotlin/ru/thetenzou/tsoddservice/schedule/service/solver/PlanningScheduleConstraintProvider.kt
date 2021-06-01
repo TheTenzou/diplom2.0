@@ -5,6 +5,7 @@ import org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScore
 import org.optaplanner.core.api.score.stream.ConstraintCollectors.*
 import org.optaplanner.core.api.score.stream.ConstraintFactory
 import org.optaplanner.core.api.score.stream.ConstraintProvider
+import org.optaplanner.core.api.score.stream.Joiners
 import ru.thetenzou.tsoddservice.crew.model.Crew
 import ru.thetenzou.tsoddservice.schedule.model.solver.PlannedTask
 import ru.thetenzou.tsoddservice.schedule.model.solver.ScheduleParameters
@@ -23,6 +24,7 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
             crewLoadBalance(constraintFactory),
             maxEffectiveness(constraintFactory),
             resourceLimit(constraintFactory),
+            minDistance(constraintFactory),
         )
 
     private fun assignTask(constraintFactory: ConstraintFactory) =
@@ -41,15 +43,15 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
                 HardMediumSoftScore.ONE_MEDIUM,
                 fun(taskType, _, dateList): Int {
                     dateList.sortBy { it }
-                    val intervalCount = dateList.size -1
+                    val intervalCount = dateList.size - 1
                     if (intervalCount == 0) {
                         return 1_000_000
                     }
 
                     val requiredInterval = taskType?.timeIntervalInDays ?: return 0
                     var averageDelta = 0
-                    for(i in 0 until intervalCount) {
-                        val interval = ChronoUnit.DAYS.between(dateList[i], dateList[i+1]).toInt()
+                    for (i in 0 until intervalCount) {
+                        val interval = ChronoUnit.DAYS.between(dateList[i], dateList[i + 1]).toInt()
                         val delta = (requiredInterval - interval).absoluteValue + 1
                         averageDelta += delta
                     }
@@ -117,5 +119,24 @@ class PlanningScheduleConstraintProvider : ConstraintProvider {
                     }
                     return 0
                 },
+            )
+
+    private fun minDistance(constraintFactory: ConstraintFactory) =
+        constraintFactory
+            .from(PlannedTask::class.java)
+            .join(
+                PlannedTask::class.java,
+                Joiners.equal(PlannedTask::crew),
+                Joiners.equal(PlannedTask::date)
+            )
+            .penalize(
+                "minimize distance",
+                HardMediumSoftScore.ONE_SOFT,
+                fun(task1, task2):Int {
+                    val point1 = task1.tsodd?.coordinates?.interiorPoint
+                    val point2 = task2.tsodd?.coordinates?.interiorPoint
+                    val distance = point1?.distance(point2) ?: return 1_000_000
+                    return (1_000_000 / distance).toInt()
+                }
             )
 }
