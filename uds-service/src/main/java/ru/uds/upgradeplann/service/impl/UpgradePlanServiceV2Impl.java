@@ -3,6 +3,7 @@ package ru.uds.upgradeplann.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
@@ -64,7 +65,7 @@ public class UpgradePlanServiceV2Impl implements UpgradePlanServiceV2 {
 
         UpgradePlan upgradePlan = result.get();
 
-        PageRequest paging = PageRequest.of(page, size);
+        PageRequest paging = PageRequest.of(page, size, Sort.by("id"));
 
         Page<PlannedUpgrade> plannedUpgrades = plannedUpgradeRepository.getByPlan(upgradePlan, paging);
 
