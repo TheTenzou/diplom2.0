@@ -13,3 +13,11 @@ spring:
   data:
     rest:
       base-path: api/uds
+
+springfox:
+  documentation:
+    swaggerUi:
+      baseUrl: /api/uds
+    swagger:
+      v2:
+        path: /api/uds/api-docs

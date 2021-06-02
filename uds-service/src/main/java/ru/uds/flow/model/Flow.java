@@ -1,7 +1,7 @@
 package ru.uds.flow.model;
 
 import lombok.Data;
-import org.postgis.GeometryCollection;
+import org.locationtech.jts.geom.GeometryCollection;
 
 import javax.persistence.*;
 

@@ -2,7 +2,7 @@ package ru.uds.flow.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.postgis.GeometryCollection;
+import org.locationtech.jts.geom.GeometryCollection;
 import org.springframework.hateoas.RepresentationModel;
 import ru.uds.flow.model.Flow;
 

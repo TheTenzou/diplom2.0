@@ -15,6 +15,7 @@ import ru.uds.upgradeplann.repository.PlannedUpgradeRepository;
 import ru.uds.upgradeplann.repository.UpgradePlanRepository;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 
 @SpringBootApplication
