@@ -12,11 +12,11 @@ Content-Type: application/json
 @accessToken = {{loginRequest.response.body.$.accessToken}}
 
 
-###
+### list of upgrade plans
 GET http://localhost:8080/api/uds/v1/upgradePlan?page=1&size=10
 Authorization: Bearer {{accessToken}}
 
-###
+### create upgrade plan
 PUT http://localhost:8080/api/uds/v1/upgradePlan
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
@@ -26,6 +26,342 @@ Content-Type: application/json
     "resourceLimit": 27.0
 }
 
-###
+### delete upgrade plan
 DELETE http://localhost:8080/api/uds/v1/upgradePlan/1
 Authorization: Bearer {{accessToken}}
+
+
+### get list of upgrade plans
+GET http://localhost:8080/api/uds/v2/upgradePlan?page=1&size=10
+Authorization: Bearer {{accessToken}}
+
+### get upgrade plan by id
+GET http://localhost:8080/api/uds/v2/upgradePlan/20
+Authorization: Bearer {{accessToken}}
+
+#######################################################
+##                                                   ##
+##                  api for flows                    ##
+##                                                   ##
+#######################################################
+
+
+### get all flows
+GET  http://localhost:8080/api/uds/flows?page=0&size=20
+Authorization: Bearer {{accessToken}}
+
+### get all flows
+GET  http://localhost:8080/api/uds/flows/5
+Authorization: Bearer {{accessToken}}
+
+### create flow
+POST http://localhost:8080/api/uds/flows
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "name": "name",
+    "coordinates" : {
+        "type" : "GeometryCollection",
+        "geometries" : [ {
+            "type" : "Point",
+            "coordinates" : [ 1, 1 ]
+        }, {
+            "type" : "Point",
+            "coordinates" : [ 1, 2 ]
+        } ]
+    }
+}
+
+### replace flow
+PUT  http://localhost:8080/api/uds/flows/2
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "name": "name test",
+    "coordinates" : {
+        "type" : "GeometryCollection",
+        "geometries" : [ {
+            "type" : "Point",
+            "coordinates" : [ 1, 1 ]
+        }, {
+            "type" : "Point",
+            "coordinates" : [ 1, 2 ]
+        } ]
+    }
+}
+
+### update flow
+PATCH http://localhost:8080/api/uds/flows/2
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "name": "test patch"
+}
+
+### delete flow
+DELETE http://localhost:8080/api/uds/flows/2
+Authorization: Bearer {{accessToken}}
+
+### measurents of this flow
+GET http://localhost:8080/api/uds/flows/15/flowMeasurementList
+Authorization: Bearer {{accessToken}}
+
+
+#######################################################
+##                                                   ##
+##            api for flows measurements             ##
+##                                                   ##
+#######################################################
+
+
+### get all flows measurenets
+GET  http://localhost:8080/api/uds/flowMeasurements?page=0&size=20
+Authorization: Bearer {{accessToken}}
+
+### create flow measuremnts
+POST http://localhost:8080/api/uds/flowMeasurements
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "dateTime": "2012-04-23T18:25:43",
+    "density": 30.0
+}
+
+### replace flow
+PUT  http://localhost:8080/api/uds/flowMeasurements/1
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "dateTime": "2012-04-23T18:25:43",
+    "density": 15.0,
+}
+
+### update flow
+PATCH http://localhost:8080/api/uds/flowMeasurements/22
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "dateTime": "2012-04-23T18:25:43",
+    "density": 15.0
+}
+
+### delete flow
+DELETE http://localhost:8080/api/uds/flowMeasurements/6
+Authorization: Bearer {{accessToken}}
+
+### get flow of this measurentet measurement
+GET  http://localhost:8080/api/uds/flowMeasurements/23/flow
+Authorization: Bearer {{accessToken}}
+
+### link flow and measurement
+PUT http://localhost:8080/api/uds/flowMeasurements/28/flow
+Authorization: Bearer {{accessToken}}
+Content-Type: text/uri-list
+
+http://localhost:8080/api/uds/flows/18
+
+### unlink flow and measurement
+DELETE http://localhost:8080/api/uds/flowMeasurements/23/flow
+Authorization: Bearer {{accessToken}}
+Content-Type: text/uri-list
+
+http://localhost:8080/api/uds/flows/18
+
+
+#######################################################
+##                                                   ##
+##            api for upgrade events                 ##
+##                                                   ##
+#######################################################
+
+
+### get all upgrade events
+GET  http://localhost:8080/api/uds/upgradeEvents?page=0&size=20
+Authorization: Bearer {{accessToken}}
+
+### create upgrade event
+POST http://localhost:8080/api/uds/upgradeEvents
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "name": "name",
+    "description": "desc",
+    "difficulty": "HIGH",
+    "type": "PROPAGANDA",
+    "resourceRequirements": 1.0
+}
+
+# difficulty -> HIGH, MEDIUM, LOW
+# type -> TECHNICAL, PROPAGANDA, LAW
+
+### replace upgrade event
+PUT http://localhost:8080/api/uds/upgradeEvents/1
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "name": "name",
+    "description": "desc",
+    "difficulty": "HIGH",
+    "type": "PROPAGANDA",
+    "resourceRequirements": 1.0
+}
+
+# difficulty -> HIGH, MEDIUM, LOW
+# type -> TECHNICAL, PROPAGANDA, LAW
+
+### update upgrade event
+PATCH  http://localhost:8080/api/uds/upgradeEvents/1
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "type": "PROPAGANDA",
+    "resourceRequirements": 1.0
+}
+
+# difficulty -> HIGH, MEDIUM, LOW
+# type -> TECHNICAL, PROPAGANDA, LAW
+
+### delete upgrade event
+DELETE http://localhost:8080/api/uds/upgradeEvents/27
+Authorization: Bearer {{accessToken}}
+
+
+#######################################################
+##                                                   ##
+##            api for upgrade plan                   ##
+##                                                   ##
+#######################################################
+
+
+### get all upgrade plans
+GET http://localhost:8080/api/uds/upgradePlans?page=0&size=20
+Authorization: Bearer {{accessToken}}
+
+### create upgrade plan
+POST http://localhost:8080/api/uds/upgradePlans
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "name": "name test",
+    "dateTime": "2012-04-23T18:25:43",
+    "resourceLimit": 2.0
+}
+
+### replace upgrade plan
+PUT http://localhost:8080/api/uds/upgradePlans/1
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "name": "name test",
+    "dateTime": "2012-04-23T18:25:43",
+    "resourceLimit": 2.0
+}
+
+### update upgrade plan
+PATCH http://localhost:8080/api/uds/upgradePlans/1
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "name": "name test",
+    "dateTime": "2012-04-23T18:25:43",
+    "resourceLimit": 2.0
+}
+
+### delete upgrade plan
+DELETE http://localhost:8080/api/uds/upgradePlans/1
+Authorization: Bearer {{accessToken}}
+
+
+#######################################################
+##                                                   ##
+##            api for planned upgrade                ##
+##                                                   ##
+#######################################################
+
+
+### get all planned upgrade
+GET http://localhost:8080/api/uds/plannedUpgrades?page=0&size=20
+Authorization: Bearer {{accessToken}}
+
+### create planned upgrade
+POST http://localhost:8080/api/uds/plannedUpgrades
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{}
+
+### delete planned upgrade
+DELETE http://localhost:8080/api/uds/plannedUpgrade/6
+Authorization: Bearer {{accessToken}}
+
+#==================================================================
+
+### get plan of this planned upgrade
+GET  http://localhost:8080/api/uds/plannedUpgrades/23/plan
+Authorization: Bearer {{accessToken}}
+
+### link plan to planned upgrade
+PUT http://localhost:8080/api/uds/plannedUpgrades/21/plan
+Authorization: Bearer {{accessToken}}
+Content-Type: text/uri-list
+
+http://localhost:8080/api/uds/upgradePlans/20
+
+### unlink plan from upgrade plan
+DELETE http://localhost:8080/api/uds/plannedUpgrades/21/plan
+Authorization: Bearer {{accessToken}}
+Content-Type: text/uri-list
+
+http://localhost:8080/api/uds/upgradePlans/20
+
+#==================================================================
+
+### get flow of this planned upgrade
+GET  http://localhost:8080/api/uds/plannedUpgrades/21/flow
+Authorization: Bearer {{accessToken}}
+
+### link flow to planned upgrade
+PUT http://localhost:8080/api/uds/plannedUpgrades/21/flow
+Authorization: Bearer {{accessToken}}
+Content-Type: text/uri-list
+
+http://localhost:8080/api/uds/flows/15
+
+### unlink flow from upgrade plan
+DELETE http://localhost:8080/api/uds/plannedUpgrades/21/flow
+Authorization: Bearer {{accessToken}}
+Content-Type: text/uri-list
+
+http://localhost:8080/api/uds/flows/15
+
+#==================================================================
+
+### get upgrade event of this planned upgrade
+GET  http://localhost:8080/api/uds/plannedUpgrades/21/upgradeEvent
+Authorization: Bearer {{accessToken}}
+
+### link flow to planned upgrade
+PUT http://localhost:8080/api/uds/plannedUpgrades/21/upgradeEvent
+Authorization: Bearer {{accessToken}}
+Content-Type: text/uri-list
+
+http://localhost:8080/api/uds/upgradeEvents/19
+
+### unlink flow from upgrade plan
+DELETE http://localhost:8080/api/uds/plannedUpgrades/21/upgradeEvent
+Authorization: Bearer {{accessToken}}
+Content-Type: text/uri-list
+
+http://localhost:8080/api/uds/upgradeEvents/19
