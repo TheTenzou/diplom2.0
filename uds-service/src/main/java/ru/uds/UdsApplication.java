@@ -3,13 +3,12 @@ package ru.uds;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import ru.uds.flow.model.Flow;
 import ru.uds.flow.repository.FlowRepository;
 import ru.uds.udsupgradeevents.model.Difficulty;
 import ru.uds.udsupgradeevents.model.Type;
 import ru.uds.udsupgradeevents.model.UpgradeEvent;
-import ru.uds.udsupgradeevents.repository.UpgradeEventsRepository;
+import ru.uds.udsupgradeevents.repository.UpgradeEventRepository;
 import ru.uds.upgradeplann.model.PlannedUpgrade;
 import ru.uds.upgradeplann.model.UpgradePlan;
 import ru.uds.upgradeplann.repository.PlannedUpgradeRepository;
@@ -17,14 +16,13 @@ import ru.uds.upgradeplann.repository.UpgradePlanRepository;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Date;
 
 @SpringBootApplication
 public class UdsApplication {
 
 	public CommandLineRunner initDb(
 			FlowRepository flowRepository,
-			UpgradeEventsRepository upgradeEventsRepository,
+			UpgradeEventRepository upgradeEventRepository,
 			UpgradePlanRepository upgradePlanRepository,
 			PlannedUpgradeRepository plannedUpgradeRepository
 	) {
@@ -39,7 +37,7 @@ public class UdsApplication {
 			upgradeEvent.setDifficulty(Difficulty.HIGH);
 			upgradeEvent.setType(Type.PROPAGANDA);
 			upgradeEvent.setResourceRequirements(27.0);
-			upgradeEventsRepository.save(upgradeEvent);
+			upgradeEventRepository.save(upgradeEvent);
 
 			UpgradePlan  upgradePlan = new UpgradePlan();
 			upgradePlan.setDateTime(LocalDateTime.now());
