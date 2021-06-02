@@ -6,6 +6,7 @@ import Authentication from "./components/AuthWindow";
 import AdminPanel from "./components/AdminPanel";
 import TsoddSchedulesList from "./pages/TsoddSchedulesList";
 import TsoddSchedule from "./pages/tsoddSchedule/TsoddSchedule";
+import EnhancedTable from "./components/EnhancedTable";
 
 import axios from "axios";
 import React, { Component, useEffect, useState } from "react";
@@ -75,7 +76,9 @@ function About() {
 function TableFlows() {
   return (
     <BDiv mx="auto" className="tableFlows">
-      Табличка с Потоками
+      <BDiv mx="auto" style={{ width: '100%', height: '100%' }} >
+        <EnhancedTable />
+      </BDiv>
     </BDiv>
   );
 }
