@@ -25,39 +25,43 @@ import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import ReactDOM from 'react-dom';
 
-export default class MyTable extends Component {
+export default class TableFlows extends Component {
   render() {
     return (
       <div>
         <RenderTable />
-        <div id="table"></div>
+        <div id="table1"></div>
       </div>
     );
   }
 }
 
-function createData(name, description, difficulty, type, resourceRequirements) {
-  return { name, description, difficulty, type, resourceRequirements };
+function createData(number, density, date) {
+  return { number, density, date };
 }
 
 var rows = [
-  createData('Загрузка', 'Загрузка', 'Загрузка', 'Загрузка', 'Загрузка')
+  createData('Загрузка', 'Загрузка')
 ];
 
 function RenderTable () {
   const getTableData = () => {
     var args = {
       method: 'get',
-      url: 'api/uds/upgradeEvents?page=0&size=20',
+      url: 'api/uds/flowMeasurements?page=0&size=20',
     };
     
     axios(args).then((r) => {
-      rows = r.data._embedded.upgradeEvents;
+      rows = [];
+      const data = r.data._embedded.flowMeasurements;
+      for (var i = 0; i < data.length; i++) {
+        rows.push(createData("№" + (i + 1), data[i]["density"], data[i]["dateTime"]));
+      }
       ReactDOM.render(
         <React.StrictMode>
           <EnhancedTable />
         </React.StrictMode>,
-        document.getElementById('table')
+        document.getElementById('table1')
       );
     }).catch((er) => {
       console.log(er);
@@ -98,11 +102,9 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Номер' },
-  { id: 'description', numeric: false, disablePadding: false, label: 'Формулировка' },
-  { id: 'difficulty', numeric: false, disablePadding: false, label: 'Сложность реализации' },
-  { id: 'type', numeric: false, disablePadding: false, label: 'Тип мероприятия' },
-  { id: 'resourceRequirements', numeric: true, disablePadding: false, label: 'Объём необходимых средств' },
+  { id: 'number', numeric: false, disablePadding: false, label: 'Номер' },
+  { id: 'density', numeric: true, disablePadding: false, label: 'Плотность потока' },
+  { id: 'dateTime', numeric: false, disablePadding: false, label: 'Время последнего изменения' },
 ];
 
 function EnhancedTableHead(props) {
@@ -194,7 +196,7 @@ const EnhancedTableToolbar = (props) => {
         </Typography>
       ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-          План по модернизации УДС
+          Данные по потокам
         </Typography>
       )}
 
@@ -347,13 +349,11 @@ function EnhancedTable() {
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.name}
+                      <TableCell align="center" component="th" id={labelId} scope="row" padding="none">
+                        {row.number}
                       </TableCell>
-                      <TableCell align="center">{row.description}</TableCell>
-                      <TableCell align="center">{row.difficulty}</TableCell>
-                      <TableCell align="center">{row.type}</TableCell>
-                      <TableCell align="center">{row.resourceRequirements}</TableCell>
+                      <TableCell align="center">{row.density}</TableCell>
+                      <TableCell align="center">{row.date}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -380,7 +380,7 @@ function EnhancedTable() {
         label="Уплотнить"
       />
       <Button variant="contained" color="primary" style={{marginLeft: '10px'}} >
-        Добавить мероприятие
+        Добавить данные о потоках
       </Button>
     </div>
   );
