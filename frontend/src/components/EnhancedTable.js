@@ -23,14 +23,13 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import Button from '@material-ui/core/Button';
 
 import axios from 'axios';
-//import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom';
 
 export default class MyTable extends Component {
   render() {
     return (
       <div>
         <RenderTable />
-        <EnhancedTable />
         <div id="table"></div>
       </div>
     );
@@ -54,6 +53,12 @@ function RenderTable () {
     
     axios(args).then((r) => {
       rows = r.data._embedded.upgradeEvents;
+      ReactDOM.render(
+        <React.StrictMode>
+          <EnhancedTable />
+        </React.StrictMode>,
+        document.getElementById('table')
+      );
     }).catch((er) => {
       console.log(er);
     });
