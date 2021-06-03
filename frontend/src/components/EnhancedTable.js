@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -22,25 +22,50 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Button from '@material-ui/core/Button';
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+import axios from 'axios';
+//import ReactDOM from 'react-dom';
+
+export default class MyTable extends Component {
+  render() {
+    return (
+      <div>
+        <RenderTable />
+        <EnhancedTable />
+        <div id="table"></div>
+      </div>
+    );
+  }
 }
 
-const rows = [
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Donut', 452, 25.0, 51, 4.9),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Honeycomb', 408, 3.2, 87, 6.5),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Jelly Bean', 375, 0.0, 94, 0.0),
-  createData('KitKat', 518, 26.0, 65, 7.0),
-  createData('Lollipop', 392, 0.2, 98, 0.0),
-  createData('Marshmallow', 318, 0, 81, 2.0),
-  createData('Nougat', 360, 19.0, 9, 37.0),
-  createData('Oreo', 437, 18.0, 63, 4.0),
+function createData(name, description, difficulty, type, resourceRequirements) {
+  return { name, description, difficulty, type, resourceRequirements };
+}
+
+var rows = [
+  createData('Загрузка', 'Загрузка', 'Загрузка', 'Загрузка', 'Загрузка')
 ];
+
+function RenderTable () {
+  const getTableData = () => {
+    var args = {
+      method: 'get',
+      url: 'api/uds/upgradeEvents?page=0&size=20',
+    };
+    
+    axios(args).then((r) => {
+      rows = r.data._embedded.upgradeEvents;
+    }).catch((er) => {
+      console.log(er);
+    });
+  }
+
+  useEffect(() => {
+    getTableData();
+    console.log(rows);
+  });
+
+  return <></>
+}
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -69,11 +94,11 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
-  { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+  { id: 'name', numeric: false, disablePadding: true, label: 'Номер' },
+  { id: 'description', numeric: false, disablePadding: false, label: 'Формулировка' },
+  { id: 'difficulty', numeric: false, disablePadding: false, label: 'Сложность реализации' },
+  { id: 'type', numeric: false, disablePadding: false, label: 'Тип мероприятия' },
+  { id: 'resourceRequirements', numeric: true, disablePadding: false, label: 'Объём необходимых средств' },
 ];
 
 function EnhancedTableHead(props) {
@@ -161,7 +186,7 @@ const EnhancedTableToolbar = (props) => {
     >
       {numSelected > 0 ? (
         <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-          {numSelected} selected
+          {numSelected} выбрано
         </Typography>
       ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
@@ -214,14 +239,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable() {
+function EnhancedTable() {
   const classes = useStyles();
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('calories');
+  const [selected, setSelected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -321,10 +346,10 @@ export default function EnhancedTable() {
                       <TableCell component="th" id={labelId} scope="row" padding="none">
                         {row.name}
                       </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
+                      <TableCell align="left">{row.description}</TableCell>
+                      <TableCell align="left">{row.difficulty}</TableCell>
+                      <TableCell align="left">{row.type}</TableCell>
+                      <TableCell align="left">{row.resourceRequirements}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -350,7 +375,7 @@ export default function EnhancedTable() {
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Уплотнить"
       />
-      <Button variant="contained" color="primary" style={{marginLeft: '10px'}}>
+      <Button variant="contained" color="primary" style={{marginLeft: '10px'}} >
         Сгенерировать план
       </Button>
     </div>
