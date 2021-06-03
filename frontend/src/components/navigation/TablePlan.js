@@ -25,43 +25,46 @@ import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import ReactDOM from 'react-dom';
 
-export default class TableFlows extends Component {
+export default class TablePlan extends Component {
   render() {
     return (
       <div>
         <RenderTable />
-        <div id="table1"></div>
+        <div id="table2"></div>
       </div>
     );
   }
 }
 
-function createData(number, density, date) {
-  return { number, density, date };
+function createData(name, description, difficulty, type, resourceRequirements) {
+  return { name, description, difficulty, type, resourceRequirements };
 }
 
 var rows = [
-  createData('Загрузка', 'Загрузка')
+  createData('Загрузка', 'Загрузка', 'Загрузка', 'Загрузка', 'Загрузка')
 ];
 
 function RenderTable () {
   const getTableData = () => {
     var args = {
       method: 'get',
-      url: 'api/uds/flowMeasurements?page=0&size=20',
+      url: 'api/uds/upgradeEvents?page=0&size=20',
     };
     
     axios(args).then((r) => {
+      var data = r.data._embedded.upgradeEvents;
       rows = [];
-      const data = r.data._embedded.flowMeasurements;
+      var indexes = [0, 1, 2, 3, 4, 5];
       for (var i = 0; i < data.length; i++) {
-        rows.push(createData("№" + (i + 1), data[i]["density"], data[i]["dateTime"]));
+        if (indexes.indexOf(i) !== -1) {
+          rows.push(data[i]);
+        }
       }
       ReactDOM.render(
         <React.StrictMode>
           <EnhancedTable />
         </React.StrictMode>,
-        document.getElementById('table1')
+        document.getElementById('table2')
       );
     }).catch((er) => {
       console.log(er);
@@ -102,9 +105,11 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'number', numeric: false, disablePadding: false, label: 'Номер' },
-  { id: 'density', numeric: true, disablePadding: false, label: 'Плотность потока' },
-  { id: 'dateTime', numeric: false, disablePadding: false, label: 'Время последнего изменения' },
+  { id: 'name', numeric: false, disablePadding: true, label: 'Номер' },
+  { id: 'description', numeric: false, disablePadding: false, label: 'Формулировка' },
+  { id: 'difficulty', numeric: false, disablePadding: false, label: 'Сложность реализации' },
+  { id: 'type', numeric: false, disablePadding: false, label: 'Тип мероприятия' },
+  { id: 'resourceRequirements', numeric: true, disablePadding: false, label: 'Объём необходимых средств' },
 ];
 
 function EnhancedTableHead(props) {
@@ -196,7 +201,7 @@ const EnhancedTableToolbar = (props) => {
         </Typography>
       ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-          Данные по потокам
+          План по модернизации УДС
         </Typography>
       )}
 
@@ -349,11 +354,13 @@ function EnhancedTable() {
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell>
-                      <TableCell align="center" component="th" id={labelId} scope="row" padding="none">
-                        {row.number}
+                      <TableCell component="th" id={labelId} scope="row" padding="none">
+                        {row.name}
                       </TableCell>
-                      <TableCell align="center">{row.density}</TableCell>
-                      <TableCell align="center">{row.date}</TableCell>
+                      <TableCell align="center">{row.description}</TableCell>
+                      <TableCell align="center">{row.difficulty}</TableCell>
+                      <TableCell align="center">{row.type}</TableCell>
+                      <TableCell align="center">{row.resourceRequirements}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -380,7 +387,7 @@ function EnhancedTable() {
         label="Уплотнить"
       />
       <Button variant="contained" color="primary" style={{marginLeft: '10px'}} >
-        Добавить данные о потоках
+        Добавить мероприятие
       </Button>
     </div>
   );
