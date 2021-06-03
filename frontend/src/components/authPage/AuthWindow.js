@@ -1,4 +1,4 @@
-import '../authWindow.css';
+import '../authPage/authWindow.css';
 import axios from "axios";
 import React, { Component, useEffect, useState } from "react";
 import { BDiv, Form, Button } from 'bootstrap-4-react';

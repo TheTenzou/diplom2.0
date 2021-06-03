@@ -1,4 +1,4 @@
-import '../AdminPanel.css';
+import '../adminPage/AdminPanel.css';
 import React, { Component, useState, useEffect } from "react";
 import { BDiv, Card, Button, Modal, Form, Collapse, Row, Col, Badge } from 'bootstrap-4-react';
 import axios from "axios";

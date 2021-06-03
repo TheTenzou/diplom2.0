@@ -52,7 +52,5 @@ const Lines = () => {
     );
   }
 
-  console.log(linePositions.length);
-
   return <div>{items}</div>
 }

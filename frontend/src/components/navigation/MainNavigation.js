@@ -1,9 +1,10 @@
-import MySidebar from "./Sidebar";
-import decodeToken from "./decodeJwt";
+import MySidebar from "../mapPage/Sidebar";
+import decodeToken from "../adminPage/decodeJwt";
+import userData from "../adminPage/AdminPanel";
+
 import React, { Component } from "react";
 import { Navbar, Nav, Button, Form, Collapse, BImg } from "bootstrap-4-react";
 import Sidebar from "react-sidebar";
-import userData from "./AdminPanel";
 
 export default class MainNavigation extends Component {
   constructor(props) {

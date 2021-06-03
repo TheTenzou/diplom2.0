@@ -1,12 +1,12 @@
 import "./App.css";
 
-import MainNavigation from "./components/MainNavigation";
-import MyMap from "./components/Map";
-import Authentication from "./components/AuthWindow";
-import AdminPanel from "./components/AdminPanel";
+import MainNavigation from "./components/navigation/MainNavigation";
+import MyMap from "./components/mapPage/Map";
+import Authentication from "./components/authPage/AuthWindow";
+import AdminPanel from "./components/adminPage/AdminPanel";
 import TsoddSchedulesList from "./pages/TsoddSchedulesList";
 import TsoddSchedule from "./pages/tsoddSchedule/TsoddSchedule";
-import EnhancedTable from "./components/EnhancedTable";
+import EnhancedTable from "./components/navigation/EnhancedTable";
 
 import axios from "axios";
 import React, { Component, useEffect, useState } from "react";
