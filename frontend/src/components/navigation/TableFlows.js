@@ -41,7 +41,7 @@ function createData(number, density, date) {
 }
 
 var rows = [
-  createData('Загрузка', 'Загрузка')
+  createData('Загрузка', 'Загрузка', 'Загрузка')
 ];
 
 function RenderTable () {
@@ -195,7 +195,7 @@ const EnhancedTableToolbar = (props) => {
           {numSelected} выбрано
         </Typography>
       ) : (
-        <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+        <Typography className={classes.title} variant="h6" id="tableTitle1" component="div">
           Данные по потокам
         </Typography>
       )}
@@ -313,7 +313,7 @@ function EnhancedTable() {
         <TableContainer>
           <Table
             className={classes.table}
-            aria-labelledby="tableTitle"
+            aria-labelledby="tableTitle1"
             size={dense ? 'small' : 'medium'}
             aria-label="enhanced table"
           >
@@ -331,7 +331,7 @@ function EnhancedTable() {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+                  const labelId = `enhanced-table-checkbox1-${index}`;
 
                   return (
                     <TableRow

@@ -200,7 +200,7 @@ const EnhancedTableToolbar = (props) => {
           {numSelected} выбрано
         </Typography>
       ) : (
-        <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+        <Typography className={classes.title} variant="h6" id="tableTitle2" component="div">
           План по модернизации УДС
         </Typography>
       )}
@@ -318,7 +318,7 @@ function EnhancedTable() {
         <TableContainer>
           <Table
             className={classes.table}
-            aria-labelledby="tableTitle"
+            aria-labelledby="tableTitle2"
             size={dense ? 'small' : 'medium'}
             aria-label="enhanced table"
           >
@@ -336,7 +336,7 @@ function EnhancedTable() {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+                  const labelId = `enhanced-table-checkbox2-${index}`;
 
                   return (
                     <TableRow

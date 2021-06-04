@@ -48,7 +48,7 @@ function RenderTable () {
   const getTableData = () => {
     var args = {
       method: 'get',
-      url: 'api/uds/upgradeEvents?page=0&size=20',
+      url: 'api/uds/upgradeEvents?page=0&size=30',
     };
     
     axios(args).then((r) => {
