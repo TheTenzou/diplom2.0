@@ -8,7 +8,7 @@
 
 ## Архитектура
 
-![Link](https://github.com/TheTenzou/gis-diplom/images/architecture.png?raw=true)
+![Link](./images/architecture.png)
 
 Приложение состоит из следующих сервисов:
  - Управление аккаунтами пользователей осушествляется сервисом аунтефикации, написаном на Go с использованием Gin-gonic. Mongo используется для храниения данных пользователя. Redis - для refresh токенов.
