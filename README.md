@@ -6,6 +6,18 @@
  - Gin-gonic, Spring(Spring-Security, Spring-Data, Spring-web), React, Leaflet.
  - Redis, Mongodb, Postgres.
 
+> ![fear and loathing in diplomnaya rabota](./images/fear_and_loathing_in_diplomnaya_rabota.png)
+> 
+> У нас было 
+> 2 дипломной работы, 
+> 75 дней до нормоконтоля,
+> 12 докер контейнеров,
+> полсолонки shell скриптов и гора докер файлов,
+> базданных и всего такого, всех цветов,
+> а ещё литр Kotlin'а, литр JavaScript'a, ящик Golang'a, пол-литра HTML и две дюжины Css файлов.
+>
+> Не то, чтобы это всё было нужно при написании диплома, но раз начал коллекционировать технологии, то иди в своём увлечении до конца.
+
 ## Архитектура
 
 ![Link](./images/architecture.png)
