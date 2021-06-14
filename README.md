@@ -6,7 +6,7 @@
  - Gin-gonic, Spring(Spring-Security, Spring-Data, Spring-web), React, Leaflet.
  - Redis, Mongodb, Postgres.
 
-> ![fear and loathing in diplomnaya rabota](./images/fear_and_loathing_in_diplomnaya_rabota.png)
+> ![fear and loathing in diplomnaya rabota](./images/fear_and_loathing_in_diplomnaya_rabota.PNG)
 > 
 > У нас было 
 > 2 дипломной работы, 
