@@ -1,4 +1,4 @@
-import '../authWindow.css';
+import '../authPage/authWindow.css';
 import axios from "axios";
 import React, { Component, useEffect, useState } from "react";
 import { BDiv, Form, Button } from 'bootstrap-4-react';
@@ -8,7 +8,7 @@ export default class Authentication extends Component {
   render() {
     return (
       <div className="wrapper">
-        <div style={{ height: '20%' }}></div>
+        <div style={{ paddingTop: '10%' }}></div>
         <BDiv m="auto" className="mainField" style={{width: "40%"}}>
           <BDiv m="auto" className="contentField">
             <h1 className="title">Авторизация</h1>

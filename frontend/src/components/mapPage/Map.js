@@ -1,6 +1,6 @@
 import AddMarker, { mapIcon1, markersPositions, linePositions } from './AddNewMarker';
 import React, { Component } from 'react';
-import { MapContainer, LayersControl, TileLayer, LayerGroup, Marker, Popup, Polyline } from 'react-leaflet';
+import { MapContainer, LayersControl, TileLayer, LayerGroup, Marker, Popup, Tooltip, Polyline } from 'react-leaflet';
 
 export default class MyMap extends Component {
   render() {
@@ -47,7 +47,7 @@ const Lines = () => {
   for (let i = 0; i < linePositions.length; ++i) {
     items.push(
       <Polyline key={i} pathOptions={linePositions[i].slice(-2, -1)[0]} positions={linePositions[i].slice(0, -2)}>
-        <Popup>{ linePositions[i].slice(-1)[0] }</Popup>
+        <Tooltip>{ linePositions[i].slice(-1)[0] }</Tooltip>
       </Polyline>
     );
   }
