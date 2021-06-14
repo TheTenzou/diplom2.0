@@ -1,5 +1,7 @@
 # Дипломный проект геоинформационные системы
 
+Дипломный проект [TheTenzou](https://github.com/TheTenzou) и [Betomex](https://github.com/betomex), 
+
 ## Технологии
 
  - Golang, Kotlin, Java, JavaScript.
@@ -28,14 +30,12 @@
  - УДС сервис CRUD приложение для данных связанных с модернизацией УДС, написанов на Java с использованием Spring. Postgres используется для хранения данных. Оптимальный план модернизации УДС составляется припомоши Optaplanner.
  - фронт написан на React с Leaflet для отображения карты.
 
-## Требования
-
-- [Docker](https://www.docker.com/)
-- Docker-compose
-
-В случае windows лучше запускать из под wsl
-
 ## Запуск
+
+Требования:
+ - [Docker](https://www.docker.com/)
+
+Вы пололнить следуюшию комаду из корня проекта
 ```sh
 docker-compose up
 ```
