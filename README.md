@@ -4,6 +4,7 @@
 
 ## Технологии
 
+ - Nginx, Docker.
  - Golang, Kotlin, Java, JavaScript.
  - Gin-gonic, Spring(Spring-Security, Spring-Data, Spring-web), React, Leaflet.
  - Redis, Mongodb, Postgres.
